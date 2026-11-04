@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
 require('dotenv').config();
 
 const app = express();
@@ -9,11 +10,11 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// MongoDB Connection
-const mongoUri = process.env.MONGODB_URI || 'mongodb://localhost:27017/devmentor-ai';
-mongoose.connect(mongoUri)
-  .then(() => console.log('MongoDB connected'))
-  .catch(err => console.error('MongoDB connection error:', err));
+// In-Memory Storage (for testing without MongoDB)
+const users = new Map();
+const learningProgress = new Map();
+
+console.log('✓ Using in-memory database (no MongoDB needed)');
 
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));

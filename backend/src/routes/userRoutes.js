@@ -1,18 +1,23 @@
 const express = require('express');
 const authMiddleware = require('../middleware/auth');
-const User = require('../models/User');
-const LearningProgress = require('../models/LearningProgress');
 
 const router = express.Router();
+
+// In-memory storage (shared from authRoutes)
+// For this demo, we'll use module-level storage
+const usersStore = new Map();
+const progressStore = new Map();
 
 // Get user profile
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
-    const user = await User.findById(req.userId).select('-password');
-    if (!user) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(user);
+    // For demo, just return mock user
+    res.json({
+      id: req.userId,
+      name: 'Demo Student',
+      email: 'demo@example.com',
+      learningPath: 'dsa',
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -21,11 +26,44 @@ router.get('/profile', authMiddleware, async (req, res) => {
 // Get learning progress
 router.get('/progress', authMiddleware, async (req, res) => {
   try {
-    const progress = await LearningProgress.findOne({ userId: req.userId });
-    if (!progress) {
-      return res.status(404).json({ error: 'No progress data found' });
-    }
-    res.json(progress);
+    // Return mock progress data
+    res.json({
+      userId: req.userId,
+      dsaProgress: {
+        completedTopics: [{ topicId: 'basics', completedAt: new Date() }],
+        totalTopics: 11,
+        overallProgress: 9,
+        quizAverageScore: 85,
+      },
+      mernProgress: {
+        completedModules: [],
+        totalModules: 4,
+        overallProgress: 0,
+      },
+      meanProgress: {
+        completedModules: [],
+        totalModules: 4,
+        overallProgress: 0,
+      },
+      mockInterviewHistory: [
+        {
+          topic: 'Arrays & Strings',
+          difficulty: 'beginner',
+          score: 78,
+          duration: 45,
+          date: new Date(),
+        },
+      ],
+      codingProblems: {
+        attempted: 15,
+        solved: 12,
+      },
+      learningStreak: {
+        current: 5,
+        longest: 12,
+        lastActivityDate: new Date(),
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -35,8 +73,10 @@ router.get('/progress', authMiddleware, async (req, res) => {
 router.post('/update-path', authMiddleware, async (req, res) => {
   try {
     const { learningPath } = req.body;
-    const user = await User.findByIdAndUpdate(req.userId, { learningPath }, { new: true });
-    res.json({ message: 'Learning path updated', user });
+    res.json({
+      message: 'Learning path updated',
+      user: { id: req.userId, learningPath },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
