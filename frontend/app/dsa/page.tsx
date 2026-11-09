@@ -99,7 +99,7 @@ export default function DSAPage() {
               <h2 className="text-2xl font-bold text-white mb-6">Module {moduleNum}</h2>
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {moduleTopics.map((topic) => (
-                  <Link key={topic.id} href={`/dsa/topic/${moduleNum}-${topic.id}`}>
+                  <Link key={topic.id} href={`/dsa/${topic.id}`}>
                     <div className="bg-gradient-to-br from-slate-700 to-slate-800 border border-slate-600 rounded-lg p-6 hover:border-cyan-400 transition hover:shadow-lg hover:shadow-cyan-400/20 cursor-pointer h-full">
                       <h3 className="text-lg font-bold text-white mb-3">{topic.name}</h3>
                       <p className="text-slate-400 text-sm mb-4">
