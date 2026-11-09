@@ -1,10 +1,12 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, Suspense } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut } from 'lucide-react';
+
+export const dynamic = 'force-dynamic';
 
 interface Topic {
   id: string;
@@ -21,7 +23,7 @@ interface Topic {
   difficulty: string;
 }
 
-export default function TopicPage() {
+function TopicPageContent() {
   const params = useParams();
   const router = useRouter();
   const id = params.id as string;
@@ -233,5 +235,17 @@ export default function TopicPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TopicPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading topic...</div>
+      </div>
+    }>
+      <TopicPageContent />
+    </Suspense>
   );
 }
