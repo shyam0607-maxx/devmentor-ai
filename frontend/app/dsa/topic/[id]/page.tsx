@@ -32,6 +32,7 @@ function TopicPageContent() {
   const [selectedLanguage, setSelectedLanguage] = useState('java');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   // Extract moduleId and topicId from the id parameter (format: "1-big-o")
   const parseId = (id: string) => {
@@ -52,10 +53,14 @@ function TopicPageContent() {
 
         const { moduleId, topicId } = parseId(id);
         try {
+          console.log('Fetching topic from API:', `/dsa/topic/${moduleId}/${topicId}`);
           const topicData = await apiCall(`/dsa/topic/${moduleId}/${topicId}`);
+          console.log('Topic data received:', topicData);
           setTopic(topicData);
+          setError(null);
         } catch (error) {
           console.error('API Error:', error);
+          setError(error instanceof Error ? error.message : 'Failed to load topic');
           setTopic(null);
         }
       } catch (err) {
@@ -110,8 +115,12 @@ function TopicPageContent() {
         </header>
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-4">Topic Not Found</h1>
-            <p className="text-slate-400 mb-8">The topic you're looking for doesn't exist.</p>
+            <h1 className="text-3xl font-bold text-white mb-4">
+              {error ? 'Error Loading Topic' : 'Topic Not Found'}
+            </h1>
+            <p className="text-slate-400 mb-8">
+              {error || 'The topic you\'re looking for doesn\'t exist.'}
+            </p>
             <Link
               href="/dsa"
               className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition"
