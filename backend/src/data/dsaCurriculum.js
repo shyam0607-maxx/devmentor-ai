@@ -294,6 +294,15 @@ int arraySum(int arr[], int index, int n) {
 
 A data structure that stores multiple elements in a fixed-size, contiguous block of memory.
 
+### Visual Representation:
+\`\`\`
+Index:    0      1      2      3      4
+       +----+----+----+----+----+
+Data:  | 10 | 20 | 30 | 40 | 50 |
+       +----+----+----+----+----+
+Memory: [Contiguous Block in RAM]
+\`\`\`
+
 ### Key Characteristics:
 - **Fixed Size**: Size is determined at creation
 - **Contiguous Memory**: All elements stored next to each other
@@ -306,6 +315,14 @@ A data structure that stores multiple elements in a fixed-size, contiguous block
 - **Insert**: Shift elements → O(n)
 - **Delete**: Shift elements → O(n)
 - **Traverse**: Visit all elements → O(n)
+
+### 2D Array Visualization:
+\`\`\`
+     Col 0  Col 1  Col 2
+Row 0  [1]    [2]    [3]
+Row 1  [4]    [5]    [6]
+Row 2  [7]    [8]    [9]
+\`\`\`
 
 ### Real-World Use Cases:
 - Storing scores in a game
@@ -444,6 +461,568 @@ void traverse(vector<int>& arr) {
         timeComplexity: "Access O(1), Search O(n), Insert O(n), Delete O(n)",
         spaceComplexity: "O(n) - proportional to array size",
         difficulty: "Beginner",
+      },
+    ],
+  },
+  3: {
+    module: 3,
+    name: "Linked Lists",
+    description: "Understanding linked lists and pointer-based structures",
+    topics: [
+      {
+        id: "linked-list-basics",
+        name: "Linked List Basics",
+        description: "Nodes, pointers, and traversal",
+        notes: `
+## Linked Lists
+
+A linear data structure where elements (nodes) are connected via pointers/references.
+
+### Visual Representation:
+\`\`\`
+Head →  [10|→]  →  [20|→]  →  [30|→]  →  [40|NULL]
+        Node 1      Node 2      Node 3      Node 4
+
+Each Node contains:
+- Data: The value stored
+- Next: Pointer to next node
+\`\`\`
+
+### Comparison with Arrays:
+\`\`\`
+ARRAYS:
+- Fixed size
+- Contiguous memory
+- O(1) access
+- O(n) insert/delete
+
+LINKED LISTS:
+- Dynamic size
+- Non-contiguous memory
+- O(n) access
+- O(1) insert/delete (if position known)
+\`\`\`
+
+### Types of Linked Lists:
+1. **Singly Linked List**: Each node points to next
+2. **Doubly Linked List**: Each node points to next AND previous
+3. **Circular Linked List**: Last node points back to first
+
+### Doubly Linked List Visualization:
+\`\`\`
+NULL ← [10|↔] ↔ [20|↔] ↔ [30|↔] ↔ [40|NULL]
+\`\`\`
+
+### Real-World Applications:
+- Browser history (back/forward buttons)
+- Undo/Redo functionality
+- Music playlist with prev/next
+        `,
+        codeExamples: {
+          java: `
+public class Node {
+  int data;
+  Node next;
+
+  Node(int data) {
+    this.data = data;
+    this.next = null;
+  }
+}
+
+public class LinkedList {
+  Node head;
+
+  // Insert at beginning - O(1)
+  public void insertFirst(int data) {
+    Node newNode = new Node(data);
+    newNode.next = head;
+    head = newNode;
+  }
+
+  // Traverse - O(n)
+  public void display() {
+    Node current = head;
+    while (current != null) {
+      System.out.print(current.data + " → ");
+      current = current.next;
+    }
+    System.out.println("NULL");
+  }
+
+  // Search - O(n)
+  public boolean search(int target) {
+    Node current = head;
+    while (current != null) {
+      if (current.data == target) return true;
+      current = current.next;
+    }
+    return false;
+  }
+}
+          `,
+          python: `
+class Node:
+  def __init__(self, data):
+    self.data = data
+    self.next = None
+
+class LinkedList:
+  def __init__(self):
+    self.head = None
+
+  # Insert at beginning - O(1)
+  def insert_first(self, data):
+    new_node = Node(data)
+    new_node.next = self.head
+    self.head = new_node
+
+  # Traverse - O(n)
+  def display(self):
+    current = self.head
+    while current:
+      print(f"{current.data} → ", end="")
+      current = current.next
+    print("NULL")
+
+  # Search - O(n)
+  def search(self, target):
+    current = self.head
+    while current:
+      if current.data == target:
+        return True
+      current = current.next
+    return False
+          `,
+          cpp: `
+#include <iostream>
+using namespace std;
+
+struct Node {
+  int data;
+  Node* next;
+  Node(int d) : data(d), next(NULL) {}
+};
+
+class LinkedList {
+public:
+  Node* head;
+
+  LinkedList() : head(NULL) {}
+
+  // Insert at beginning - O(1)
+  void insertFirst(int data) {
+    Node* newNode = new Node(data);
+    newNode->next = head;
+    head = newNode;
+  }
+
+  // Traverse - O(n)
+  void display() {
+    Node* current = head;
+    while (current) {
+      cout << current->data << " → ";
+      current = current->next;
+    }
+    cout << "NULL\\n";
+  }
+
+  // Search - O(n)
+  bool search(int target) {
+    Node* current = head;
+    while (current) {
+      if (current->data == target) return true;
+      current = current->next;
+    }
+    return false;
+  }
+};
+          `,
+        },
+        timeComplexity: "Access O(n), Insert O(1), Delete O(1)",
+        spaceComplexity: "O(n) - one node per element",
+        difficulty: "Intermediate",
+      },
+    ],
+  },
+  4: {
+    module: 4,
+    name: "Stacks & Queues",
+    description: "LIFO and FIFO data structures",
+    topics: [
+      {
+        id: "stacks",
+        name: "Stacks (LIFO)",
+        description: "Last-In-First-Out data structure",
+        notes: `
+## Stacks (LIFO)
+
+Last element added is the first one removed. Like a stack of plates!
+
+### Visual Representation:
+\`\`\`
+Push 10:    Push 20:    Push 30:    Pop:
+┌───┐       ┌───┐       ┌───┐       ┌───┐
+│10 │       │20 │       │30 │ TOP   │   │
+└───┘       ├───┤       ├───┤   →   ├───┤
+            │10 │       │20 │       │20 │ TOP
+            └───┘       ├───┤       ├───┤
+                        │10 │       │10 │
+                        └───┘       └───┘
+
+Operations:
+- Push: Add to top - O(1)
+- Pop: Remove from top - O(1)
+- Peek: View top - O(1)
+\`\`\`
+
+### Stack vs Queue Comparison:
+\`\`\`
+STACK (LIFO):        QUEUE (FIFO):
+Push 1, 2, 3         Enqueue 1, 2, 3
+Pop Order: 3,2,1     Dequeue Order: 1,2,3
+
+Stack:          Queue:
+  [3]           [1] → [2] → [3]
+  [2]           Front        Rear
+  [1]
+\`\`\`
+
+### Applications:
+- Browser back button
+- Undo/Redo in editors
+- Function call stack
+- Expression evaluation
+- Backtracking algorithms
+        `,
+        codeExamples: {
+          java: `
+public class Stack {
+  private int[] arr;
+  private int top;
+  private int capacity;
+
+  Stack(int size) {
+    arr = new int[size];
+    capacity = size;
+    top = -1;
+  }
+
+  // Push - O(1)
+  public void push(int x) {
+    if (top == capacity - 1) {
+      System.out.println("Stack Overflow");
+      return;
+    }
+    arr[++top] = x;
+  }
+
+  // Pop - O(1)
+  public int pop() {
+    if (top == -1) {
+      System.out.println("Stack Underflow");
+      return -1;
+    }
+    return arr[top--];
+  }
+
+  // Peek - O(1)
+  public int peek() {
+    if (top == -1) return -1;
+    return arr[top];
+  }
+
+  // Is Empty - O(1)
+  public boolean isEmpty() {
+    return top == -1;
+  }
+}
+          `,
+          python: `
+class Stack:
+  def __init__(self, size=100):
+    self.arr = []
+    self.capacity = size
+
+  # Push - O(1)
+  def push(self, x):
+    if len(self.arr) < self.capacity:
+      self.arr.append(x)
+    else:
+      print("Stack Overflow")
+
+  # Pop - O(1)
+  def pop(self):
+    if not self.arr:
+      print("Stack Underflow")
+      return None
+    return self.arr.pop()
+
+  # Peek - O(1)
+  def peek(self):
+    if not self.arr:
+      return None
+    return self.arr[-1]
+
+  # Is Empty - O(1)
+  def is_empty(self):
+    return len(self.arr) == 0
+
+  # Size - O(1)
+  def size(self):
+    return len(self.arr)
+          `,
+          cpp: `
+#include <iostream>
+#include <vector>
+using namespace std;
+
+class Stack {
+private:
+  vector<int> arr;
+  int top;
+  int capacity;
+
+public:
+  Stack(int size = 100) {
+    capacity = size;
+    top = -1;
+  }
+
+  // Push - O(1)
+  void push(int x) {
+    if (top < capacity - 1) {
+      arr.push_back(x);
+      top++;
+    } else {
+      cout << "Stack Overflow\\n";
+    }
+  }
+
+  // Pop - O(1)
+  int pop() {
+    if (top == -1) {
+      cout << "Stack Underflow\\n";
+      return -1;
+    }
+    int val = arr[top];
+    arr.pop_back();
+    top--;
+    return val;
+  }
+
+  // Peek - O(1)
+  int peek() {
+    if (top == -1) return -1;
+    return arr[top];
+  }
+};
+          `,
+        },
+        timeComplexity: "Push O(1), Pop O(1), Peek O(1)",
+        spaceComplexity: "O(n)",
+        difficulty: "Beginner",
+      },
+    ],
+  },
+  5: {
+    module: 5,
+    name: "Trees",
+    description: "Hierarchical data structures",
+    topics: [
+      {
+        id: "binary-trees",
+        name: "Binary Trees",
+        description: "Trees where each node has at most 2 children",
+        notes: `
+## Binary Trees
+
+A hierarchical structure where each node has at most 2 children (left and right).
+
+### Visual Representation:
+\`\`\`
+        1 (Root)
+       / \\
+      2   3
+     / \\
+    4   5
+
+Tree Structure:
+- Root: Node with no parent (1)
+- Internal: Nodes with children (1, 2)
+- Leaf: Nodes with no children (3, 4, 5)
+- Height: Maximum distance from root to leaf
+\`\`\`
+
+### Types of Binary Trees:
+\`\`\`
+1. Full Binary Tree:
+   Every node has 0 or 2 children
+     1
+    / \\
+   2   3
+  / \\ / \\
+ 4  5 6  7
+
+2. Complete Binary Tree:
+   All levels filled except possibly last
+     1
+    / \\
+   2   3
+  / \\ /
+ 4  5 6
+
+3. Perfect Binary Tree:
+   All internal nodes have 2 children
+   All leaves at same level
+     1
+    / \\
+   2   3
+  / \\ / \\
+ 4  5 6  7
+
+4. Binary Search Tree (BST):
+   Left < Node < Right
+     5
+    / \\
+   3   7
+  / \\ / \\
+ 2  4 6  8
+\`\`\`
+
+### Tree Traversals:
+\`\`\`
+      1
+     / \\
+    2   3
+
+Inorder (L-N-R):   2 1 3
+Preorder (N-L-R):  1 2 3
+Postorder (L-R-N): 2 3 1
+Level Order:       1 2 3
+\`\`\`
+
+### Applications:
+- File system hierarchy
+- DOM in web browsers
+- Expression parsing
+- Huffman coding
+- Binary search trees
+        `,
+        codeExamples: {
+          java: `
+public class TreeNode {
+  int data;
+  TreeNode left, right;
+
+  TreeNode(int data) {
+    this.data = data;
+    left = right = null;
+  }
+}
+
+public class BinaryTree {
+  TreeNode root;
+
+  // Inorder Traversal - O(n)
+  void inorder(TreeNode node) {
+    if (node == null) return;
+    inorder(node.left);      // Left
+    System.out.print(node.data + " ");  // Node
+    inorder(node.right);     // Right
+  }
+
+  // Preorder Traversal - O(n)
+  void preorder(TreeNode node) {
+    if (node == null) return;
+    System.out.print(node.data + " ");  // Node
+    preorder(node.left);     // Left
+    preorder(node.right);    // Right
+  }
+
+  // Height of Tree - O(n)
+  int height(TreeNode node) {
+    if (node == null) return -1;
+    return 1 + Math.max(height(node.left),
+                        height(node.right));
+  }
+}
+          `,
+          python: `
+class TreeNode:
+  def __init__(self, data):
+    self.data = data
+    self.left = None
+    self.right = None
+
+class BinaryTree:
+  def __init__(self):
+    self.root = None
+
+  # Inorder Traversal - O(n)
+  def inorder(self, node):
+    if not node:
+      return
+    self.inorder(node.left)        # Left
+    print(node.data, end=" ")      # Node
+    self.inorder(node.right)       # Right
+
+  # Preorder Traversal - O(n)
+  def preorder(self, node):
+    if not node:
+      return
+    print(node.data, end=" ")      # Node
+    self.preorder(node.left)       # Left
+    self.preorder(node.right)      # Right
+
+  # Height - O(n)
+  def height(self, node):
+    if not node:
+      return -1
+    return 1 + max(self.height(node.left),
+                   self.height(node.right))
+          `,
+          cpp: `
+#include <iostream>
+#include <algorithm>
+using namespace std;
+
+struct TreeNode {
+  int data;
+  TreeNode *left, *right;
+  TreeNode(int d) : data(d), left(NULL), right(NULL) {}
+};
+
+class BinaryTree {
+public:
+  // Inorder - O(n)
+  void inorder(TreeNode* node) {
+    if (!node) return;
+    inorder(node->left);
+    cout << node->data << " ";
+    inorder(node->right);
+  }
+
+  // Preorder - O(n)
+  void preorder(TreeNode* node) {
+    if (!node) return;
+    cout << node->data << " ";
+    preorder(node->left);
+    preorder(node->right);
+  }
+
+  // Height - O(n)
+  int height(TreeNode* node) {
+    if (!node) return -1;
+    return 1 + max(height(node->left),
+                   height(node->right));
+  }
+};
+          `,
+        },
+        timeComplexity: "Traversal O(n), Height O(n), Search O(h)",
+        spaceComplexity: "O(h) - recursive call stack",
+        difficulty: "Intermediate",
       },
     ],
   },
