@@ -6,7 +6,7 @@ import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut } from 'lucide-react';
 
-export const dynamic = 'force-dynamic';
+
 
 interface Topic {
   id: string;
