@@ -26,7 +26,7 @@ router.get('/topics', authMiddleware, (req, res) => {
 
 // Get module content
 router.get('/module/:moduleId', authMiddleware, (req, res) => {
-  const moduleId = parseInt(req.params.moduleId);
+  const moduleId = req.params.moduleId;
   const module = dsaCurriculum[moduleId];
 
   if (!module) {
@@ -38,7 +38,7 @@ router.get('/module/:moduleId', authMiddleware, (req, res) => {
 
 // Get specific topic details
 router.get('/topic/:moduleId/:topicId', authMiddleware, (req, res) => {
-  const moduleId = parseInt(req.params.moduleId);
+  const moduleId = req.params.moduleId;
   const topicId = req.params.topicId;
 
   const module = dsaCurriculum[moduleId];
@@ -56,7 +56,7 @@ router.get('/topic/:moduleId/:topicId', authMiddleware, (req, res) => {
 
 // Get code example for a topic
 router.get('/code/:moduleId/:topicId/:language', authMiddleware, (req, res) => {
-  const moduleId = parseInt(req.params.moduleId);
+  const moduleId = req.params.moduleId;
   const topicId = req.params.topicId;
   const language = req.params.language.toLowerCase();
 
@@ -84,7 +84,7 @@ router.get('/code/:moduleId/:topicId/:language', authMiddleware, (req, res) => {
 
 // Get complexity analysis
 router.get('/complexity/:moduleId/:topicId', authMiddleware, (req, res) => {
-  const moduleId = parseInt(req.params.moduleId);
+  const moduleId = req.params.moduleId;
   const topicId = req.params.topicId;
 
   const module = dsaCurriculum[moduleId];
