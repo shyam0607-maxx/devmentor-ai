@@ -134,7 +134,7 @@ export default function BinaryTreesPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        {/* Two Column Layout */}
+        {/* Two Column Layout - Animation + Properties */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left: Animated Tree */}
           <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 backdrop-blur-sm">
@@ -174,13 +174,11 @@ export default function BinaryTreesPage() {
                 `}</style>
               </defs>
 
-              {/* Lines */}
               <line x1="150" y1="60" x2="100" y2="140" stroke="#06b6d4" strokeWidth="2" className="line line-1"/>
               <line x1="150" y1="60" x2="200" y2="140" stroke="#06b6d4" strokeWidth="2" className="line line-2"/>
               <line x1="100" y1="160" x2="75" y2="240" stroke="#06b6d4" strokeWidth="2" className="line line-3"/>
               <line x1="100" y1="160" x2="125" y2="240" stroke="#06b6d4" strokeWidth="2" className="line line-4"/>
 
-              {/* Nodes */}
               <g className="root">
                 <circle cx="150" cy="50" r="25" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
                 <text x="150" y="57" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">1</text>
@@ -206,37 +204,93 @@ export default function BinaryTreesPage() {
                 <text x="125" y="256" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">5</text>
               </g>
 
-              <text x="150" y="340" textAnchor="middle" fill="#cbd5e1" fontSize="13" fontWeight="bold">Binary Tree Growth (In-Order Traversal)</text>
-              <text x="150" y="360" textAnchor="middle" fill="#94a3b8" fontSize="11">Each level builds upon the previous</text>
+              <text x="150" y="340" textAnchor="middle" fill="#cbd5e1" fontSize="13" fontWeight="bold">Binary Tree Growth</text>
+              <text x="150" y="360" textAnchor="middle" fill="#94a3b8" fontSize="11">Hierarchical Structure</text>
             </svg>
           </div>
 
-          {/* Right: Tree Properties Panel */}
+          {/* Right: Properties + Complexity */}
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
             <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">📋 Tree Properties</h2>
-            <div className="space-y-4">
+            <div className="space-y-3">
               <div className="bg-teal-800/30 p-4 rounded border border-teal-700/50">
-                <p className="text-teal-300 font-semibold mb-2">Height</p>
+                <p className="text-teal-300 font-semibold mb-2">📏 Height</p>
                 <p className="text-slate-300 text-sm">Distance from root to deepest leaf</p>
-                <p className="text-slate-400 text-xs mt-1">Max height: O(n) in worst case</p>
+                <p className="text-slate-400 text-xs mt-1">O(n) worst case | O(log n) balanced</p>
               </div>
               <div className="bg-emerald-800/30 p-4 rounded border border-emerald-700/50">
-                <p className="text-emerald-300 font-semibold mb-2">Depth</p>
+                <p className="text-emerald-300 font-semibold mb-2">📐 Depth</p>
                 <p className="text-slate-300 text-sm">Distance from root to specific node</p>
-                <p className="text-slate-400 text-xs mt-1">Used in traversal algorithms</p>
+                <p className="text-slate-400 text-xs mt-1">Used in traversal analysis</p>
               </div>
               <div className="bg-cyan-700/30 p-4 rounded border border-cyan-700/50">
-                <p className="text-cyan-200 font-semibold mb-2">Traversal Methods</p>
+                <p className="text-cyan-200 font-semibold mb-2">🔄 Traversals</p>
                 <p className="text-slate-300 text-sm">In-order, Pre-order, Post-order, Level-order</p>
+                <p className="text-slate-400 text-xs mt-1">Different use cases, same O(n)</p>
               </div>
               <div className="bg-teal-700/30 p-4 rounded border border-teal-700/50">
-                <p className="text-teal-200 font-semibold mb-2">Balance Property</p>
-                <p className="text-slate-300 text-sm">Balanced trees optimize search to O(log n)</p>
+                <p className="text-teal-200 font-semibold mb-2">⚖️ Balance</p>
+                <p className="text-slate-300 text-sm">Balanced trees optimize operations</p>
+                <p className="text-slate-400 text-xs mt-1">Search: O(n) → O(log n)</p>
+              </div>
+            </div>
+            <div className="mt-4 pt-4 border-t border-slate-700">
+              <p className="text-slate-300 text-sm font-semibold mb-2">⏱️ Time Complexity:</p>
+              <p className="text-cyan-400 font-mono text-sm">{topic.timeComplexity}</p>
+              <p className="text-slate-300 text-sm font-semibold mb-2 mt-3">💾 Space Complexity:</p>
+              <p className="text-cyan-400 font-mono text-sm">{topic.spaceComplexity}</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Traversal Methods Section */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-emerald-900/40 to-slate-900/40 border border-emerald-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-emerald-100 mb-6">🔄 Traversal Methods</h2>
+            <div className="space-y-3">
+              <div className="bg-emerald-800/30 p-3 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 font-semibold">In-order (LDR)</p>
+                <p className="text-slate-300 text-xs mt-1">Left → Data → Right (Sorted output for BST)</p>
+              </div>
+              <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 font-semibold">Pre-order (DLR)</p>
+                <p className="text-slate-300 text-xs mt-1">Data → Left → Right (Tree copy, expressions)</p>
+              </div>
+              <div className="bg-teal-800/30 p-3 rounded border border-teal-700/50">
+                <p className="text-teal-300 font-semibold">Post-order (LRD)</p>
+                <p className="text-slate-300 text-xs mt-1">Left → Right → Data (Tree deletion, cleanup)</p>
+              </div>
+              <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
+                <p className="text-indigo-300 font-semibold">Level-order (BFS)</p>
+                <p className="text-slate-300 text-xs mt-1">Level by level, left to right (Shortest path)</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-violet-100 mb-6">🌲 Tree Types</h2>
+            <div className="space-y-3">
+              <div className="bg-violet-800/30 p-3 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold">Binary Search Tree (BST)</p>
+                <p className="text-slate-300 text-xs mt-1">Ordered: Left < Parent < Right</p>
+              </div>
+              <div className="bg-pink-800/30 p-3 rounded border border-pink-700/50">
+                <p className="text-pink-300 font-semibold">AVL Tree</p>
+                <p className="text-slate-300 text-xs mt-1">Self-balancing, Height difference ≤ 1</p>
+              </div>
+              <div className="bg-rose-800/30 p-3 rounded border border-rose-700/50">
+                <p className="text-rose-300 font-semibold">Red-Black Tree</p>
+                <p className="text-slate-300 text-xs mt-1">Self-balancing with color properties</p>
+              </div>
+              <div className="bg-amber-800/30 p-3 rounded border border-amber-700/50">
+                <p className="text-amber-300 font-semibold">Complete Binary Tree</p>
+                <p className="text-slate-300 text-xs mt-1">All levels filled except last (may be partial)</p>
               </div>
             </div>
           </div>
         </div>
 
+        {/* Detailed Notes */}
         <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
           <h2 className="text-3xl font-extrabold text-teal-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
@@ -256,6 +310,70 @@ export default function BinaryTreesPage() {
           </div>
         </div>
 
+        {/* Practical Applications */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-orange-100 mb-6">💼 Real-World Applications</h2>
+            <ul className="space-y-3 text-slate-300 text-sm">
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>Database Indexing:</strong> B-Trees in SQL databases</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>File Systems:</strong> Directory hierarchies</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>DOM Trees:</strong> HTML/XML document structure</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>Expression Parsing:</strong> Abstract Syntax Trees (AST)</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>Game AI:</strong> Decision trees, game tree search</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-orange-400 font-bold">•</span>
+                <span><strong>Compression:</strong> Huffman coding trees</span>
+              </li>
+            </ul>
+          </div>
+
+          <div className="bg-gradient-to-br from-lime-900/40 to-slate-900/40 border border-lime-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-lime-100 mb-6">✅ Common Algorithms</h2>
+            <ul className="space-y-3 text-slate-300 text-sm">
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>Searching:</strong> O(log n) in balanced trees</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>Insertion:</strong> Maintain order and balance</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>Deletion:</strong> Complex with multiple cases</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>Tree Rotation:</strong> Rebalancing technique</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>LCA (Lowest Common Ancestor):</strong> O(log n)</span>
+              </li>
+              <li className="flex gap-3">
+                <span className="text-lime-400 font-bold">•</span>
+                <span><strong>Path Finding:</strong> DFS/BFS approaches</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        {/* Code Examples */}
         <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
           <h2 className="text-3xl font-extrabold text-teal-100 mb-6">💻 Code Examples</h2>
 
