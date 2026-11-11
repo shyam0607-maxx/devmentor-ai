@@ -272,7 +272,7 @@ export default function BinaryTreesPage() {
             <div className="space-y-3">
               <div className="bg-violet-800/30 p-3 rounded border border-violet-700/50">
                 <p className="text-violet-300 font-semibold">Binary Search Tree (BST)</p>
-                <p className="text-slate-300 text-xs mt-1">Ordered: Left < Parent < Right</p>
+                <p className="text-slate-300 text-xs mt-1">Ordered: Left {`<`} Parent {`<`} Right</p>
               </div>
               <div className="bg-pink-800/30 p-3 rounded border border-pink-700/50">
                 <p className="text-pink-300 font-semibold">AVL Tree</p>
