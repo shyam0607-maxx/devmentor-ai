@@ -114,8 +114,8 @@ export default function LinkedListBasicsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-950 via-purple-950 to-indigo-950">
-      <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-indigo-900">
+      <header className="border-b border-slate-700/50 bg-slate-900/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />

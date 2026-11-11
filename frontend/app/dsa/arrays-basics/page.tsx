@@ -114,8 +114,8 @@ export default function ArraysBasicsPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-950 via-red-950 to-pink-950">
-      <header className="border-b border-orange-700/50 bg-orange-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-blue-900">
+      <header className="border-b border-slate-700/50 bg-slate-900/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -141,8 +141,8 @@ export default function ArraysBasicsPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-gradient-to-br from-orange-900/40 to-red-900/40 border border-orange-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-orange-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-slate-800/50 to-blue-800/30 border border-slate-600/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-slate-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             <div className="prose prose-invert max-w-none">
               {topic.notes.split('\n').map((line, idx) => {

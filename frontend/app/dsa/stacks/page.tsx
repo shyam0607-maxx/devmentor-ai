@@ -114,8 +114,8 @@ export default function StacksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-950 via-pink-950 to-purple-950">
-      <header className="border-b border-rose-700/50 bg-rose-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950">
+      <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -141,19 +141,19 @@ export default function StacksPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-gradient-to-br from-rose-900/40 to-pink-900/40 border border-rose-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-rose-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-indigo-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             <div className="prose prose-invert max-w-none">
               {topic.notes.split('\n').map((line, idx) => {
                 if (line.startsWith('## ')) {
-                  return <h3 key={idx} className="text-2xl font-bold text-pink-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                  return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
                 } else if (line.startsWith('### ')) {
-                  return <h4 key={idx} className="text-xl font-bold text-rose-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                  return <h4 key={idx} className="text-xl font-bold text-indigo-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
                 } else if (line.startsWith('- ')) {
                   return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
                 } else if (line.startsWith('**') && line.endsWith('**')) {
-                  return <p key={idx} className="font-semibold text-rose-100">{line.replace(/\*\*/g, '')}</p>;
+                  return <p key={idx} className="font-semibold text-indigo-100">{line.replace(/\*\*/g, '')}</p>;
                 } else if (line.trim() === '') {
                   return <br key={idx} />;
                 } else if (line.startsWith('```')) {
@@ -164,6 +164,63 @@ export default function StacksPage() {
               })}
             </div>
           </div>
+        </div>
+
+        {/* 3D Animated Stack Visualization */}
+        <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-indigo-100 mb-8">🎬 3D Stack Visualization</h2>
+          <div className="flex justify-center items-center min-h-96">
+            <svg viewBox="0 0 400 500" className="w-full max-w-md h-auto" style={{perspective: '1000px'}}>
+              <defs>
+                <filter id="shadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="3" dy="3" stdDeviation="4" floodOpacity="0.3"/>
+                </filter>
+                <linearGradient id="stackGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#06b6d4', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#0891b2', stopOpacity: 1}} />
+                </linearGradient>
+                <style>{`
+                  @keyframes slideDown {
+                    0% { transform: translateY(-200px); opacity: 0; }
+                    50% { opacity: 1; }
+                    100% { transform: translateY(0); opacity: 1; }
+                  }
+                  @keyframes slideUp {
+                    0% { transform: translateY(0); opacity: 1; }
+                    100% { transform: translateY(-150px); opacity: 0; }
+                  }
+                  .stack-item-1 { animation: slideDown 0.8s ease-out 0s; }
+                  .stack-item-2 { animation: slideDown 0.8s ease-out 0.3s backwards; }
+                  .stack-item-3 { animation: slideDown 0.8s ease-out 0.6s backwards; }
+                  .stack-item-pop { animation: slideUp 0.8s ease-in 2s forwards; }
+                `}</style>
+              </defs>
+
+              {/* Base */}
+              <rect x="50" y="380" width="300" height="20" fill="#1e293b" stroke="#475569" strokeWidth="2"/>
+
+              {/* Stack Items with 3D effect */}
+              <g className="stack-item-1">
+                <rect x="75" y="310" width="250" height="60" fill="url(#stackGradient)" stroke="#0ea5e9" strokeWidth="2" filter="url(#shadow)"/>
+                <text x="200" y="345" textAnchor="middle" fill="#ffffff" fontSize="24" fontWeight="bold">30</text>
+              </g>
+
+              <g className="stack-item-2">
+                <rect x="75" y="250" width="250" height="60" fill="url(#stackGradient)" stroke="#0ea5e9" strokeWidth="2" filter="url(#shadow)"/>
+                <text x="200" y="285" textAnchor="middle" fill="#ffffff" fontSize="24" fontWeight="bold">20</text>
+              </g>
+
+              <g className="stack-item-3 stack-item-pop">
+                <rect x="75" y="190" width="250" height="60" fill="url(#stackGradient)" stroke="#0ea5e9" strokeWidth="2" filter="url(#shadow)"/>
+                <text x="200" y="225" textAnchor="middle" fill="#ffffff" fontSize="24" fontWeight="bold">10</text>
+              </g>
+
+              {/* Labels */}
+              <text x="200" y="50" textAnchor="middle" fill="#cbd5e1" fontSize="16" fontWeight="bold">Push: 10, 20, 30 → Pop: 30</text>
+              <text x="200" y="150" textAnchor="middle" fill="#94a3b8" fontSize="12">LIFO: Last In, First Out</text>
+            </svg>
+          </div>
+          <p className="text-slate-300 text-sm mt-4 text-center">Watch as items are pushed onto the stack and the top item pops off</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">

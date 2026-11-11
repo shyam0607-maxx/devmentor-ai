@@ -114,8 +114,8 @@ export default function BinaryTreesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-lime-950 via-green-950 to-emerald-950">
-      <header className="border-b border-lime-700/50 bg-lime-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950">
+      <header className="border-b border-teal-700/50 bg-teal-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -141,19 +141,19 @@ export default function BinaryTreesPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-gradient-to-br from-lime-900/40 to-green-900/40 border border-lime-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-lime-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             <div className="prose prose-invert max-w-none">
               {topic.notes.split('\n').map((line, idx) => {
                 if (line.startsWith('## ')) {
-                  return <h3 key={idx} className="text-2xl font-bold text-green-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                  return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
                 } else if (line.startsWith('### ')) {
-                  return <h4 key={idx} className="text-xl font-bold text-lime-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                  return <h4 key={idx} className="text-xl font-bold text-teal-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
                 } else if (line.startsWith('- ')) {
                   return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
                 } else if (line.startsWith('**') && line.endsWith('**')) {
-                  return <p key={idx} className="font-semibold text-lime-100">{line.replace(/\*\*/g, '')}</p>;
+                  return <p key={idx} className="font-semibold text-teal-100">{line.replace(/\*\*/g, '')}</p>;
                 } else if (line.trim() === '') {
                   return <br key={idx} />;
                 } else if (line.startsWith('```')) {
@@ -163,6 +163,79 @@ export default function BinaryTreesPage() {
                 }
               })}
             </div>
+          </div>
+        </div>
+
+        {/* 3D Animated Binary Tree Visualization */}
+        <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">🎬 3D Binary Tree Visualization</h2>
+          <div className="flex justify-center items-center min-h-96">
+            <svg viewBox="0 0 500 400" className="w-full max-w-md h-auto">
+              <defs>
+                <filter id="treeNodeShadow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.4"/>
+                </filter>
+                <radialGradient id="nodeGradient" cx="35%" cy="35%">
+                  <stop offset="0%" style={{stopColor: '#22d3ee', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#0891b2', stopOpacity: 1}} />
+                </radialGradient>
+                <style>{`
+                  @keyframes nodeGrow {
+                    0% { r: 0; opacity: 0; }
+                    50% { opacity: 0.5; }
+                    100% { r: 20; opacity: 1; }
+                  }
+                  @keyframes lineGrow {
+                    0% { stroke-dasharray: 500; stroke-dashoffset: 500; opacity: 0; }
+                    100% { stroke-dasharray: 500; stroke-dashoffset: 0; opacity: 1; }
+                  }
+                  .root-node { animation: nodeGrow 0.6s ease-out; }
+                  .left-node { animation: nodeGrow 0.6s ease-out 0.3s backwards; }
+                  .right-node { animation: nodeGrow 0.6s ease-out 0.3s backwards; }
+                  .ll-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
+                  .lr-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
+                  .rl-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
+                  .rr-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
+                  .tree-line { animation: lineGrow 1s ease-out forwards; stroke-dasharray: 500; }
+                `}</style>
+              </defs>
+
+              {/* Connecting Lines */}
+              <line x1="250" y1="60" x2="150" y2="140" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+              <line x1="250" y1="60" x2="350" y2="140" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+              <line x1="150" y1="160" x2="100" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+              <line x1="150" y1="160" x2="200" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+              <line x1="350" y1="160" x2="300" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+              <line x1="350" y1="160" x2="400" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
+
+              {/* Root Node */}
+              <circle cx="250" cy="50" r="20" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="root-node" filter="url(#treeNodeShadow)"/>
+              <text x="250" y="56" textAnchor="middle" fill="#ffffff" fontSize="18" fontWeight="bold" pointerEvents="none">1</text>
+
+              {/* Level 2 Nodes */}
+              <circle cx="150" cy="150" r="18" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="left-node" filter="url(#treeNodeShadow)"/>
+              <text x="150" y="156" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold" pointerEvents="none">2</text>
+
+              <circle cx="350" cy="150" r="18" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="right-node" filter="url(#treeNodeShadow)"/>
+              <text x="350" y="156" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold" pointerEvents="none">3</text>
+
+              {/* Level 3 Nodes */}
+              <circle cx="100" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="ll-node" filter="url(#treeNodeShadow)"/>
+              <text x="100" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">4</text>
+
+              <circle cx="200" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="lr-node" filter="url(#treeNodeShadow)"/>
+              <text x="200" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">5</text>
+
+              <circle cx="300" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="rl-node" filter="url(#treeNodeShadow)"/>
+              <text x="300" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">6</text>
+
+              <circle cx="400" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="rr-node" filter="url(#treeNodeShadow)"/>
+              <text x="400" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">7</text>
+
+              {/* Title */}
+              <text x="250" y="340" textAnchor="middle" fill="#cbd5e1" fontSize="14" fontWeight="bold">Binary Tree Structure (Complete Tree)</text>
+              <text x="250" y="365" textAnchor="middle" fill="#94a3b8" fontSize="12">Nodes grow outward in 3D-like perspective</text>
+            </svg>
           </div>
         </div>
 
