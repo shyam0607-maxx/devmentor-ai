@@ -141,6 +141,67 @@ export default function RecursionPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
+        {/* Animated Recursion Visualization */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-purple-900/40 to-indigo-900/40 border border-purple-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-purple-100 mb-6">🔄 Recursion Call Stack</h2>
+            <svg viewBox="0 0 300 400" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes stackPush {
+                    0% { transform: translateY(50px); opacity: 0; }
+                    100% { transform: translateY(0); opacity: 1; }
+                  }
+                  @keyframes stackPop {
+                    0% { transform: translateY(0); opacity: 1; }
+                    100% { transform: translateY(50px); opacity: 0; }
+                  }
+                  .call-1 { animation: stackPush 0.5s ease-out 0s forwards; }
+                  .call-2 { animation: stackPush 0.5s ease-out 0.3s forwards; }
+                  .call-3 { animation: stackPush 0.5s ease-out 0.6s forwards; }
+                  .call-pop-3 { animation: stackPop 0.5s ease-in 1.5s forwards; }
+                  .call-pop-2 { animation: stackPop 0.5s ease-in 2s forwards; }
+                  .call-pop-1 { animation: stackPop 0.5s ease-in 2.5s forwards; }
+                `}</style>
+                <linearGradient id="stackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#a78bfa', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#6366f1', stopOpacity: 1}} />
+                </linearGradient>
+              </defs>
+              <text x="150" y="25" textAnchor="middle" fill="#cbd5e1" fontSize="14" fontWeight="bold">factorial(3)</text>
+
+              <rect x="30" y="70" width="240" height="50" fill="url(#stackGrad)" stroke="#818cf8" strokeWidth="2" className="call-1" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+              <text x="150" y="103" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">factorial(3)</text>
+
+              <rect x="30" y="140" width="240" height="50" fill="url(#stackGrad)" stroke="#818cf8" strokeWidth="2" className="call-2" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+              <text x="150" y="173" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">factorial(2)</text>
+
+              <rect x="30" y="210" width="240" height="50" fill="url(#stackGrad)" stroke="#818cf8" strokeWidth="2" className="call-3" filter="drop-shadow(0 2px 4px rgba(0,0,0,0.3))"/>
+              <text x="150" y="243" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">factorial(1) - Base Case</text>
+
+              <text x="150" y="330" textAnchor="middle" fill="#94a3b8" fontSize="12">Stack grows then unwound</text>
+              <text x="150" y="350" textAnchor="middle" fill="#94a3b8" fontSize="12">Result: 3! = 6</text>
+            </svg>
+          </div>
+          <div className="bg-gradient-to-br from-emerald-900/40 to-teal-900/40 border border-emerald-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-emerald-100 mb-6">📌 Key Patterns</h2>
+            <div className="space-y-3">
+              <div className="bg-emerald-800/30 p-3 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 text-sm font-semibold">Base Case</p>
+                <p className="text-slate-300 text-xs">Stops recursion & returns value</p>
+              </div>
+              <div className="bg-teal-800/30 p-3 rounded border border-teal-700/50">
+                <p className="text-teal-300 text-sm font-semibold">Recursive Case</p>
+                <p className="text-slate-300 text-xs">Function calls itself with smaller input</p>
+              </div>
+              <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 text-sm font-semibold">Call Stack</p>
+                <p className="text-slate-300 text-xs">Each call waits for inner call to finish</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-gradient-to-br from-emerald-900/40 to-teal-900/40 border border-emerald-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
           <h2 className="text-3xl font-extrabold text-emerald-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">

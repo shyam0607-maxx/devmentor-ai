@@ -168,9 +168,104 @@ export default function BigOPage() {
           </div>
         </div>
 
-        {/* Big O Graph */}
+        {/* Big O Graph with Animation */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border border-purple-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-purple-100 mb-6">📈 Complexity Graph</h2>
+            <svg viewBox="0 0 400 350" className="w-full h-auto bg-slate-900/50 rounded-lg p-4">
+              <defs>
+                <style>{`
+                  @keyframes lineTrace {
+                    0% { stroke-dasharray: 500; stroke-dashoffset: 500; }
+                    100% { stroke-dasharray: 500; stroke-dashoffset: 0; }
+                  }
+                  .line-o1 { animation: lineTrace 2s ease-in-out infinite; }
+                  .line-olog { animation: lineTrace 2s ease-in-out 0.3s infinite; }
+                  .line-on { animation: lineTrace 2s ease-in-out 0.6s infinite; }
+                  .line-on2 { animation: lineTrace 2s ease-in-out 0.9s infinite; }
+                  .line-o2n { animation: lineTrace 2s ease-in-out 1.2s infinite; }
+                `}</style>
+              </defs>
+              {/* Grid */}
+              <defs>
+                <pattern id="grid2" width="30" height="30" patternUnits="userSpaceOnUse">
+                  <path d="M 30 0 L 0 0 0 30" fill="none" stroke="#334155" strokeWidth="0.5"/>
+                </pattern>
+              </defs>
+              <rect width="400" height="350" fill="url(#grid2)" />
+              <line x1="40" y1="300" x2="380" y2="300" stroke="#94a3b8" strokeWidth="2"/>
+              <line x1="40" y1="300" x2="40" y2="20" stroke="#94a3b8" strokeWidth="2"/>
+              <line x1="380" y1="305" x2="390" y2="300" stroke="#94a3b8" strokeWidth="2"/>
+              <line x1="35" y1="20" x2="40" y2="10" stroke="#94a3b8" strokeWidth="2"/>
+              <text x="390" y="320" fontSize="12" fill="#cbd5e1">n</text>
+              <text x="15" y="15" fontSize="12" fill="#cbd5e1">T</text>
+
+              <line x1="40" y1="280" x2="380" y2="280" stroke="#10b981" strokeWidth="3" opacity="0.8" className="line-o1" strokeDasharray="500"/>
+              <polyline points="40,270 120,240 200,220 280,205 360,195" fill="none" stroke="#3b82f6" strokeWidth="3" opacity="0.8" className="line-olog" strokeDasharray="500"/>
+              <line x1="40" y1="250" x2="380" y2="50" stroke="#f59e0b" strokeWidth="3" opacity="0.8" className="line-on" strokeDasharray="500"/>
+              <polyline points="40,260 90,230 140,180 190,110 240,30" fill="none" stroke="#ef4444" strokeWidth="3" opacity="0.8" className="line-on2" strokeDasharray="500"/>
+              <polyline points="40,270 70,230 100,160 130,60" fill="none" stroke="#a855f7" strokeWidth="3" opacity="0.8" className="line-o2n" strokeDasharray="500"/>
+
+              <text x="360" y="275" fontSize="11" fill="#10b981" fontWeight="bold">O(1)</text>
+              <text x="370" y="195" fontSize="11" fill="#3b82f6" fontWeight="bold">O(log n)</text>
+              <text x="385" y="55" fontSize="11" fill="#f59e0b" fontWeight="bold">O(n)</text>
+            </svg>
+          </div>
+          <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">📊 Complexity Comparison</h2>
+            <div className="space-y-4">
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-slate-300">O(1)</span>
+                  <span className="text-green-400 font-bold">Excellent</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="bg-green-500 h-3 rounded-full" style={{width: '5%'}}></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-slate-300">O(log n)</span>
+                  <span className="text-blue-400 font-bold">Very Good</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="bg-blue-500 h-3 rounded-full" style={{width: '15%'}}></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-slate-300">O(n)</span>
+                  <span className="text-yellow-400 font-bold">Good</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="bg-yellow-500 h-3 rounded-full" style={{width: '40%'}}></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-slate-300">O(n²)</span>
+                  <span className="text-orange-400 font-bold">Poor</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="bg-orange-500 h-3 rounded-full" style={{width: '70%'}}></div>
+                </div>
+              </div>
+              <div>
+                <div className="flex justify-between mb-2">
+                  <span className="text-slate-300">O(2ⁿ)</span>
+                  <span className="text-purple-400 font-bold">Very Bad</span>
+                </div>
+                <div className="w-full bg-slate-700 rounded-full h-3">
+                  <div className="bg-purple-500 h-3 rounded-full" style={{width: '95%'}}></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* Original Full-width Graph */}
         <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border border-purple-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-purple-100 mb-6">📈 Big O Complexity Graph</h2>
+          <h2 className="text-3xl font-extrabold text-purple-100 mb-6">📈 Full Complexity Graph</h2>
           <svg viewBox="0 0 800 400" className="w-full h-auto bg-slate-900/50 rounded-lg p-4">
             {/* Grid */}
             <defs>

@@ -141,6 +141,79 @@ export default function ArraysBasicsPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
+        {/* Array Operations Animation */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 border border-blue-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-blue-100 mb-6">🎬 Array Operations</h2>
+            <svg viewBox="0 0 350 300" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes cellShift {
+                    0% { transform: translateX(0); }
+                    50% { transform: translateX(30px); }
+                    100% { transform: translateX(0); }
+                  }
+                  @keyframes cellHighlight {
+                    0%, 100% { fill: #1e40af; }
+                    50% { fill: #3b82f6; }
+                  }
+                  .cell-0 { animation: cellHighlight 2s ease-in-out infinite; }
+                  .cell-1 { animation: cellHighlight 2s ease-in-out 0.3s infinite; }
+                  .cell-2 { animation: cellHighlight 2s ease-in-out 0.6s infinite; }
+                  .cell-3 { animation: cellHighlight 2s ease-in-out 0.9s infinite; }
+                `}</style>
+              </defs>
+              <text x="175" y="25" textAnchor="middle" fill="#cbd5e1" fontSize="14" fontWeight="bold">Array Access Pattern - O(1)</text>
+
+              <rect x="10" y="60" width="60" height="60" className="cell-0" stroke="#0ea5e9" strokeWidth="2"/>
+              <text x="40" y="95" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">10</text>
+              <text x="40" y="130" textAnchor="middle" fill="#cbd5e1" fontSize="12">[0]</text>
+
+              <rect x="95" y="60" width="60" height="60" className="cell-1" stroke="#0ea5e9" strokeWidth="2"/>
+              <text x="125" y="95" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">20</text>
+              <text x="125" y="130" textAnchor="middle" fill="#cbd5e1" fontSize="12">[1]</text>
+
+              <rect x="180" y="60" width="60" height="60" className="cell-2" stroke="#0ea5e9" strokeWidth="2"/>
+              <text x="210" y="95" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">30</text>
+              <text x="210" y="130" textAnchor="middle" fill="#cbd5e1" fontSize="12">[2]</text>
+
+              <rect x="265" y="60" width="60" height="60" className="cell-3" stroke="#0ea5e9" strokeWidth="2"/>
+              <text x="295" y="95" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">40</text>
+              <text x="295" y="130" textAnchor="middle" fill="#cbd5e1" fontSize="12">[3]</text>
+
+              <text x="175" y="170" textAnchor="middle" fill="#cbd5e1" fontSize="12">Contiguous Memory</text>
+              <text x="175" y="190" textAnchor="middle" fill="#cbd5e1" fontSize="12">Each cell highlighted in sequence</text>
+
+              <rect x="30" y="220" width="140" height="40" fill="#1e3a8a" stroke="#3b82f6" strokeWidth="2" rx="5"/>
+              <text x="100" y="245" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">Search: O(n)</text>
+
+              <rect x="200" y="220" width="140" height="40" fill="#1e3a8a" stroke="#3b82f6" strokeWidth="2" rx="5"/>
+              <text x="270" y="245" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">Insert: O(n)</text>
+            </svg>
+          </div>
+          <div className="bg-gradient-to-br from-slate-900/40 to-blue-900/40 border border-slate-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-slate-100 mb-6">📊 Array Metrics</h2>
+            <div className="space-y-4">
+              <div className="bg-blue-800/30 p-4 rounded border border-blue-700/50">
+                <p className="text-blue-300 font-semibold mb-2">Access Time</p>
+                <p className="text-slate-300 text-sm">O(1) - Direct memory address</p>
+              </div>
+              <div className="bg-cyan-800/30 p-4 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 font-semibold mb-2">Search Time</p>
+                <p className="text-slate-300 text-sm">O(n) - Linear scan needed</p>
+              </div>
+              <div className="bg-blue-700/30 p-4 rounded border border-blue-700/50">
+                <p className="text-blue-200 font-semibold mb-2">Insert/Delete</p>
+                <p className="text-slate-300 text-sm">O(n) - Shifting required</p>
+              </div>
+              <div className="bg-indigo-800/30 p-4 rounded border border-indigo-700/50">
+                <p className="text-indigo-300 font-semibold mb-2">Space Usage</p>
+                <p className="text-slate-300 text-sm">O(n) - Contiguous block</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div className="bg-gradient-to-br from-slate-800/50 to-blue-800/30 border border-slate-600/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
           <h2 className="text-3xl font-extrabold text-slate-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
