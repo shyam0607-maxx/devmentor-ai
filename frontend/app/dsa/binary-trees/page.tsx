@@ -70,7 +70,7 @@ export default function BinaryTreesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
     );
@@ -78,8 +78,8 @@ export default function BinaryTreesPage() {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-        <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950">
+        <header className="border-b border-teal-700/50 bg-teal-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
               <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -95,16 +95,9 @@ export default function BinaryTreesPage() {
         </header>
         <div className="max-w-7xl mx-auto px-6 py-12">
           <div className="text-center">
-            <h1 className="text-3xl font-bold text-white mb-4">
-              {error ? 'Error Loading Topic' : 'Topic Not Found'}
-            </h1>
-            <p className="text-slate-400 mb-8">
-              {error || 'The topic you\'re looking for doesn\'t exist.'}
-            </p>
-            <Link
-              href="/dsa"
-              className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition"
-            >
+            <h1 className="text-3xl font-bold text-white mb-4">{error ? 'Error' : 'Not Found'}</h1>
+            <p className="text-slate-400 mb-8">{error || 'Topic not found'}</p>
+            <Link href="/dsa" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition">
               Back to DSA Topics
             </Link>
           </div>
@@ -141,117 +134,130 @@ export default function BinaryTreesPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">📚 Detailed Notes</h2>
-          <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
-            <div className="prose prose-invert max-w-none">
-              {topic.notes.split('\n').map((line, idx) => {
-                if (line.startsWith('## ')) {
-                  return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
-                } else if (line.startsWith('### ')) {
-                  return <h4 key={idx} className="text-xl font-bold text-teal-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
-                } else if (line.startsWith('- ')) {
-                  return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
-                } else if (line.startsWith('**') && line.endsWith('**')) {
-                  return <p key={idx} className="font-semibold text-teal-100">{line.replace(/\*\*/g, '')}</p>;
-                } else if (line.trim() === '') {
-                  return <br key={idx} />;
-                } else if (line.startsWith('```')) {
-                  return null;
-                } else {
-                  return <p key={idx} className="text-slate-300">{line}</p>;
-                }
-              })}
+        {/* Two Column Layout */}
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          {/* Left: Animated Tree */}
+          <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-teal-100 mb-6">🌳 Tree Growth Animation</h2>
+            <svg viewBox="0 0 300 400" className="w-full h-auto">
+              <defs>
+                <filter id="nodeShadow">
+                  <feDropShadow dx="3" dy="3" stdDeviation="4" floodOpacity="0.5"/>
+                </filter>
+                <linearGradient id="treeNodeGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" stopColor="#14b8a6" stopOpacity="1" />
+                  <stop offset="100%" stopColor="#0d9488" stopOpacity="1" />
+                </linearGradient>
+                <style>{`
+                  @keyframes nodeGrow {
+                    0% { transform: scale(0); opacity: 0; }
+                    100% { transform: scale(1); opacity: 1; }
+                  }
+                  @keyframes nodePulse {
+                    0%, 100% { filter: brightness(1); }
+                    50% { filter: brightness(1.3); }
+                  }
+                  @keyframes lineGrow {
+                    0% { stroke-dasharray: 100; stroke-dashoffset: 100; opacity: 0; }
+                    100% { stroke-dasharray: 100; stroke-dashoffset: 0; opacity: 1; }
+                  }
+                  .root { animation: nodeGrow 0.6s ease-out 0s forwards, nodePulse 2s ease-in-out 1s infinite; }
+                  .left-child { animation: nodeGrow 0.6s ease-out 0.4s forwards, nodePulse 2s ease-in-out 1.4s infinite; }
+                  .right-child { animation: nodeGrow 0.6s ease-out 0.4s forwards, nodePulse 2s ease-in-out 1.4s infinite; }
+                  .left-left { animation: nodeGrow 0.6s ease-out 0.8s forwards, nodePulse 2s ease-in-out 1.8s infinite; }
+                  .left-right { animation: nodeGrow 0.6s ease-out 0.8s forwards, nodePulse 2s ease-in-out 1.8s infinite; }
+                  .line { animation: lineGrow 0.8s ease-in-out forwards; stroke-dasharray: 100; }
+                  .line-1 { animation-delay: 0.2s; }
+                  .line-2 { animation-delay: 0.2s; }
+                  .line-3 { animation-delay: 0.6s; }
+                  .line-4 { animation-delay: 0.6s; }
+                `}</style>
+              </defs>
+
+              {/* Lines */}
+              <line x1="150" y1="60" x2="100" y2="140" stroke="#06b6d4" strokeWidth="2" className="line line-1"/>
+              <line x1="150" y1="60" x2="200" y2="140" stroke="#06b6d4" strokeWidth="2" className="line line-2"/>
+              <line x1="100" y1="160" x2="75" y2="240" stroke="#06b6d4" strokeWidth="2" className="line line-3"/>
+              <line x1="100" y1="160" x2="125" y2="240" stroke="#06b6d4" strokeWidth="2" className="line line-4"/>
+
+              {/* Nodes */}
+              <g className="root">
+                <circle cx="150" cy="50" r="25" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
+                <text x="150" y="57" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold">1</text>
+              </g>
+
+              <g className="left-child">
+                <circle cx="100" cy="150" r="22" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
+                <text x="100" y="157" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold">2</text>
+              </g>
+
+              <g className="right-child">
+                <circle cx="200" cy="150" r="22" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
+                <text x="200" y="157" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold">3</text>
+              </g>
+
+              <g className="left-left">
+                <circle cx="75" cy="250" r="18" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
+                <text x="75" y="256" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">4</text>
+              </g>
+
+              <g className="left-right">
+                <circle cx="125" cy="250" r="18" fill="url(#treeNodeGrad)" stroke="#06b6d4" strokeWidth="2" filter="url(#nodeShadow)"/>
+                <text x="125" y="256" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">5</text>
+              </g>
+
+              <text x="150" y="340" textAnchor="middle" fill="#cbd5e1" fontSize="13" fontWeight="bold">Binary Tree Growth (In-Order Traversal)</text>
+              <text x="150" y="360" textAnchor="middle" fill="#94a3b8" fontSize="11">Each level builds upon the previous</text>
+            </svg>
+          </div>
+
+          {/* Right: Tree Properties Panel */}
+          <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">📋 Tree Properties</h2>
+            <div className="space-y-4">
+              <div className="bg-teal-800/30 p-4 rounded border border-teal-700/50">
+                <p className="text-teal-300 font-semibold mb-2">Height</p>
+                <p className="text-slate-300 text-sm">Distance from root to deepest leaf</p>
+                <p className="text-slate-400 text-xs mt-1">Max height: O(n) in worst case</p>
+              </div>
+              <div className="bg-emerald-800/30 p-4 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 font-semibold mb-2">Depth</p>
+                <p className="text-slate-300 text-sm">Distance from root to specific node</p>
+                <p className="text-slate-400 text-xs mt-1">Used in traversal algorithms</p>
+              </div>
+              <div className="bg-cyan-700/30 p-4 rounded border border-cyan-700/50">
+                <p className="text-cyan-200 font-semibold mb-2">Traversal Methods</p>
+                <p className="text-slate-300 text-sm">In-order, Pre-order, Post-order, Level-order</p>
+              </div>
+              <div className="bg-teal-700/30 p-4 rounded border border-teal-700/50">
+                <p className="text-teal-200 font-semibold mb-2">Balance Property</p>
+                <p className="text-slate-300 text-sm">Balanced trees optimize search to O(log n)</p>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* 3D Animated Binary Tree Visualization */}
-        <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">🎬 3D Binary Tree Visualization</h2>
-          <div className="flex justify-center items-center min-h-96">
-            <svg viewBox="0 0 500 400" className="w-full max-w-md h-auto">
-              <defs>
-                <filter id="treeNodeShadow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feDropShadow dx="2" dy="2" stdDeviation="3" floodOpacity="0.4"/>
-                </filter>
-                <radialGradient id="nodeGradient" cx="35%" cy="35%">
-                  <stop offset="0%" style={{stopColor: '#22d3ee', stopOpacity: 1}} />
-                  <stop offset="100%" style={{stopColor: '#0891b2', stopOpacity: 1}} />
-                </radialGradient>
-                <style>{`
-                  @keyframes nodeGrow {
-                    0% { r: 0; opacity: 0; }
-                    50% { opacity: 0.5; }
-                    100% { r: 20; opacity: 1; }
-                  }
-                  @keyframes lineGrow {
-                    0% { stroke-dasharray: 500; stroke-dashoffset: 500; opacity: 0; }
-                    100% { stroke-dasharray: 500; stroke-dashoffset: 0; opacity: 1; }
-                  }
-                  .root-node { animation: nodeGrow 0.6s ease-out; }
-                  .left-node { animation: nodeGrow 0.6s ease-out 0.3s backwards; }
-                  .right-node { animation: nodeGrow 0.6s ease-out 0.3s backwards; }
-                  .ll-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
-                  .lr-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
-                  .rl-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
-                  .rr-node { animation: nodeGrow 0.6s ease-out 0.6s backwards; }
-                  .tree-line { animation: lineGrow 1s ease-out forwards; stroke-dasharray: 500; }
-                `}</style>
-              </defs>
-
-              {/* Connecting Lines */}
-              <line x1="250" y1="60" x2="150" y2="140" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-              <line x1="250" y1="60" x2="350" y2="140" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-              <line x1="150" y1="160" x2="100" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-              <line x1="150" y1="160" x2="200" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-              <line x1="350" y1="160" x2="300" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-              <line x1="350" y1="160" x2="400" y2="240" className="tree-line" stroke="#06b6d4" strokeWidth="2" opacity="0.6"/>
-
-              {/* Root Node */}
-              <circle cx="250" cy="50" r="20" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="root-node" filter="url(#treeNodeShadow)"/>
-              <text x="250" y="56" textAnchor="middle" fill="#ffffff" fontSize="18" fontWeight="bold" pointerEvents="none">1</text>
-
-              {/* Level 2 Nodes */}
-              <circle cx="150" cy="150" r="18" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="left-node" filter="url(#treeNodeShadow)"/>
-              <text x="150" y="156" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold" pointerEvents="none">2</text>
-
-              <circle cx="350" cy="150" r="18" fill="url(#nodeGradient)" stroke="#0891b2" strokeWidth="2" className="right-node" filter="url(#treeNodeShadow)"/>
-              <text x="350" y="156" textAnchor="middle" fill="#ffffff" fontSize="16" fontWeight="bold" pointerEvents="none">3</text>
-
-              {/* Level 3 Nodes */}
-              <circle cx="100" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="ll-node" filter="url(#treeNodeShadow)"/>
-              <text x="100" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">4</text>
-
-              <circle cx="200" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="lr-node" filter="url(#treeNodeShadow)"/>
-              <text x="200" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">5</text>
-
-              <circle cx="300" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="rl-node" filter="url(#treeNodeShadow)"/>
-              <text x="300" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">6</text>
-
-              <circle cx="400" cy="260" r="16" fill="url(#nodeGradient)" stroke="#06b6d4" strokeWidth="2" className="rr-node" filter="url(#treeNodeShadow)"/>
-              <text x="400" y="265" textAnchor="middle" fill="#ffffff" fontSize="14" fontWeight="bold" pointerEvents="none">7</text>
-
-              {/* Title */}
-              <text x="250" y="340" textAnchor="middle" fill="#cbd5e1" fontSize="14" fontWeight="bold">Binary Tree Structure (Complete Tree)</text>
-              <text x="250" y="365" textAnchor="middle" fill="#94a3b8" fontSize="12">Nodes grow outward in 3D-like perspective</text>
-            </svg>
+        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">📚 Detailed Notes</h2>
+          <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
+            {topic.notes.split('\n').map((line, idx) => {
+              if (line.startsWith('## ')) {
+                return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+              } else if (line.startsWith('### ')) {
+                return <h4 key={idx} className="text-xl font-bold text-teal-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+              } else if (line.startsWith('- ')) {
+                return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
+              } else if (line.trim() === '') {
+                return <br key={idx} />;
+              } else {
+                return <p key={idx} className="text-slate-300">{line}</p>;
+              }
+            })}
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-6 mb-12">
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <h3 className="text-lg font-bold text-white mb-3">⏱️ Time Complexity</h3>
-            <p className="text-cyan-400 font-mono text-lg">{topic.timeComplexity}</p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <h3 className="text-lg font-bold text-white mb-3">💾 Space Complexity</h3>
-            <p className="text-cyan-400 font-mono text-lg">{topic.spaceComplexity}</p>
-          </div>
-        </div>
-
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8">
-          <h2 className="text-2xl font-bold text-white mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-teal-100 mb-6">💻 Code Examples</h2>
 
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => (
@@ -293,7 +299,7 @@ export default function BinaryTreesPage() {
           </div>
         </div>
 
-        <div className="flex justify-between mt-12">
+        <div className="flex justify-between">
           <Link
             href="/dsa"
             className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition"
