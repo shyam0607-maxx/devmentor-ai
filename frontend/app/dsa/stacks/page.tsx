@@ -114,8 +114,8 @@ export default function StacksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-rose-950 via-pink-950 to-purple-950">
+      <header className="border-b border-rose-700/50 bg-rose-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -141,10 +141,28 @@ export default function StacksPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6">📚 Detailed Notes</h2>
-          <div className="text-slate-300 leading-relaxed whitespace-pre-wrap font-mono text-sm">
-            {topic.notes}
+        <div className="bg-gradient-to-br from-rose-900/40 to-pink-900/40 border border-rose-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-rose-100 mb-8">📚 Detailed Notes</h2>
+          <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
+            <div className="prose prose-invert max-w-none">
+              {topic.notes.split('\n').map((line, idx) => {
+                if (line.startsWith('## ')) {
+                  return <h3 key={idx} className="text-2xl font-bold text-pink-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                } else if (line.startsWith('### ')) {
+                  return <h4 key={idx} className="text-xl font-bold text-rose-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                } else if (line.startsWith('- ')) {
+                  return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
+                } else if (line.startsWith('**') && line.endsWith('**')) {
+                  return <p key={idx} className="font-semibold text-rose-100">{line.replace(/\*\*/g, '')}</p>;
+                } else if (line.trim() === '') {
+                  return <br key={idx} />;
+                } else if (line.startsWith('```')) {
+                  return null;
+                } else {
+                  return <p key={idx} className="text-slate-300">{line}</p>;
+                }
+              })}
+            </div>
           </div>
         </div>
 

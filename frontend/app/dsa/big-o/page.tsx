@@ -116,8 +116,8 @@ export default function BigOPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900">
-      <header className="border-b border-slate-700 bg-slate-900/50 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-indigo-950 to-purple-950">
+      <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -143,11 +143,75 @@ export default function BigOPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
 
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6">📚 Detailed Notes</h2>
-          <div className="text-slate-300 leading-relaxed whitespace-pre-wrap font-mono text-sm">
-            {topic.notes}
+        <div className="bg-gradient-to-br from-indigo-900/40 to-purple-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-indigo-100 mb-8">📚 Detailed Notes</h2>
+          <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
+            <div className="prose prose-invert max-w-none">
+              {topic.notes.split('\n').map((line, idx) => {
+                if (line.startsWith('## ')) {
+                  return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                } else if (line.startsWith('### ')) {
+                  return <h4 key={idx} className="text-xl font-bold text-indigo-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                } else if (line.startsWith('- ')) {
+                  return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
+                } else if (line.startsWith('**') && line.endsWith('**')) {
+                  return <p key={idx} className="font-semibold text-indigo-100">{line.replace(/\*\*/g, '')}</p>;
+                } else if (line.trim() === '') {
+                  return <br key={idx} />;
+                } else if (line.startsWith('```')) {
+                  return null;
+                } else {
+                  return <p key={idx} className="text-slate-300">{line}</p>;
+                }
+              })}
+            </div>
           </div>
+        </div>
+
+        {/* Big O Graph */}
+        <div className="bg-gradient-to-br from-purple-900/40 to-pink-900/40 border border-purple-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-purple-100 mb-6">📈 Big O Complexity Graph</h2>
+          <svg viewBox="0 0 800 400" className="w-full h-auto bg-slate-900/50 rounded-lg p-4">
+            {/* Grid */}
+            <defs>
+              <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#4c5a84" strokeWidth="0.5"/>
+              </pattern>
+            </defs>
+            <rect width="800" height="400" fill="url(#grid)" />
+
+            {/* Axes */}
+            <line x1="60" y1="350" x2="750" y2="350" stroke="#94a3b8" strokeWidth="2"/>
+            <line x1="60" y1="350" x2="60" y2="20" stroke="#94a3b8" strokeWidth="2"/>
+
+            {/* Axis labels */}
+            <text x="750" y="375" fontSize="14" fill="#cbd5e1">Input Size (n)</text>
+            <text x="20" y="30" fontSize="14" fill="#cbd5e1">Time</text>
+
+            {/* O(1) - Constant */}
+            <line x1="60" y1="330" x2="750" y2="330" stroke="#10b981" strokeWidth="3" opacity="0.8"/>
+            <text x="760" y="335" fontSize="12" fill="#10b981" fontWeight="bold">O(1)</text>
+
+            {/* O(log n) - Logarithmic */}
+            <polyline points="60,320 150,290 250,270 350,255 450,245 550,238 650,233 750,230"
+              fill="none" stroke="#3b82f6" strokeWidth="3" opacity="0.8"/>
+            <text x="760" y="235" fontSize="12" fill="#3b82f6" fontWeight="bold">O(log n)</text>
+
+            {/* O(n) - Linear */}
+            <line x1="60" y1="300" x2="750" y2="50" stroke="#f59e0b" strokeWidth="3" opacity="0.8"/>
+            <text x="760" y="80" fontSize="12" fill="#f59e0b" fontWeight="bold">O(n)</text>
+
+            {/* O(n²) - Quadratic */}
+            <polyline points="60,310 120,290 180,250 240,190 300,110 360,20"
+              fill="none" stroke="#ef4444" strokeWidth="3" opacity="0.8"/>
+            <text x="370" y="25" fontSize="12" fill="#ef4444" fontWeight="bold">O(n²)</text>
+
+            {/* O(2ⁿ) - Exponential */}
+            <polyline points="60,340 100,330 140,310 180,280 220,220 260,80"
+              fill="none" stroke="#a855f7" strokeWidth="3" opacity="0.8"/>
+            <text x="270" y="80" fontSize="12" fill="#a855f7" fontWeight="bold">O(2ⁿ)</text>
+          </svg>
+          <p className="text-slate-300 text-sm mt-4">Green (fastest) → Purple (slowest). The graph shows how different algorithms scale with input size.</p>
         </div>
 
         <div className="grid md:grid-cols-2 gap-6 mb-12">
