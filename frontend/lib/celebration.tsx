@@ -51,30 +51,28 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     let frameCount = 0;
     const maxFrames = 480;
 
-    // Camera is looking down at an angle at the road
+    // 3D projection with camera angle
     const project = (point: Point3D): { x: number; y: number; scale: number } => {
-      // Camera looking down from angle, car on ground (y=0)
-      const cameraDistance = 600;
-      const depth = point.z + cameraDistance;
-      const scale = Math.max(0.1, 300 / depth);
+      const focalLength = 700;
+      const depth = point.z + focalLength;
+      const scale = Math.max(0.1, focalLength / depth);
 
       const x = canvas.width / 2 + point.x * scale;
-      const y = canvas.height * 0.7 - point.z * scale * 0.3;
+      const y = canvas.height * 0.65 - point.y * scale * 0.8 - point.z * scale * 0.2;
 
       return { x, y, scale };
     };
 
     // Draw road
     const drawRoad = () => {
-      // Road surface - dark asphalt
-      ctx.fillStyle = '#2a2a2a';
-      for (let z = -600; z < 200; z += 50) {
-        const p1 = project({ x: -150, y: 0, z });
-        const p2 = project({ x: 150, y: 0, z });
-        const p3 = project({ x: 150, y: 0, z: z + 50 });
-        const p4 = project({ x: -150, y: 0, z: z + 50 });
+      ctx.fillStyle = '#1a1a1a';
+      for (let z = -700; z < 300; z += 40) {
+        const p1 = project({ x: -200, y: 0, z });
+        const p2 = project({ x: 200, y: 0, z });
+        const p3 = project({ x: 200, y: 0, z: z + 40 });
+        const p4 = project({ x: -200, y: 0, z: z + 40 });
 
-        ctx.fillStyle = z % 100 === 0 ? '#333333' : '#2a2a2a';
+        ctx.fillStyle = (Math.floor(z / 40) % 2 === 0) ? '#222222' : '#1a1a1a';
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
@@ -84,31 +82,31 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         ctx.fill();
       }
 
-      // Road markings - center line
-      ctx.strokeStyle = '#ffff99';
+      // Road markings
+      ctx.strokeStyle = '#ffff88';
       ctx.lineWidth = 2;
-      ctx.setLineDash([20, 20]);
+      ctx.setLineDash([30, 15]);
       ctx.beginPath();
-      const p1 = project({ x: 0, y: 0, z: -600 });
-      const p2 = project({ x: 0, y: 0, z: 200 });
+      const p1 = project({ x: 0, y: 0, z: -700 });
+      const p2 = project({ x: 0, y: 0, z: 300 });
       ctx.moveTo(p1.x, p1.y);
       ctx.lineTo(p2.x, p2.y);
       ctx.stroke();
       ctx.setLineDash([]);
 
-      // Road edges - white lines
+      // Road edges
       ctx.strokeStyle = '#ffffff';
-      ctx.lineWidth = 2;
-      for (let z = -600; z < 200; z += 30) {
-        const p1 = project({ x: -150, y: 0, z });
-        const p2 = project({ x: -150, y: 0, z: z + 30 });
+      ctx.lineWidth = 3;
+      for (let z = -700; z < 300; z += 25) {
+        const p1 = project({ x: -200, y: 0, z });
+        const p2 = project({ x: -200, y: 0, z: z + 25 });
         ctx.beginPath();
         ctx.moveTo(p1.x, p1.y);
         ctx.lineTo(p2.x, p2.y);
         ctx.stroke();
 
-        const p3 = project({ x: 150, y: 0, z });
-        const p4 = project({ x: 150, y: 0, z: z + 30 });
+        const p3 = project({ x: 200, y: 0, z });
+        const p4 = project({ x: 200, y: 0, z: z + 25 });
         ctx.beginPath();
         ctx.moveTo(p3.x, p3.y);
         ctx.lineTo(p4.x, p4.y);
@@ -116,79 +114,201 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
       }
     };
 
-    // Create realistic car geometry
-    const createCar = (posX: number, posZ: number, rotY: number) => {
-      const posY = 0; // Car on ground
+    // Realistic 3D car model
+    const createRealisticCar = (posX: number, posZ: number, rotY: number) => {
       const cosY = Math.cos(rotY);
       const sinY = Math.sin(rotY);
 
       const transform = (x: number, y: number, z: number): Point3D => ({
         x: (x * cosY - z * sinY) + posX,
-        y: y + posY,
+        y: y,
         z: (x * sinY + z * cosY) + posZ,
       });
 
-      const parts: Array<{ points: Point3D[]; color: string; opacity: number }> = [];
+      const faces: Array<{ points: Point3D[]; color: string; opacity: number }> = [];
 
-      // Main body (long chassis)
-      const bodyPoints = [
-        [transform(-20, 5, -35), transform(20, 5, -35), transform(20, 5, 35), transform(-20, 5, 35)], // bottom
-        [transform(-20, -8, -35), transform(20, -8, -35), transform(20, -8, 35), transform(-20, -8, 35)], // top
-        [transform(-20, 5, -35), transform(-20, -8, -35), transform(-20, -8, 35), transform(-20, 5, 35)], // left
-        [transform(20, 5, -35), transform(20, -8, -35), transform(20, -8, 35), transform(20, 5, 35)], // right
-      ];
-      bodyPoints.forEach((p) => parts.push({ points: p, color: '#c41e3a', opacity: 1 }));
+      // MAIN CHASSIS BODY
+      // Front section (hood)
+      faces.push({
+        points: [
+          transform(-18, 8, -45),
+          transform(18, 8, -45),
+          transform(18, 5, -30),
+          transform(-18, 5, -30),
+        ],
+        color: '#c41e3a',
+        opacity: 1,
+      });
 
-      // Hood (front)
-      const hoodPoints = [
-        [transform(-18, -8, -35), transform(18, -8, -35), transform(18, -12, -40), transform(-18, -12, -40)],
-      ];
-      hoodPoints.forEach((p) => parts.push({ points: p, color: '#b21630', opacity: 1 }));
+      // Main body - bottom
+      faces.push({
+        points: [
+          transform(-22, 8, -30),
+          transform(22, 8, -30),
+          transform(22, 8, 30),
+          transform(-22, 8, 30),
+        ],
+        color: '#a01628',
+        opacity: 1,
+      });
 
-      // Roof
-      const roofPoints = [
-        [transform(-15, -8, -15), transform(15, -8, -15), transform(15, -15, -5), transform(-15, -15, -5)],
-        [transform(-15, -15, -5), transform(15, -15, -5), transform(15, -15, 15), transform(-15, -15, 15)],
-      ];
-      roofPoints.forEach((p) => parts.push({ points: p, color: '#b21630', opacity: 1 }));
+      // Main body - top
+      faces.push({
+        points: [
+          transform(-20, -5, -25),
+          transform(20, -5, -25),
+          transform(20, -5, 25),
+          transform(-20, -5, 25),
+        ],
+        color: '#d62e3a',
+        opacity: 1,
+      });
 
-      // Windows (front)
-      const windowFrontPoints = [
-        [transform(-13, -12, -20), transform(13, -12, -20), transform(13, -18, -10), transform(-13, -18, -10)],
-      ];
-      windowFrontPoints.forEach((p) => parts.push({ points: p, color: '#4a90e2', opacity: 0.5 }));
+      // Left side
+      faces.push({
+        points: [
+          transform(-22, 8, -30),
+          transform(-22, 8, 30),
+          transform(-20, -5, 25),
+          transform(-20, -5, -25),
+        ],
+        color: '#b01d28',
+        opacity: 1,
+      });
 
-      // Headlights
+      // Right side
+      faces.push({
+        points: [
+          transform(22, 8, -30),
+          transform(22, 8, 30),
+          transform(20, -5, 25),
+          transform(20, -5, -25),
+        ],
+        color: '#b01d28',
+        opacity: 1,
+      });
+
+      // Rear
+      faces.push({
+        points: [
+          transform(-20, 8, 30),
+          transform(20, 8, 30),
+          transform(20, -5, 25),
+          transform(-20, -5, 25),
+        ],
+        color: '#8b0000',
+        opacity: 1,
+      });
+
+      // WINDSHIELD
+      faces.push({
+        points: [
+          transform(-16, -2, -25),
+          transform(16, -2, -25),
+          transform(16, -12, -15),
+          transform(-16, -12, -15),
+        ],
+        color: '#6ba3d4',
+        opacity: 0.6,
+      });
+
+      // SIDE WINDOWS
+      faces.push({
+        points: [
+          transform(-20, -5, -10),
+          transform(-20, -5, 10),
+          transform(-20, -12, 8),
+          transform(-20, -12, -8),
+        ],
+        color: '#5a8fbf',
+        opacity: 0.5,
+      });
+
+      faces.push({
+        points: [
+          transform(20, -5, -10),
+          transform(20, -5, 10),
+          transform(20, -12, 8),
+          transform(20, -12, -8),
+        ],
+        color: '#5a8fbf',
+        opacity: 0.5,
+      });
+
+      // ROOF
+      faces.push({
+        points: [
+          transform(-18, -5, -15),
+          transform(18, -5, -15),
+          transform(18, -15, 5),
+          transform(-18, -15, 5),
+        ],
+        color: '#c41e3a',
+        opacity: 1,
+      });
+
+      // SPOILER
+      faces.push({
+        points: [
+          transform(-16, -8, 35),
+          transform(16, -8, 35),
+          transform(16, -18, 40),
+          transform(-16, -18, 40),
+        ],
+        color: '#8b0000',
+        opacity: 1,
+      });
+
+      // FRONT BUMPER
+      faces.push({
+        points: [
+          transform(-20, 5, -48),
+          transform(20, 5, -48),
+          transform(20, 3, -45),
+          transform(-20, 3, -45),
+        ],
+        color: '#000000',
+        opacity: 1,
+      });
+
+      // HEADLIGHTS
       const headlights = [
-        { center: transform(8, -6, -36), radius: 3, color: '#ffff99' },
-        { center: transform(-8, -6, -36), radius: 3, color: '#ffff99' },
+        { pos: transform(8, 4, -48), radius: 2.5, color: '#ffff99' },
+        { pos: transform(-8, 4, -48), radius: 2.5, color: '#ffff99' },
       ];
 
-      // Wheels
+      // TAILLIGHTS
+      const taillights = [
+        { pos: transform(8, 4, 32), radius: 2, color: '#ff3333' },
+        { pos: transform(-8, 4, 32), radius: 2, color: '#ff3333' },
+      ];
+
+      // WHEELS - 3D cylinders
       const wheels = [
-        { center: transform(-15, 6, -20), radius: 6, color: '#1a1a1a' },
-        { center: transform(15, 6, -20), radius: 6, color: '#1a1a1a' },
-        { center: transform(-15, 6, 20), radius: 6, color: '#1a1a1a' },
-        { center: transform(15, 6, 20), radius: 6, color: '#1a1a1a' },
+        { pos: transform(-20, 8, -20), radius: 7, color: '#1a1a1a' },
+        { pos: transform(20, 8, -20), radius: 7, color: '#1a1a1a' },
+        { pos: transform(-20, 8, 20), radius: 7, color: '#1a1a1a' },
+        { pos: transform(20, 8, 20), radius: 7, color: '#1a1a1a' },
       ];
 
-      return { parts, headlights, wheels };
+      return { faces, headlights, taillights, wheels };
     };
 
-    const drawCar3D = (posX: number, posZ: number, rotY: number) => {
-      const car = createCar(posX, posZ, rotY);
+    const drawCar = (posX: number, posZ: number, rotY: number) => {
+      const car = createRealisticCar(posX, posZ, rotY);
 
-      // Sort parts by depth
-      const projectedParts = car.parts.map((part) => {
-        const avgDepth = part.points.reduce((sum, p) => sum + p.z, 0) / part.points.length;
-        const projected = part.points.map(project);
-        return { projected, color: part.color, opacity: part.opacity, depth: avgDepth };
-      }).sort((a, b) => b.depth - a.depth);
+      // Sort and draw faces
+      const sortedFaces = car.faces
+        .map((face) => {
+          const avgZ = face.points.reduce((sum, p) => sum + p.z, 0) / face.points.length;
+          return { face, avgZ };
+        })
+        .sort((a, b) => b.avgZ - a.avgZ);
 
-      // Draw body parts
-      projectedParts.forEach(({ projected, color, opacity }) => {
-        ctx.fillStyle = color;
-        ctx.globalAlpha = opacity;
+      sortedFaces.forEach(({ face }) => {
+        const projected = face.points.map(project);
+        ctx.fillStyle = face.color;
+        ctx.globalAlpha = face.opacity;
         ctx.beginPath();
         ctx.moveTo(projected[0].x, projected[0].y);
         for (let i = 1; i < projected.length; i++) {
@@ -197,26 +317,34 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         ctx.closePath();
         ctx.fill();
         ctx.strokeStyle = '#000';
-        ctx.lineWidth = 1;
+        ctx.lineWidth = 0.5;
         ctx.stroke();
       });
       ctx.globalAlpha = 1;
 
       // Draw headlights
       car.headlights.forEach((light) => {
-        const proj = project(light.center);
-        const scale = proj.scale;
+        const proj = project(light.pos);
         ctx.fillStyle = light.color;
-        ctx.globalAlpha = 0.8;
+        ctx.globalAlpha = 0.9;
         ctx.beginPath();
-        ctx.arc(proj.x, proj.y, light.radius * scale, 0, Math.PI * 2);
+        ctx.arc(proj.x, proj.y, light.radius * proj.scale, 0, Math.PI * 2);
         ctx.fill();
-        ctx.globalAlpha = 1;
+      });
+
+      // Draw taillights
+      car.taillights.forEach((light) => {
+        const proj = project(light.pos);
+        ctx.fillStyle = light.color;
+        ctx.globalAlpha = 0.7;
+        ctx.beginPath();
+        ctx.arc(proj.x, proj.y, light.radius * proj.scale, 0, Math.PI * 2);
+        ctx.fill();
       });
 
       // Draw wheels
       car.wheels.forEach((wheel) => {
-        const proj = project(wheel.center);
+        const proj = project(wheel.pos);
         const scale = proj.scale;
         ctx.fillStyle = wheel.color;
         ctx.beginPath();
@@ -227,40 +355,31 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         ctx.stroke();
 
         // Rim
-        ctx.fillStyle = '#444';
+        ctx.fillStyle = '#555';
         ctx.beginPath();
-        ctx.arc(proj.x, proj.y, wheel.radius * scale * 0.6, 0, Math.PI * 2);
+        ctx.arc(proj.x, proj.y, wheel.radius * scale * 0.5, 0, Math.PI * 2);
         ctx.fill();
       });
-    };
 
-    const addSkidMark = (x: number, z: number, angle: number) => {
-      skidMarks.push({
-        x,
-        z,
-        angle,
-        width: 8,
-        alpha: 1,
-        life: 1,
-      });
+      ctx.globalAlpha = 1;
     };
 
     const drawSkidMarks = () => {
       for (let i = skidMarks.length - 1; i >= 0; i--) {
         const mark = skidMarks[i];
-        mark.life -= 0.01;
-        mark.alpha = mark.life * 0.6;
+        mark.life -= 0.012;
+        mark.alpha = mark.life * 0.7;
 
         const proj = project({ x: mark.x, y: 0, z: mark.z });
         const scale = proj.scale;
 
-        ctx.strokeStyle = `rgba(30, 30, 30, ${mark.alpha})`;
+        ctx.strokeStyle = `rgba(50, 50, 50, ${mark.alpha})`;
         ctx.lineWidth = mark.width * scale;
         ctx.lineCap = 'round';
         ctx.beginPath();
 
-        const perpX = -Math.sin(mark.angle) * 2;
-        const perpZ = Math.cos(mark.angle) * 2;
+        const perpX = -Math.sin(mark.angle) * 2.5;
+        const perpZ = Math.cos(mark.angle) * 2.5;
         const p1 = project({ x: mark.x + perpX, y: 0, z: mark.z + perpZ });
         const p2 = project({ x: mark.x - perpX, y: 0, z: mark.z - perpZ });
 
@@ -275,50 +394,59 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     };
 
     const generateSmoke = (x: number, z: number) => {
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         smoke.push({
-          x: x + (Math.random() - 0.5) * 25,
-          y: 10 + Math.random() * 20,
-          z: z + (Math.random() - 0.5) * 15,
+          x: x + (Math.random() - 0.5) * 30,
+          y: 8 + Math.random() * 25,
+          z: z + (Math.random() - 0.5) * 20,
           vx: (Math.random() - 0.5) * 3,
-          vy: Math.random() * 2 + 1,
-          vz: (Math.random() - 0.5) * 3 - 1,
-          size: Math.random() * 18 + 12,
-          alpha: 0.7,
+          vy: Math.random() * 2.5 + 1.5,
+          vz: (Math.random() - 0.5) * 3 - 0.5,
+          size: Math.random() * 20 + 15,
+          alpha: 0.6,
           life: 1,
         });
       }
     };
 
     const animate = () => {
-      // Clear with fade
-      ctx.fillStyle = 'rgba(100, 150, 200, 0.3)';
+      ctx.fillStyle = 'rgba(100, 140, 200, 0.4)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const progress = frameCount / maxFrames;
 
-      // Car drifting on road - moving down the road (z) and side to side (x)
-      const carZ = -400 + progress * 600; // Moving forward on road
-      const carX = Math.sin(progress * Math.PI * 3.5) * 80; // Drifting left and right
-      const carRotY = progress * Math.PI * 6 + Math.sin(progress * Math.PI * 4) * 0.9; // Rotation from drifting
+      // Car motion - realistic drifting
+      const carZ = -500 + progress * 650;
+      const carX = Math.sin(progress * Math.PI * 2.5) * 100 - Math.cos(progress * Math.PI * 1.2) * 40;
+      const carRotY = Math.sin(progress * Math.PI * 2) * 0.6 + progress * Math.PI * 2; // Drift angle + forward spin
 
-      // Tire slip for skid marks
-      const tireSlip = Math.abs(Math.sin(progress * Math.PI * 4)) * 0.7;
-      if (frameCount % 3 === 0 && tireSlip > 0.2) {
-        addSkidMark(carX - 15, carZ, carRotY);
-        addSkidMark(carX + 15, carZ, carRotY);
+      const driftIntensity = Math.abs(Math.sin(progress * Math.PI * 3.5)) * 0.8;
+
+      // Skid marks
+      if (frameCount % 2 === 0 && driftIntensity > 0.3) {
+        addSkidMark(carX - 18, carZ, carRotY);
+        addSkidMark(carX + 18, carZ, carRotY);
       }
 
-      // Smoke from tires when drifting hard
-      if (frameCount % 5 === 0 && tireSlip > 0.3) {
-        generateSmoke(carX - 18, carZ);
-        generateSmoke(carX + 18, carZ);
+      // Smoke
+      if (frameCount % 4 === 0 && driftIntensity > 0.4) {
+        generateSmoke(carX - 20, carZ);
+        generateSmoke(carX + 20, carZ);
       }
 
-      // Draw road first
+      const addSkidMark = (x: number, z: number, angle: number) => {
+        skidMarks.push({
+          x,
+          z,
+          angle,
+          width: 9,
+          alpha: 1,
+          life: 1,
+        });
+      };
+
+      // Draw road
       drawRoad();
-
-      // Draw skid marks on road
       drawSkidMarks();
 
       // Update smoke
@@ -327,14 +455,14 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         s.x += s.vx;
         s.y += s.vy;
         s.z += s.vz;
-        s.size += 0.7;
-        s.life -= 0.008;
-        s.alpha = s.life * 0.8;
+        s.size += 0.8;
+        s.life -= 0.009;
+        s.alpha = s.life * 0.75;
 
         const proj = project({ x: s.x, y: s.y, z: s.z });
-        const smokeScale = Math.max(0.2, proj.scale);
+        const smokeScale = Math.max(0.15, proj.scale);
 
-        ctx.fillStyle = `rgba(100, 100, 110, ${s.alpha})`;
+        ctx.fillStyle = `rgba(110, 110, 120, ${s.alpha})`;
         ctx.beginPath();
         ctx.arc(proj.x, proj.y, s.size * smokeScale, 0, Math.PI * 2);
         ctx.fill();
@@ -344,8 +472,8 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         }
       }
 
-      // Draw car on road
-      drawCar3D(carX, carZ, carRotY);
+      // Draw car
+      drawCar(carX, carZ, carRotY);
 
       frameCount++;
 
