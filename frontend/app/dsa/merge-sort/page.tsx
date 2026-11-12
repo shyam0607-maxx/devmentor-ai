@@ -74,8 +74,93 @@ export default function MergeSortPage() {
             </div>
           </div>
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Key Features</h2>
-            <ul className="space-y-2 text-slate-300 text-sm"><li>✓ Divide-and-conquer approach</li><li>✓ Guaranteed O(n log n)</li><li>✓ Stable sort</li><li>✓ Great for linked lists</li></ul>
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎬 Merge Process</h2>
+            <svg viewBox="0 0 300 150" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes merge { 0% { opacity: 0; y: -20px; } 100% { opacity: 1; y: 0; } }
+                  .merge-item { animation: merge 0.5s ease-out forwards; }
+                `}</style>
+              </defs>
+              <text x="150" y="20" textAnchor="middle" fill="#cbd5e1" fontSize="12" fontWeight="bold">Merge: Combine Sorted Arrays</text>
+
+              <g className="merge-item">
+                <rect x="10" y="35" width="30" height="30" fill="#06b6d4" stroke="#0891b2" strokeWidth="2"/>
+                <text x="25" y="55" textAnchor="middle" fill="#fff" fontSize="11">1</text>
+              </g>
+              <g className="merge-item" style={{animationDelay: '0.1s'}}>
+                <rect x="50" y="35" width="30" height="30" fill="#06b6d4" stroke="#0891b2" strokeWidth="2"/>
+                <text x="65" y="55" textAnchor="middle" fill="#fff" fontSize="11">3</text>
+              </g>
+
+              <g className="merge-item" style={{animationDelay: '0.2s'}}>
+                <rect x="130" y="35" width="30" height="30" fill="#06b6d4" stroke="#0891b2" strokeWidth="2"/>
+                <text x="145" y="55" textAnchor="middle" fill="#fff" fontSize="11">2</text>
+              </g>
+              <g className="merge-item" style={{animationDelay: '0.2s'}}>
+                <rect x="170" y="35" width="30" height="30" fill="#06b6d4" stroke="#0891b2" strokeWidth="2"/>
+                <text x="185" y="55" textAnchor="middle" fill="#fff" fontSize="11">4</text>
+              </g>
+
+              <text x="150" y="90" textAnchor="middle" fill="#cbd5e1" fontSize="10">↓ Merge ↓</text>
+
+              <g className="merge-item" style={{animationDelay: '0.4s'}}>
+                <rect x="20" y="105" width="25" height="25" fill="#0ea5e9" stroke="#0891b2" strokeWidth="2"/>
+                <text x="32" y="122" textAnchor="middle" fill="#fff" fontSize="10">1</text>
+              </g>
+              <g className="merge-item" style={{animationDelay: '0.5s'}}>
+                <rect x="55" y="105" width="25" height="25" fill="#0ea5e9" stroke="#0891b2" strokeWidth="2"/>
+                <text x="67" y="122" textAnchor="middle" fill="#fff" fontSize="10">2</text>
+              </g>
+              <g className="merge-item" style={{animationDelay: '0.6s'}}>
+                <rect x="90" y="105" width="25" height="25" fill="#0ea5e9" stroke="#0891b2" strokeWidth="2"/>
+                <text x="102" y="122" textAnchor="middle" fill="#fff" fontSize="10">3</text>
+              </g>
+              <g className="merge-item" style={{animationDelay: '0.7s'}}>
+                <rect x="125" y="105" width="25" height="25" fill="#0ea5e9" stroke="#0891b2" strokeWidth="2"/>
+                <text x="137" y="122" textAnchor="middle" fill="#fff" fontSize="10">4</text>
+              </g>
+            </svg>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-gradient-to-br from-emerald-900/40 to-slate-900/40 border border-emerald-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-emerald-100 mb-4">📊 Phases</h2>
+            <div className="space-y-2">
+              <div className="bg-emerald-800/30 p-2 rounded text-xs">
+                <p className="text-emerald-300 font-semibold">1. Divide</p>
+                <p className="text-slate-300">Split array</p>
+              </div>
+              <div className="bg-cyan-800/30 p-2 rounded text-xs">
+                <p className="text-cyan-300 font-semibold">2. Conquer</p>
+                <p className="text-slate-300">Sort halves</p>
+              </div>
+              <div className="bg-indigo-800/30 p-2 rounded text-xs">
+                <p className="text-indigo-300 font-semibold">3. Merge</p>
+                <p className="text-slate-300">Combine parts</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-orange-100 mb-4">💾 Analysis</h2>
+            <div className="space-y-2 text-xs">
+              <p className="text-slate-300"><strong>Time:</strong> O(n log n)</p>
+              <p className="text-slate-300"><strong>Space:</strong> O(n)</p>
+              <p className="text-slate-300"><strong>Stable:</strong> Yes</p>
+              <p className="text-slate-300"><strong>In-place:</strong> No</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-violet-100 mb-4">🎯 Best For</h2>
+            <ul className="space-y-1 text-xs text-slate-300">
+              <li>▸ Linked lists</li>
+              <li>▸ External sorting</li>
+              <li>▸ Stable sorting</li>
+              <li>▸ Guaranteed O(n log n)</li>
+            </ul>
           </div>
         </div>
         <div className="bg-gradient-to-br from-purple-900/40 to-cyan-900/40 border border-purple-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">

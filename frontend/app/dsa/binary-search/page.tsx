@@ -72,8 +72,55 @@ export default function BinarySearchPage() {
             </div>
           </div>
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Features</h2>
-            <ul className="space-y-2 text-slate-300"><li>✓ Requires sorted array</li><li>✓ Divide-and-conquer</li><li>✓ O(log n) guaranteed</li><li>✓ Optimal for large datasets</li></ul>
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🔍 Search Visualization</h2>
+            <svg viewBox="0 0 300 150" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes pulse { 0%, 100% { r: 18; } 50% { r: 22; } }
+                  .mid-marker { animation: pulse 1s ease-in-out infinite; }
+                `}</style>
+              </defs>
+              <text x="150" y="15" textAnchor="middle" fill="#cbd5e1" fontSize="11">Binary Search: Find 35</text>
+              <rect x="20" y="30" width="30" height="25" fill="#1e40af" stroke="#3b82f6" strokeWidth="1"/><text x="35" y="48" textAnchor="middle" fill="#fff" fontSize="10">10</text>
+              <rect x="60" y="30" width="30" height="25" fill="#1e40af" stroke="#3b82f6" strokeWidth="1"/><text x="75" y="48" textAnchor="middle" fill="#fff" fontSize="10">20</text>
+              <circle cx="115" cy="42" r="18" fill="none" stroke="#0ea5e9" strokeWidth="2" className="mid-marker"/><rect x="100" y="30" width="30" height="25" fill="#1e40af" stroke="#3b82f6" strokeWidth="1"/><text x="115" y="48" textAnchor="middle" fill="#fff" fontSize="10">30</text>
+              <rect x="140" y="30" width="30" height="25" fill="#1e40af" stroke="#3b82f6" strokeWidth="1"/><text x="155" y="48" textAnchor="middle" fill="#fff" fontSize="10">40</text>
+              <rect x="180" y="30" width="30" height="25" fill="#06b6d4" stroke="#0891b2" strokeWidth="2"/><text x="195" y="48" textAnchor="middle" fill="#fff" fontSize="10">50</text>
+              <text x="150" y="75" textAnchor="middle" fill="#cbd5e1" fontSize="10">Compare: 30 {`<`} 35</text>
+              <text x="150" y="95" textAnchor="middle" fill="#cbd5e1" fontSize="10">↓ Search Right Half</text>
+              <text x="150" y="115" textAnchor="middle" fill="#0ea5e9" fontSize="11" fontWeight="bold">Found 35 at index 4</text>
+            </svg>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 border border-blue-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-blue-100 mb-4">⚙️ Steps</h2>
+            <ol className="space-y-1 text-xs text-slate-300 list-decimal list-inside">
+              <li>Set boundaries</li>
+              <li>Find middle</li>
+              <li>Compare target</li>
+              <li>Eliminate half</li>
+              <li>Repeat/Found</li>
+            </ol>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-orange-100 mb-4">📊 Iterations</h2>
+            <div className="space-y-1 text-xs">
+              <p className="text-slate-300"><strong className="text-orange-300">n = 1,000:</strong> ~10 steps</p>
+              <p className="text-slate-300"><strong className="text-orange-300">n = 1,000,000:</strong> ~20 steps</p>
+              <p className="text-slate-300"><strong className="text-orange-300">n = 1 billion:</strong> ~30 steps</p>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-emerald-900/40 to-slate-900/40 border border-emerald-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-emerald-100 mb-4">✅ Pros & Cons</h2>
+            <div className="space-y-1 text-xs">
+              <p className="text-emerald-300"><strong>+</strong> Very fast O(log n)</p>
+              <p className="text-emerald-300"><strong>+</strong> Simple code</p>
+              <p className="text-red-400"><strong>-</strong> Array must be sorted</p>
+            </div>
           </div>
         </div>
         <div className="bg-gradient-to-br from-orange-900/40 to-cyan-900/40 border border-orange-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">

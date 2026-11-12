@@ -72,8 +72,47 @@ export default function DPPage() {
             </div>
           </div>
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Key Principles</h2>
-            <ul className="space-y-2 text-slate-300"><li>✓ Overlapping subproblems</li><li>✓ Optimal substructure</li><li>✓ Memoization</li><li>✓ Exponential → Polynomial</li></ul>
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">📊 Complexity Comparison</h2>
+            <svg viewBox="0 0 300 180" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes grow { 0% { height: 0; } 100% { height: 100%; } }
+                  .bar { animation: grow 0.8s ease-out forwards; }
+                `}</style>
+              </defs>
+              <text x="150" y="15" textAnchor="middle" fill="#cbd5e1" fontSize="12" fontWeight="bold">Naive vs DP: n=5 (Fibonacci)</text>
+              <rect x="30" y="60" width="40" height="2" fill="#cbd5e1"/><text x="50" y="105" textAnchor="middle" fill="#cbd5e1" fontSize="10">Naive</text><text x="50" y="120" textAnchor="middle" fill="#0ea5e9" fontSize="11" fontWeight="bold">O(2^n)</text>
+              <rect x="100" y="100" width="40" height="2" fill="#cbd5e1"/><text x="120" y="145" textAnchor="middle" fill="#cbd5e1" fontSize="10">DP</text><text x="120" y="160" textAnchor="middle" fill="#06b6d4" fontSize="11" fontWeight="bold">O(n)</text>
+              <text x="150" y="175" textAnchor="middle" fill="#94a3b8" fontSize="10">DP: 32 → 5 calls</text>
+            </svg>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-violet-100 mb-6">🔄 Approaches</h2>
+            <div className="space-y-3">
+              <div className="bg-violet-800/30 p-3 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold text-sm">Top-Down</p>
+                <p className="text-slate-300 text-xs mt-1">Recursion + Caching</p>
+              </div>
+              <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
+                <p className="text-indigo-300 font-semibold text-sm">Bottom-Up</p>
+                <p className="text-slate-300 text-xs mt-1">Iterative + Tabulation</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-amber-900/40 to-slate-900/40 border border-amber-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-amber-100 mb-6">📋 Classic Problems</h2>
+            <ul className="space-y-1 text-xs text-slate-300">
+              <li>▸ Fibonacci sequence</li>
+              <li>▸ Coin change</li>
+              <li>▸ Knapsack problem</li>
+              <li>▸ LCS (Longest)</li>
+              <li>▸ Edit distance</li>
+              <li>▸ Matrix chain</li>
+            </ul>
           </div>
         </div>
         <div className="bg-gradient-to-br from-rose-900/40 to-cyan-900/40 border border-rose-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">

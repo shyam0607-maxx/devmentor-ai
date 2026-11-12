@@ -285,53 +285,61 @@ export default function QueuesPage() {
           </div>
         </div>
 
-        {/* Queue Characteristics */}
-        <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-teal-100 mb-6">🔄 Queue Types</h2>
-            <div className="space-y-3">
-              <div className="bg-teal-800/30 p-3 rounded border border-teal-700/50">
-                <p className="text-teal-300 font-semibold">Simple Queue</p>
-                <p className="text-slate-300 text-xs mt-1">Standard FIFO queue</p>
+        {/* Queue Characteristics - 3 Column */}
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
+          <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-teal-100 mb-4">🔄 Queue Types</h2>
+            <div className="space-y-2">
+              <div className="bg-teal-800/30 p-2 rounded border border-teal-700/50">
+                <p className="text-teal-300 font-semibold text-sm">Simple Queue</p>
+                <p className="text-slate-300 text-xs mt-0.5">Standard FIFO</p>
               </div>
-              <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
-                <p className="text-cyan-300 font-semibold">Circular Queue</p>
-                <p className="text-slate-300 text-xs mt-1">Rear connects to front, efficient memory</p>
+              <div className="bg-cyan-800/30 p-2 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 font-semibold text-sm">Circular</p>
+                <p className="text-slate-300 text-xs mt-0.5">Memory efficient</p>
               </div>
-              <div className="bg-emerald-800/30 p-3 rounded border border-emerald-700/50">
-                <p className="text-emerald-300 font-semibold">Priority Queue</p>
-                <p className="text-slate-300 text-xs mt-1">Elements processed by priority</p>
+              <div className="bg-emerald-800/30 p-2 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 font-semibold text-sm">Priority</p>
+                <p className="text-slate-300 text-xs mt-0.5">Priority based</p>
               </div>
-              <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
-                <p className="text-indigo-300 font-semibold">Deque (Double-ended)</p>
-                <p className="text-slate-300 text-xs mt-1">Add/remove from both ends</p>
+              <div className="bg-indigo-800/30 p-2 rounded border border-indigo-700/50">
+                <p className="text-indigo-300 font-semibold text-sm">Deque</p>
+                <p className="text-slate-300 text-xs mt-0.5">Both ends</p>
               </div>
             </div>
           </div>
 
-          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-violet-100 mb-6">📋 Applications</h2>
-            <ul className="space-y-2 text-slate-300 text-sm">
-              <li className="flex gap-2">
-                <span className="text-violet-400 font-bold">•</span>
-                <span><strong>CPU Task Scheduling:</strong> Manage process execution</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-violet-400 font-bold">•</span>
-                <span><strong>Printer Queue:</strong> Document printing order</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-violet-400 font-bold">•</span>
-                <span><strong>Customer Service:</strong> Service tickets</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-violet-400 font-bold">•</span>
-                <span><strong>BFS Algorithm:</strong> Graph traversal</span>
-              </li>
-              <li className="flex gap-2">
-                <span className="text-violet-400 font-bold">•</span>
-                <span><strong>Message Queues:</strong> Async processing</span>
-              </li>
+          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-violet-100 mb-4">⚙️ Key Operations</h2>
+            <div className="space-y-2">
+              <div className="bg-violet-800/30 p-2 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold text-sm">Enqueue</p>
+                <p className="text-slate-300 text-xs mt-0.5">O(1) - Add rear</p>
+              </div>
+              <div className="bg-emerald-800/30 p-2 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 font-semibold text-sm">Dequeue</p>
+                <p className="text-slate-300 text-xs mt-0.5">O(1) - Remove front</p>
+              </div>
+              <div className="bg-blue-800/30 p-2 rounded border border-blue-700/50">
+                <p className="text-blue-300 font-semibold text-sm">Peek</p>
+                <p className="text-slate-300 text-xs mt-0.5">O(1) - View front</p>
+              </div>
+              <div className="bg-cyan-800/30 p-2 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 font-semibold text-sm">IsEmpty</p>
+                <p className="text-slate-300 text-xs mt-0.5">O(1) - Check</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-orange-100 mb-4">💼 Applications</h2>
+            <ul className="space-y-1 text-slate-300 text-xs">
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>CPU scheduling</span></li>
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>Printer queues</span></li>
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>Customer service</span></li>
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>BFS traversal</span></li>
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>Message queues</span></li>
+              <li className="flex gap-2"><span className="text-orange-400">▸</span><span>Breadth searches</span></li>
             </ul>
           </div>
         </div>

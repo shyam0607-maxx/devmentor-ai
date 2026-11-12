@@ -72,8 +72,69 @@ export default function GraphsPage() {
             </div>
           </div>
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Fundamentals</h2>
-            <ul className="space-y-2 text-slate-300"><li>✓ Vertices & Edges</li><li>✓ Directed/Undirected</li><li>✓ BFS & DFS traversal</li><li>✓ Real-world modeling</li></ul>
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🌐 Graph Visualization</h2>
+            <svg viewBox="0 0 300 180" className="w-full h-auto">
+              <defs>
+                <style>{`
+                  @keyframes nodeGrow { 0% { r: 0; opacity: 0; } 100% { r: 16; opacity: 1; } }
+                  @keyframes edgeGrow { 0% { stroke-dasharray: 100; stroke-dashoffset: 100; } 100% { stroke-dasharray: 100; stroke-dashoffset: 0; } }
+                  .graph-node { animation: nodeGrow 0.5s ease-out forwards; }
+                  .graph-edge { animation: edgeGrow 0.7s ease-in-out forwards; stroke-dasharray: 100; }
+                `}</style>
+              </defs>
+              <line x1="80" y1="80" x2="160" y2="80" stroke="#06b6d4" strokeWidth="2" className="graph-edge"/>
+              <line x1="160" y1="80" x2="160" y2="140" stroke="#06b6d4" strokeWidth="2" className="graph-edge" style={{animationDelay: '0.2s'}}/>
+              <line x1="80" y1="80" x2="160" y2="140" stroke="#06b6d4" strokeWidth="2" className="graph-edge" style={{animationDelay: '0.3s'}}/>
+
+              <circle cx="80" cy="80" r="16" fill="#06b6d4" stroke="#0891b2" strokeWidth="2" className="graph-node"/><text x="80" y="85" textAnchor="middle" fill="#fff" fontSize="12">A</text>
+              <circle cx="160" cy="80" r="16" fill="#06b6d4" stroke="#0891b2" strokeWidth="2" className="graph-node" style={{animationDelay: '0.15s'}}/><text x="160" y="85" textAnchor="middle" fill="#fff" fontSize="12">B</text>
+              <circle cx="160" cy="140" r="16" fill="#06b6d4" stroke="#0891b2" strokeWidth="2" className="graph-node" style={{animationDelay: '0.25s'}}/><text x="160" y="145" textAnchor="middle" fill="#fff" fontSize="12">C</text>
+
+              <text x="150" y="30" textAnchor="middle" fill="#cbd5e1" fontSize="11">Graph: 3 nodes, 3 edges</text>
+              <text x="150" y="170" textAnchor="middle" fill="#cbd5e1" fontSize="10">Vertices (nodes) connected by edges</text>
+            </svg>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 border border-blue-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-blue-100 mb-6">🔍 Graph Types</h2>
+            <div className="space-y-2">
+              <div className="bg-blue-800/30 p-2 rounded text-xs">
+                <p className="text-blue-300 font-semibold">Directed</p>
+                <p className="text-slate-300">A → B (one-way)</p>
+              </div>
+              <div className="bg-cyan-800/30 p-2 rounded text-xs">
+                <p className="text-cyan-300 font-semibold">Undirected</p>
+                <p className="text-slate-300">A ↔ B (both ways)</p>
+              </div>
+              <div className="bg-purple-800/30 p-2 rounded text-xs">
+                <p className="text-purple-300 font-semibold">Weighted</p>
+                <p className="text-slate-300">Edges have values</p>
+              </div>
+              <div className="bg-indigo-800/30 p-2 rounded text-xs">
+                <p className="text-indigo-300 font-semibold">Cyclic</p>
+                <p className="text-slate-300">Has cycles/loops</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-orange-100 mb-6">🧭 Traversals</h2>
+            <div className="space-y-2">
+              <div className="bg-orange-800/30 p-2 rounded border border-orange-700/50">
+                <p className="text-orange-300 font-semibold text-sm">BFS (Queue)</p>
+                <p className="text-slate-300 text-xs mt-0.5">Level-wise exploration</p>
+              </div>
+              <div className="bg-amber-800/30 p-2 rounded border border-amber-700/50">
+                <p className="text-amber-300 font-semibold text-sm">DFS (Stack)</p>
+                <p className="text-slate-300 text-xs mt-0.5">Deep exploration first</p>
+              </div>
+              <div className="space-y-1 text-xs text-slate-300 mt-3">
+                <p><strong className="text-orange-300">Both:</strong> O(V+E)</p>
+                <p><strong className="text-orange-300">V:</strong> vertices, E: edges</p>
+              </div>
+            </div>
           </div>
         </div>
         <div className="bg-gradient-to-br from-amber-900/40 to-cyan-900/40 border border-amber-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">

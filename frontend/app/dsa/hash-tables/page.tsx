@@ -127,8 +127,85 @@ export default function HashTablesPage() {
           </div>
 
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Key Concepts</h2>
-            <p className="text-slate-300 text-sm leading-relaxed">Master the core principles and applications of {topic.name} including performance characteristics and real-world use cases.</p>
+            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎯 Hash Function</h2>
+            <svg viewBox="0 0 300 200" className="w-full h-auto mb-4">
+              <defs>
+                <style>{`
+                  @keyframes hashFlow {
+                    0% { opacity: 0; transform: translateY(20px); }
+                    100% { opacity: 1; transform: translateY(0); }
+                  }
+                  .hash-item { animation: hashFlow 0.6s ease-out forwards; }
+                  .hash-bucket { animation: hashFlow 0.8s ease-out 0.2s forwards; }
+                  @keyframes hashPulse {
+                    0%, 100% { r: 12; }
+                    50% { r: 15; }
+                  }
+                  .hash-node { animation: hashPulse 1.5s ease-in-out infinite; }
+                `}</style>
+              </defs>
+
+              <text x="150" y="25" textAnchor="middle" fill="#cbd5e1" fontSize="14" fontWeight="bold">Hash Function: Key → Index</text>
+
+              <g className="hash-item">
+                <rect x="20" y="50" width="50" height="40" fill="#06b6d4" stroke="#0891b2" strokeWidth="2" rx="4"/>
+                <text x="45" y="75" textAnchor="middle" fill="#ffffff" fontSize="12" fontWeight="bold">Key1</text>
+              </g>
+
+              <path d="M 70 70 L 100 70" stroke="#0ea5e9" strokeWidth="2" markerEnd="url(#arrowhead)" opacity="0"/>
+              <animate attributeName="opacity" values="0;1" dur="0.5s" begin="0.3s" fill="freeze"/>
+
+              <g className="hash-bucket">
+                <rect x="110" y="45" width="50" height="50" fill="#1e40af" stroke="#3b82f6" strokeWidth="2" rx="4"/>
+                <text x="135" y="80" textAnchor="middle" fill="#cyan" fontSize="11" fontWeight="bold">[3]</text>
+              </g>
+
+              <text x="150" y="130" textAnchor="middle" fill="#cbd5e1" fontSize="12">Hash → Index → Bucket</text>
+            </svg>
+            <div className="space-y-2 text-sm">
+              <p className="text-slate-300">✓ Deterministic mapping</p>
+              <p className="text-slate-300">✓ Uniform distribution</p>
+              <p className="text-slate-300">✓ Fast computation</p>
+            </div>
+          </div>
+        </div>
+
+        <div className="grid md:grid-cols-2 gap-8 mb-12">
+          <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">🔗 Collision Handling</h2>
+            <div className="space-y-3">
+              <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
+                <p className="text-indigo-300 font-semibold text-sm">Chaining</p>
+                <p className="text-slate-300 text-xs mt-1">Linked list at each bucket</p>
+              </div>
+              <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
+                <p className="text-cyan-300 font-semibold text-sm">Open Addressing</p>
+                <p className="text-slate-300 text-xs mt-1">Find next empty slot</p>
+              </div>
+              <div className="bg-emerald-800/30 p-3 rounded border border-emerald-700/50">
+                <p className="text-emerald-300 font-semibold text-sm">Double Hashing</p>
+                <p className="text-slate-300 text-xs mt-1">Secondary hash function</p>
+              </div>
+            </div>
+          </div>
+
+          <div className="bg-gradient-to-br from-violet-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-violet-100 mb-6">⚖️ Load Factor</h2>
+            <div className="space-y-3">
+              <div className="bg-violet-800/30 p-4 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold mb-2">Load Factor = size / capacity</p>
+                <p className="text-slate-300 text-xs">Determines table efficiency</p>
+                <p className="text-slate-400 text-xs mt-2">Optimal: 0.5 - 0.75</p>
+              </div>
+              <div className="bg-amber-800/30 p-3 rounded border border-amber-700/50">
+                <p className="text-amber-300 font-semibold text-sm">High Load Factor</p>
+                <p className="text-slate-300 text-xs mt-1">More collisions, slower</p>
+              </div>
+              <div className="bg-green-800/30 p-3 rounded border border-green-700/50">
+                <p className="text-green-300 font-semibold text-sm">Low Load Factor</p>
+                <p className="text-slate-300 text-xs mt-1">Wasted space</p>
+              </div>
+            </div>
           </div>
         </div>
 
