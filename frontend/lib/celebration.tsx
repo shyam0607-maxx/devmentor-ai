@@ -409,6 +409,17 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
       }
     };
 
+    const addSkidMark = (x: number, z: number, angle: number) => {
+      skidMarks.push({
+        x,
+        z,
+        angle,
+        width: 9,
+        alpha: 1,
+        life: 1,
+      });
+    };
+
     const animate = () => {
       ctx.fillStyle = 'rgba(100, 140, 200, 0.4)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -433,17 +444,6 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         generateSmoke(carX - 20, carZ);
         generateSmoke(carX + 20, carZ);
       }
-
-      const addSkidMark = (x: number, z: number, angle: number) => {
-        skidMarks.push({
-          x,
-          z,
-          angle,
-          width: 9,
-          alpha: 1,
-          life: 1,
-        });
-      };
 
       // Draw road
       drawRoad();
