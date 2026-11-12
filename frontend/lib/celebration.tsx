@@ -18,97 +18,168 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     canvas.width = window.innerWidth;
     canvas.height = window.innerHeight;
 
-    interface Flower {
+    interface Smoke {
       x: number;
       y: number;
       vx: number;
       vy: number;
       size: number;
-      rotation: number;
-      rotationSpeed: number;
-      color: string;
       alpha: number;
+      life: number;
     }
 
-    const flowers: Flower[] = [];
-    const flowerColors = ['#FF69B4', '#FFB6C1', '#FF1493', '#FFC0CB', '#FFD700', '#FFA500', '#FF4500', '#FF6B9D', '#FF007F'];
-
-    // Create flowers
-    for (let i = 0; i < 80; i++) {
-      flowers.push({
-        x: Math.random() * canvas.width,
-        y: -50,
-        vx: (Math.random() - 0.5) * 6,
-        vy: Math.random() * 4 + 2,
-        size: Math.random() * 15 + 8,
-        rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.15,
-        color: flowerColors[Math.floor(Math.random() * flowerColors.length)],
-        alpha: 1,
-      });
-    }
-
+    const smoke: Smoke[] = [];
     let animationId: number;
     let frameCount = 0;
-    const maxFrames = 200; // ~3.3 seconds at 60fps
+    const maxFrames = 240;
 
-    const drawFlower = (flower: Flower) => {
+    // Car position and state
+    const car = {
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      vx: 0,
+      vy: 0,
+      rotation: 0,
+      driftAngle: 0,
+      scale: 80,
+    };
+
+    const drawCar = (x: number, y: number, rotation: number, driftAngle: number, scale: number) => {
       ctx.save();
-      ctx.globalAlpha = flower.alpha;
-      ctx.fillStyle = flower.color;
-      ctx.translate(flower.x, flower.y);
-      ctx.rotate(flower.rotation);
+      ctx.translate(x, y);
+      ctx.rotate(rotation);
 
-      // Draw a simple flower shape (5-petal flower)
-      const petalSize = flower.size;
-      for (let i = 0; i < 5; i++) {
-        ctx.save();
-        ctx.rotate((i / 5) * Math.PI * 2);
-        ctx.fillRect(0, -petalSize / 2, petalSize / 3, petalSize);
-        ctx.restore();
-      }
-
-      // Draw center
-      ctx.fillStyle = '#FFD700';
+      // Car body (main chassis)
+      ctx.fillStyle = '#e74c3c';
       ctx.beginPath();
-      ctx.arc(0, 0, petalSize / 4, 0, Math.PI * 2);
+      ctx.moveTo(-scale * 0.4, -scale * 0.15);
+      ctx.lineTo(scale * 0.4, -scale * 0.15);
+      ctx.lineTo(scale * 0.35, scale * 0.15);
+      ctx.lineTo(-scale * 0.35, scale * 0.15);
+      ctx.closePath();
       ctx.fill();
+      ctx.strokeStyle = '#c0392b';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      // Cabin/roof
+      ctx.fillStyle = '#e74c3c';
+      ctx.beginPath();
+      ctx.moveTo(-scale * 0.25, -scale * 0.15);
+      ctx.lineTo(scale * 0.15, -scale * 0.15);
+      ctx.lineTo(scale * 0.1, -scale * 0.35);
+      ctx.lineTo(-scale * 0.2, -scale * 0.35);
+      ctx.closePath();
+      ctx.fill();
+
+      // Windows
+      ctx.fillStyle = '#87CEEB';
+      ctx.globalAlpha = 0.6;
+      ctx.beginPath();
+      ctx.moveTo(-scale * 0.15, -scale * 0.25);
+      ctx.lineTo(scale * 0.05, -scale * 0.25);
+      ctx.lineTo(scale * 0.02, -scale * 0.2);
+      ctx.lineTo(-scale * 0.12, -scale * 0.2);
+      ctx.closePath();
+      ctx.fill();
+      ctx.globalAlpha = 1;
+
+      // Front wheels
+      ctx.fillStyle = '#2c3e50';
+      ctx.beginPath();
+      ctx.arc(scale * 0.2, scale * 0.15, scale * 0.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#34495e';
+      ctx.beginPath();
+      ctx.arc(scale * 0.2, scale * 0.15, scale * 0.06, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Rear wheels
+      ctx.fillStyle = '#2c3e50';
+      ctx.beginPath();
+      ctx.arc(-scale * 0.25, scale * 0.15, scale * 0.1, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = '#34495e';
+      ctx.beginPath();
+      ctx.arc(-scale * 0.25, scale * 0.15, scale * 0.06, 0, Math.PI * 2);
+      ctx.fill();
+
+      // Headlights
+      ctx.fillStyle = '#fff9e6';
+      ctx.globalAlpha = 0.9;
+      ctx.beginPath();
+      ctx.arc(scale * 0.38, -scale * 0.08, scale * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.beginPath();
+      ctx.arc(scale * 0.38, scale * 0.08, scale * 0.05, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.globalAlpha = 1;
 
       ctx.restore();
     };
 
+    const generateSmoke = (x: number, y: number) => {
+      for (let i = 0; i < 3; i++) {
+        smoke.push({
+          x: x + (Math.random() - 0.5) * 20,
+          y: y + (Math.random() - 0.5) * 20,
+          vx: (Math.random() - 0.5) * 3,
+          vy: (Math.random() - 0.5) * 3 - 1,
+          size: Math.random() * 30 + 20,
+          alpha: 0.6,
+          life: 1,
+        });
+      }
+    };
+
     const animate = () => {
-      // Clear canvas with slight fade
-      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      // Clear canvas
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-      // Update and draw flowers
-      for (let i = flowers.length - 1; i >= 0; i--) {
-        const flower = flowers[i];
+      // Update car position and rotation
+      const progress = frameCount / maxFrames;
+      const easeProgress = Math.sin(progress * Math.PI);
 
-        flower.x += flower.vx;
-        flower.y += flower.vy;
-        flower.rotation += flower.rotationSpeed;
-        flower.vy += 0.12; // Gravity
+      car.x = canvas.width / 2 + Math.sin(progress * Math.PI * 3) * 200;
+      car.y = canvas.height / 2 + Math.cos(progress * Math.PI * 2) * 100;
+      car.rotation = progress * Math.PI * 4 + Math.sin(progress * Math.PI) * 0.3;
+      car.driftAngle = Math.sin(progress * Math.PI * 2) * 0.4;
 
-        // Fade out as it falls
-        if (flower.y > canvas.height * 0.6) {
-          flower.alpha = Math.max(0, flower.alpha - 0.04);
-        }
+      // Generate smoke
+      if (frameCount % 2 === 0) {
+        const smokeX = car.x - Math.cos(car.rotation) * 40;
+        const smokeY = car.y - Math.sin(car.rotation) * 40;
+        generateSmoke(smokeX, smokeY);
+      }
 
-        drawFlower(flower);
+      // Update and draw smoke
+      for (let i = smoke.length - 1; i >= 0; i--) {
+        const s = smoke[i];
+        s.x += s.vx;
+        s.y += s.vy;
+        s.size += 1;
+        s.life -= 0.015;
+        s.alpha = s.life * 0.7;
 
-        if (flower.alpha <= 0 || flower.y > canvas.height) {
-          flowers.splice(i, 1);
+        ctx.fillStyle = `rgba(150, 150, 150, ${s.alpha})`;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.size, 0, Math.PI * 2);
+        ctx.fill();
+
+        if (s.life <= 0) {
+          smoke.splice(i, 1);
         }
       }
 
+      // Draw car
+      drawCar(car.x, car.y, car.rotation, car.driftAngle, car.scale);
+
       frameCount++;
 
-      if (frameCount < maxFrames && flowers.length > 0) {
+      if (frameCount < maxFrames) {
         animationId = requestAnimationFrame(animate);
       } else {
-        // Animation complete
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (onComplete) {
           setTimeout(onComplete, 300);
