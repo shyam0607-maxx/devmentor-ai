@@ -124,8 +124,8 @@ export default function QueuesPage() {
 
   if (loading) {
     return (
-      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950 flex items-center justify-center">
+        <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
         <div className="text-white text-lg">Loading topic...</div>
       </div>
     );
@@ -133,8 +133,8 @@ export default function QueuesPage() {
 
   if (!topic) {
     return (
-      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+        <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
         <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
@@ -163,8 +163,8 @@ export default function QueuesPage() {
   }
 
   return (
-    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+    <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
