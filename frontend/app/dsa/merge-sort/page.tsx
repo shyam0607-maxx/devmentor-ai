@@ -189,7 +189,7 @@ export default function MergeSortPage() {
             <pre className="bg-slate-900 p-6 rounded overflow-x-auto text-slate-300 font-mono text-sm"><code>{topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]}</code></pre>
           </div>
         </div>
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">← Back</Link><button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg">Mark as Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold"> hover:bg-cyan-600 text-white rounded-lg">Mark as Complete ✓</button></div>
       </div>
     </div>
   );

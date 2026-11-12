@@ -113,6 +113,15 @@ export default function QueuesPage() {
     setTimeout(() => setMessage(''), 2000);
   };
 
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    router.push('/dsa/hash-tables');
+  };
+
   if (loading) {
     return (
       <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
