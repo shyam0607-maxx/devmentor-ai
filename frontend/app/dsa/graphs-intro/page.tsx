@@ -18,6 +18,7 @@ export default function GraphsPage() {
   const [selectedLanguage, setSelectedLanguage] = useState('java');
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [celebrating, setCelebrating] = useState(false);
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -47,14 +48,21 @@ export default function GraphsPage() {
     router.push('/');
   };
 
-  if (loading) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
-  if (!topic) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950" />;
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    router.push('/dsa');
+  };
+
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  if (!topic) return <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950" />;
 
   return (
-    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950">
+    <div className="min-h-screen bg-gradient-to-br from-sky-950 via-slate-900 to-cyan-950">
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <header className="border-b border-sky-700/50 bg-sky-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2"><ArrowLeft className="w-5 h-5 text-cyan-400" /><span className="text-slate-300">Back to DSA</span></Link>
@@ -163,7 +171,7 @@ export default function GraphsPage() {
             <pre className="bg-slate-900 p-6 rounded overflow-x-auto text-slate-300 font-mono text-sm"><code>{topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]}</code></pre>
           </div>
         </div>
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold"> text-white rounded-lg">Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold">Complete ✓</button></div>
       </div>
     </div>
   );

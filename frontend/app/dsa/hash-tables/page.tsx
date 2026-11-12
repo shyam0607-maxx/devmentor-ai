@@ -25,6 +25,7 @@ export default function HashTablesPage() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [celebrating, setCelebrating] = useState(false);
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -63,13 +64,21 @@ export default function HashTablesPage() {
     router.push('/');
   };
 
-  if (loading) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    router.push('/dsa/merge-sort');
+  };
+
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
 
   if (!topic) {
     return (
-      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+        <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
         <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80">
@@ -90,8 +99,8 @@ export default function HashTablesPage() {
   }
 
   return (
-    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80">
@@ -247,7 +256,7 @@ export default function HashTablesPage() {
 
         <div className="flex justify-between">
           <Link href="/dsa" className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">← Back</Link>
-          <button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold"> hover:bg-cyan-600 text-white rounded-lg">Mark as Complete ✓</button>
+          <button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold">Mark as Complete ✓</button>
         </div>
       </div>
     </div>

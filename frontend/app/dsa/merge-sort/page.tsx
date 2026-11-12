@@ -19,6 +19,7 @@ export default function MergeSortPage() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [celebrating, setCelebrating] = useState(false);
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -49,14 +50,21 @@ export default function MergeSortPage() {
     router.push('/');
   };
 
-  if (loading) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
-  if (!topic) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950"><header className="border-b border-red-700/50 bg-red-950/70"><div className="max-w-7xl mx-auto px-6 py-4 flex justify-between"><Link href="/dsa" className="flex items-center gap-2"><ArrowLeft className="w-5 h-5 text-cyan-400" /><span className="text-slate-300">Back</span></Link><button onClick={handleLogout} className="text-red-400"><LogOut className="w-4 h-4" /></button></div></header></div>;
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    router.push('/dsa/binary-search');
+  };
+
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  if (!topic) return <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950"><header className="border-b border-red-700/50 bg-red-950/70"><div className="max-w-7xl mx-auto px-6 py-4 flex justify-between"><Link href="/dsa" className="flex items-center gap-2"><ArrowLeft className="w-5 h-5 text-cyan-400" /><span className="text-slate-300">Back</span></Link><button onClick={handleLogout} className="text-red-400"><LogOut className="w-4 h-4" /></button></div></header></div>;
 
   return (
-    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
-      <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950">
+    <div className="min-h-screen bg-gradient-to-br from-red-950 via-slate-900 to-cyan-950">
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <header className="border-b border-red-700/50 bg-red-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80"><ArrowLeft className="w-5 h-5 text-cyan-400" /><span className="text-slate-300">Back to DSA</span></Link>
@@ -189,7 +197,7 @@ export default function MergeSortPage() {
             <pre className="bg-slate-900 p-6 rounded overflow-x-auto text-slate-300 font-mono text-sm"><code>{topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]}</code></pre>
           </div>
         </div>
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold"> hover:bg-cyan-600 text-white rounded-lg">Mark as Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold">Mark as Complete ✓</button></div>
       </div>
     </div>
   );
