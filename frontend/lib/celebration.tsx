@@ -51,19 +51,76 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     let frameCount = 0;
     const maxFrames = 480;
 
-    // 3D projection
+    // Camera is looking down at an angle at the road
     const project = (point: Point3D): { x: number; y: number; scale: number } => {
-      const focalLength = 600;
-      const scale = Math.max(0.1, focalLength / (focalLength + point.z));
+      // Camera looking down from angle, car on ground (y=0)
+      const cameraDistance = 600;
+      const depth = point.z + cameraDistance;
+      const scale = Math.max(0.1, 300 / depth);
+
       const x = canvas.width / 2 + point.x * scale;
-      const y = canvas.height / 2 + point.y * scale * 0.7;
+      const y = canvas.height * 0.7 - point.z * scale * 0.3;
+
       return { x, y, scale };
     };
 
+    // Draw road
+    const drawRoad = () => {
+      // Road surface - dark asphalt
+      ctx.fillStyle = '#2a2a2a';
+      for (let z = -600; z < 200; z += 50) {
+        const p1 = project({ x: -150, y: 0, z });
+        const p2 = project({ x: 150, y: 0, z });
+        const p3 = project({ x: 150, y: 0, z: z + 50 });
+        const p4 = project({ x: -150, y: 0, z: z + 50 });
+
+        ctx.fillStyle = z % 100 === 0 ? '#333333' : '#2a2a2a';
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.lineTo(p3.x, p3.y);
+        ctx.lineTo(p4.x, p4.y);
+        ctx.closePath();
+        ctx.fill();
+      }
+
+      // Road markings - center line
+      ctx.strokeStyle = '#ffff99';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([20, 20]);
+      ctx.beginPath();
+      const p1 = project({ x: 0, y: 0, z: -600 });
+      const p2 = project({ x: 0, y: 0, z: 200 });
+      ctx.moveTo(p1.x, p1.y);
+      ctx.lineTo(p2.x, p2.y);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      // Road edges - white lines
+      ctx.strokeStyle = '#ffffff';
+      ctx.lineWidth = 2;
+      for (let z = -600; z < 200; z += 30) {
+        const p1 = project({ x: -150, y: 0, z });
+        const p2 = project({ x: -150, y: 0, z: z + 30 });
+        ctx.beginPath();
+        ctx.moveTo(p1.x, p1.y);
+        ctx.lineTo(p2.x, p2.y);
+        ctx.stroke();
+
+        const p3 = project({ x: 150, y: 0, z });
+        const p4 = project({ x: 150, y: 0, z: z + 30 });
+        ctx.beginPath();
+        ctx.moveTo(p3.x, p3.y);
+        ctx.lineTo(p4.x, p4.y);
+        ctx.stroke();
+      }
+    };
+
     // Create realistic car geometry
-    const createCar = (posX: number, posY: number, posZ: number, rotY: number, driftAngle: number) => {
-      const cosY = Math.cos(rotY + driftAngle);
-      const sinY = Math.sin(rotY + driftAngle);
+    const createCar = (posX: number, posZ: number, rotY: number) => {
+      const posY = 0; // Car on ground
+      const cosY = Math.cos(rotY);
+      const sinY = Math.sin(rotY);
 
       const transform = (x: number, y: number, z: number): Point3D => ({
         x: (x * cosY - z * sinY) + posX,
@@ -118,8 +175,8 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
       return { parts, headlights, wheels };
     };
 
-    const drawCar3D = (posX: number, posY: number, posZ: number, rotY: number, driftAngle: number) => {
-      const car = createCar(posX, posY, posZ, rotY, driftAngle);
+    const drawCar3D = (posX: number, posZ: number, rotY: number) => {
+      const car = createCar(posX, posZ, rotY);
 
       // Sort parts by depth
       const projectedParts = car.parts.map((part) => {
@@ -197,7 +254,7 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         const proj = project({ x: mark.x, y: 0, z: mark.z });
         const scale = proj.scale;
 
-        ctx.strokeStyle = `rgba(50, 50, 50, ${mark.alpha})`;
+        ctx.strokeStyle = `rgba(30, 30, 30, ${mark.alpha})`;
         ctx.lineWidth = mark.width * scale;
         ctx.lineCap = 'round';
         ctx.beginPath();
@@ -217,14 +274,14 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
       }
     };
 
-    const generateSmoke = (x: number, y: number, z: number) => {
+    const generateSmoke = (x: number, z: number) => {
       for (let i = 0; i < 4; i++) {
         smoke.push({
           x: x + (Math.random() - 0.5) * 25,
-          y: y + (Math.random() - 0.5) * 15,
+          y: 10 + Math.random() * 20,
           z: z + (Math.random() - 0.5) * 15,
           vx: (Math.random() - 0.5) * 3,
-          vy: Math.random() * 2,
+          vy: Math.random() * 2 + 1,
           vz: (Math.random() - 0.5) * 3 - 1,
           size: Math.random() * 18 + 12,
           alpha: 0.7,
@@ -234,32 +291,34 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     };
 
     const animate = () => {
-      ctx.fillStyle = 'rgba(15, 15, 25, 0.2)';
+      // Clear with fade
+      ctx.fillStyle = 'rgba(100, 150, 200, 0.3)';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       const progress = frameCount / maxFrames;
 
-      // Car trajectory
-      const carZ = -500 + progress * 700;
-      const carX = Math.sin(progress * Math.PI * 3) * 200;
-      const carY = -80 + Math.cos(progress * Math.PI) * 60;
-      const carRotY = progress * Math.PI * 8;
-      const driftAngle = Math.sin(progress * Math.PI * 4) * 0.8;
+      // Car drifting on road - moving down the road (z) and side to side (x)
+      const carZ = -400 + progress * 600; // Moving forward on road
+      const carX = Math.sin(progress * Math.PI * 3.5) * 80; // Drifting left and right
+      const carRotY = progress * Math.PI * 6 + Math.sin(progress * Math.PI * 4) * 0.9; // Rotation from drifting
 
-      // Tire movement for skid marks
+      // Tire slip for skid marks
       const tireSlip = Math.abs(Math.sin(progress * Math.PI * 4)) * 0.7;
-      if (frameCount % 4 === 0 && tireSlip > 0.3) {
-        addSkidMark(carX - 12, carZ, carRotY);
-        addSkidMark(carX + 12, carZ, carRotY);
+      if (frameCount % 3 === 0 && tireSlip > 0.2) {
+        addSkidMark(carX - 15, carZ, carRotY);
+        addSkidMark(carX + 15, carZ, carRotY);
       }
 
-      // Smoke from tires
-      if (frameCount % 4 === 0) {
-        generateSmoke(carX - 15, carY + 8, carZ + 25);
-        generateSmoke(carX + 15, carY + 8, carZ + 25);
+      // Smoke from tires when drifting hard
+      if (frameCount % 5 === 0 && tireSlip > 0.3) {
+        generateSmoke(carX - 18, carZ);
+        generateSmoke(carX + 18, carZ);
       }
 
-      // Draw skid marks (ground)
+      // Draw road first
+      drawRoad();
+
+      // Draw skid marks on road
       drawSkidMarks();
 
       // Update smoke
@@ -285,8 +344,8 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         }
       }
 
-      // Draw car
-      drawCar3D(carX, carY, carZ, carRotY, driftAngle);
+      // Draw car on road
+      drawCar3D(carX, carZ, carRotY);
 
       frameCount++;
 
