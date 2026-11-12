@@ -62,12 +62,12 @@ export default function HashTablesPage() {
     router.push('/');
   };
 
-  if (loading) return <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950">
-        <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+        <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80">
               <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -87,8 +87,8 @@ export default function HashTablesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950">
-      <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+      <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80">
             <ArrowLeft className="w-5 h-5 text-cyan-400" />
@@ -112,11 +112,11 @@ export default function HashTablesPage() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">⏱️ Complexity Analysis</h2>
+          <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 border border-blue-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-blue-100 mb-6">⏱️ Complexity Analysis</h2>
             <div className="space-y-4">
-              <div className="bg-indigo-800/30 p-4 rounded border border-indigo-700/50">
-                <p className="text-indigo-300 font-semibold mb-2">Time Complexity</p>
+              <div className="bg-blue-800/30 p-4 rounded border border-blue-700/50">
+                <p className="text-blue-300 font-semibold mb-2">Time Complexity</p>
                 <p className="text-cyan-400 font-mono text-lg">{topic.timeComplexity}</p>
               </div>
               <div className="bg-cyan-800/30 p-4 rounded border border-cyan-700/50">
@@ -171,11 +171,11 @@ export default function HashTablesPage() {
         </div>
 
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">🔗 Collision Handling</h2>
+          <div className="bg-gradient-to-br from-blue-900/40 to-slate-900/40 border border-blue-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-blue-100 mb-6">🔗 Collision Handling</h2>
             <div className="space-y-3">
-              <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
-                <p className="text-indigo-300 font-semibold text-sm">Chaining</p>
+              <div className="bg-blue-800/30 p-3 rounded border border-blue-700/50">
+                <p className="text-blue-300 font-semibold text-sm">Chaining</p>
                 <p className="text-slate-300 text-xs mt-1">Linked list at each bucket</p>
               </div>
               <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
@@ -209,12 +209,12 @@ export default function HashTablesPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-indigo-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border border-blue-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-blue-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             {topic.notes.split('\n').map((line, idx) => {
               if (line.startsWith('## ')) return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
-              if (line.startsWith('### ')) return <h4 key={idx} className="text-xl font-bold text-indigo-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+              if (line.startsWith('### ')) return <h4 key={idx} className="text-xl font-bold text-blue-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
               if (line.startsWith('- ')) return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
               if (line.trim() === '') return <br key={idx} />;
               return <p key={idx} className="text-slate-300">{line}</p>;
@@ -222,8 +222,8 @@ export default function HashTablesPage() {
           </div>
         </div>
 
-        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-blue-900/40 to-cyan-900/40 border border-blue-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-blue-100 mb-6">💻 Code Examples</h2>
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => (
               <button key={lang} onClick={() => setSelectedLanguage(lang)} className={`px-4 py-2 font-semibold transition ${selectedLanguage === lang ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-400'}`}>

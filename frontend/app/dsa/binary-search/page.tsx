@@ -46,12 +46,12 @@ export default function BinarySearchPage() {
     router.push('/');
   };
 
-  if (loading) return <div className="min-h-screen bg-gradient-to-br from-orange-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
-  if (!topic) return <div className="min-h-screen bg-gradient-to-br from-orange-950 via-slate-900 to-cyan-950"><header className="border-b border-orange-700/50 bg-orange-950/70"><div className="max-w-7xl mx-auto px-6 py-4"><Link href="/dsa"><span className="text-slate-300">Back</span></Link></div></header></div>;
+  if (loading) return <div className="min-h-screen bg-gradient-to-br from-yellow-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  if (!topic) return <div className="min-h-screen bg-gradient-to-br from-yellow-950 via-slate-900 to-cyan-950"><header className="border-b border-yellow-700/50 bg-yellow-950/70"><div className="max-w-7xl mx-auto px-6 py-4"><Link href="/dsa"><span className="text-slate-300">Back</span></Link></div></header></div>;
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-950 via-slate-900 to-cyan-950">
-      <header className="border-b border-orange-700/50 bg-orange-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-yellow-950 via-slate-900 to-cyan-950">
+      <header className="border-b border-yellow-700/50 bg-yellow-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2"><ArrowLeft className="w-5 h-5 text-cyan-400" /><span className="text-slate-300">Back to DSA</span></Link>
           <button onClick={handleLogout} className="px-4 py-2 text-red-400 flex items-center gap-2"><LogOut className="w-4 h-4" /> Logout</button>
@@ -64,10 +64,10 @@ export default function BinarySearchPage() {
           <p className="text-slate-400 text-lg">{topic.description}</p>
         </div>
         <div className="grid md:grid-cols-2 gap-8 mb-12">
-          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-orange-100 mb-6">⏱️ Complexity</h2>
+          <div className="bg-gradient-to-br from-yellow-900/40 to-slate-900/40 border border-yellow-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-yellow-100 mb-6">⏱️ Complexity</h2>
             <div className="space-y-4">
-              <div className="bg-orange-800/30 p-4 rounded border border-orange-700/50"><p className="text-orange-300 font-semibold">Time</p><p className="text-cyan-400 font-mono">{topic.timeComplexity}</p></div>
+              <div className="bg-yellow-800/30 p-4 rounded border border-yellow-700/50"><p className="text-yellow-300 font-semibold">Time</p><p className="text-cyan-400 font-mono">{topic.timeComplexity}</p></div>
               <div className="bg-cyan-800/30 p-4 rounded border border-cyan-700/50"><p className="text-cyan-300 font-semibold">Space</p><p className="text-cyan-400 font-mono">{topic.spaceComplexity}</p></div>
             </div>
           </div>
@@ -105,12 +105,12 @@ export default function BinarySearchPage() {
             </ol>
           </div>
 
-          <div className="bg-gradient-to-br from-orange-900/40 to-slate-900/40 border border-orange-700/50 rounded-xl p-6 backdrop-blur-sm">
-            <h2 className="text-2xl font-extrabold text-orange-100 mb-4">📊 Iterations</h2>
+          <div className="bg-gradient-to-br from-yellow-900/40 to-slate-900/40 border border-yellow-700/50 rounded-xl p-6 backdrop-blur-sm">
+            <h2 className="text-2xl font-extrabold text-yellow-100 mb-4">📊 Iterations</h2>
             <div className="space-y-1 text-xs">
-              <p className="text-slate-300"><strong className="text-orange-300">n = 1,000:</strong> ~10 steps</p>
-              <p className="text-slate-300"><strong className="text-orange-300">n = 1,000,000:</strong> ~20 steps</p>
-              <p className="text-slate-300"><strong className="text-orange-300">n = 1 billion:</strong> ~30 steps</p>
+              <p className="text-slate-300"><strong className="text-yellow-300">n = 1,000:</strong> ~10 steps</p>
+              <p className="text-slate-300"><strong className="text-yellow-300">n = 1,000,000:</strong> ~20 steps</p>
+              <p className="text-slate-300"><strong className="text-yellow-300">n = 1 billion:</strong> ~30 steps</p>
             </div>
           </div>
 
@@ -123,20 +123,20 @@ export default function BinarySearchPage() {
             </div>
           </div>
         </div>
-        <div className="bg-gradient-to-br from-orange-900/40 to-cyan-900/40 border border-orange-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-orange-100 mb-8">📚 Notes</h2>
+        <div className="bg-gradient-to-br from-yellow-900/40 to-cyan-900/40 border border-yellow-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-yellow-100 mb-8">📚 Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4">
             {topic.notes.split('\n').map((line, idx) => {
               if (line.startsWith('## ')) return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
-              if (line.startsWith('### ')) return <h4 key={idx} className="text-xl font-bold text-orange-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+              if (line.startsWith('### ')) return <h4 key={idx} className="text-xl font-bold text-yellow-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
               if (line.startsWith('- ')) return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
               if (line.trim()) return <p key={idx} className="text-slate-300">{line}</p>;
               return null;
             })}
           </div>
         </div>
-        <div className="bg-gradient-to-br from-orange-900/40 to-cyan-900/40 border border-orange-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-orange-100 mb-6">💻 Code</h2>
+        <div className="bg-gradient-to-br from-yellow-900/40 to-cyan-900/40 border border-yellow-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-yellow-100 mb-6">💻 Code</h2>
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => <button key={lang} onClick={() => setSelectedLanguage(lang)} className={`px-4 py-2 font-semibold ${selectedLanguage === lang ? 'text-cyan-400 border-b-2 border-cyan-400' : 'text-slate-400'}`}>{lang.toUpperCase()}</button>)}
           </div>

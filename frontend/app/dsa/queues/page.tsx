@@ -113,7 +113,7 @@ export default function QueuesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-cyan-950 via-slate-900 to-emerald-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
     );
@@ -121,11 +121,11 @@ export default function QueuesPage() {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-cyan-950 via-slate-900 to-emerald-950">
-        <header className="border-b border-cyan-700/50 bg-cyan-950/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+        <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-              <ArrowLeft className="w-5 h-5 text-cyan-400" />
+              <ArrowLeft className="w-5 h-5 text-violet-400" />
               <span className="text-slate-300">Back to DSA</span>
             </Link>
             <button
@@ -140,7 +140,7 @@ export default function QueuesPage() {
           <div className="text-center">
             <h1 className="text-3xl font-bold text-white mb-4">{error ? 'Error' : 'Not Found'}</h1>
             <p className="text-slate-400 mb-8">{error || 'Topic not found'}</p>
-            <Link href="/dsa" className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition">
+            <Link href="/dsa" className="px-6 py-3 bg-violet-500 hover:bg-violet-600 text-white rounded-lg transition">
               Back to DSA Topics
             </Link>
           </div>
@@ -150,11 +150,11 @@ export default function QueuesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-cyan-950 via-slate-900 to-emerald-950">
-      <header className="border-b border-cyan-700/50 bg-cyan-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+      <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-            <ArrowLeft className="w-5 h-5 text-cyan-400" />
+            <ArrowLeft className="w-5 h-5 text-violet-400" />
             <span className="text-slate-300">Back to DSA</span>
           </Link>
           <button
@@ -169,8 +169,8 @@ export default function QueuesPage() {
       <div className="max-w-7xl mx-auto px-6 py-12">
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
-            <div className="px-3 py-1 bg-cyan-400/20 rounded-lg">
-              <span className="text-cyan-400 text-sm font-semibold">{topic.difficulty}</span>
+            <div className="px-3 py-1 bg-violet-400/20 rounded-lg">
+              <span className="text-violet-400 text-sm font-semibold">{topic.difficulty}</span>
             </div>
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">{topic.name}</h1>
@@ -180,8 +180,8 @@ export default function QueuesPage() {
         {/* Interactive Queue Visualizer */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left: Queue Display */}
-          <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">🎮 Queue Visualizer</h2>
+          <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-violet-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-violet-100 mb-6">🎮 Queue Visualizer</h2>
 
             <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6 mb-6 min-h-60">
               <p className="text-slate-300 text-sm mb-3 font-semibold">Queue Contents (Front ← → Rear)</p>
@@ -198,13 +198,13 @@ export default function QueuesPage() {
                           className={`p-4 rounded border-2 text-white font-bold text-center transition-all min-w-16 ${
                             idx === 0
                               ? 'bg-gradient-to-r from-emerald-500 to-emerald-600 border-emerald-400 shadow-lg shadow-emerald-500/50'
-                              : 'bg-gradient-to-r from-cyan-600 to-cyan-700 border-cyan-400'
+                              : 'bg-gradient-to-r from-cyan-600 to-cyan-700 border-violet-400'
                           }`}
                         >
                           {item}
                         </div>
-                        {idx === 0 && <span className="text-xs text-emerald-400 font-semibold">FRONT</span>}
-                        {idx === queueItems.length - 1 && <span className="text-xs text-cyan-400 font-semibold">REAR</span>}
+                        {idx === 0 && <span className="text-xs text-purple-400 font-semibold">FRONT</span>}
+                        {idx === queueItems.length - 1 && <span className="text-xs text-violet-400 font-semibold">REAR</span>}
                       </div>
                     ))}
                   </>
@@ -220,7 +220,7 @@ export default function QueuesPage() {
                 onChange={(e) => setInputValue(e.target.value)}
                 onKeyPress={(e) => e.key === 'Enter' && handleEnqueue()}
                 placeholder="Enter value"
-                className="flex-1 px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400 focus:outline-none focus:border-cyan-400"
+                className="flex-1 px-4 py-2 bg-slate-700 border border-slate-600 rounded text-white placeholder-slate-400 focus:outline-none focus:border-violet-400"
               />
             </div>
 
@@ -260,10 +260,10 @@ export default function QueuesPage() {
 
           {/* Right: Operations Info */}
           <div className="bg-gradient-to-br from-emerald-900/40 to-slate-900/40 border border-emerald-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-emerald-100 mb-6">📊 Operations Guide</h2>
+            <h2 className="text-3xl font-extrabold text-purple-100 mb-6">📊 Operations Guide</h2>
             <div className="space-y-4">
-              <div className="bg-emerald-800/30 p-4 rounded border border-emerald-700/50">
-                <p className="text-emerald-300 font-semibold mb-2">📥 Enqueue - Add Element</p>
+              <div className="bg-purple-800/30 p-4 rounded border border-emerald-700/50">
+                <p className="text-purple-300 font-semibold mb-2">📥 Enqueue - Add Element</p>
                 <p className="text-slate-300 text-sm">Adds element at rear of queue</p>
                 <p className="text-slate-400 text-xs mt-1">Time: O(1) | Space: O(1)</p>
               </div>
@@ -277,8 +277,8 @@ export default function QueuesPage() {
                 <p className="text-slate-300 text-sm">Returns front without removal</p>
                 <p className="text-slate-400 text-xs mt-1">Time: O(1) | Space: O(1)</p>
               </div>
-              <div className="bg-cyan-800/30 p-4 rounded border border-cyan-700/50">
-                <p className="text-cyan-300 font-semibold mb-2">💡 Real-World Uses</p>
+              <div className="bg-violet-800/30 p-4 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold mb-2">💡 Real-World Uses</p>
                 <p className="text-slate-300 text-sm">Task scheduling, customer service, BFS, print queues</p>
               </div>
             </div>
@@ -294,12 +294,12 @@ export default function QueuesPage() {
                 <p className="text-teal-300 font-semibold text-sm">Simple Queue</p>
                 <p className="text-slate-300 text-xs mt-0.5">Standard FIFO</p>
               </div>
-              <div className="bg-cyan-800/30 p-2 rounded border border-cyan-700/50">
-                <p className="text-cyan-300 font-semibold text-sm">Circular</p>
+              <div className="bg-violet-800/30 p-2 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold text-sm">Circular</p>
                 <p className="text-slate-300 text-xs mt-0.5">Memory efficient</p>
               </div>
-              <div className="bg-emerald-800/30 p-2 rounded border border-emerald-700/50">
-                <p className="text-emerald-300 font-semibold text-sm">Priority</p>
+              <div className="bg-purple-800/30 p-2 rounded border border-emerald-700/50">
+                <p className="text-purple-300 font-semibold text-sm">Priority</p>
                 <p className="text-slate-300 text-xs mt-0.5">Priority based</p>
               </div>
               <div className="bg-indigo-800/30 p-2 rounded border border-indigo-700/50">
@@ -316,16 +316,16 @@ export default function QueuesPage() {
                 <p className="text-violet-300 font-semibold text-sm">Enqueue</p>
                 <p className="text-slate-300 text-xs mt-0.5">O(1) - Add rear</p>
               </div>
-              <div className="bg-emerald-800/30 p-2 rounded border border-emerald-700/50">
-                <p className="text-emerald-300 font-semibold text-sm">Dequeue</p>
+              <div className="bg-purple-800/30 p-2 rounded border border-emerald-700/50">
+                <p className="text-purple-300 font-semibold text-sm">Dequeue</p>
                 <p className="text-slate-300 text-xs mt-0.5">O(1) - Remove front</p>
               </div>
               <div className="bg-blue-800/30 p-2 rounded border border-blue-700/50">
                 <p className="text-blue-300 font-semibold text-sm">Peek</p>
                 <p className="text-slate-300 text-xs mt-0.5">O(1) - View front</p>
               </div>
-              <div className="bg-cyan-800/30 p-2 rounded border border-cyan-700/50">
-                <p className="text-cyan-300 font-semibold text-sm">IsEmpty</p>
+              <div className="bg-violet-800/30 p-2 rounded border border-violet-700/50">
+                <p className="text-violet-300 font-semibold text-sm">IsEmpty</p>
                 <p className="text-slate-300 text-xs mt-0.5">O(1) - Check</p>
               </div>
             </div>
@@ -345,14 +345,14 @@ export default function QueuesPage() {
         </div>
 
         {/* Detailed Notes */}
-        <div className="bg-gradient-to-br from-cyan-900/40 to-emerald-900/40 border border-cyan-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-cyan-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-cyan-900/40 to-emerald-900/40 border border-violet-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-violet-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             {topic.notes.split('\n').map((line, idx) => {
               if (line.startsWith('## ')) {
-                return <h3 key={idx} className="text-2xl font-bold text-emerald-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                return <h3 key={idx} className="text-2xl font-bold text-purple-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
               } else if (line.startsWith('### ')) {
-                return <h4 key={idx} className="text-xl font-bold text-cyan-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                return <h4 key={idx} className="text-xl font-bold text-violet-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
               } else if (line.startsWith('- ')) {
                 return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
               } else if (line.trim() === '') {
@@ -365,8 +365,8 @@ export default function QueuesPage() {
         </div>
 
         {/* Code Examples */}
-        <div className="bg-gradient-to-br from-cyan-900/40 to-emerald-900/40 border border-cyan-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-cyan-900/40 to-emerald-900/40 border border-violet-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-violet-100 mb-6">💻 Code Examples</h2>
 
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => (
@@ -375,7 +375,7 @@ export default function QueuesPage() {
                 onClick={() => setSelectedLanguage(lang)}
                 className={`px-4 py-2 font-semibold transition ${
                   selectedLanguage === lang
-                    ? 'text-cyan-400 border-b-2 border-cyan-400'
+                    ? 'text-violet-400 border-b-2 border-violet-400'
                     : 'text-slate-400 hover:text-slate-300'
                 }`}
               >
@@ -415,7 +415,7 @@ export default function QueuesPage() {
           >
             ← Back to Topics
           </Link>
-          <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition">
+          <button className="px-6 py-3 bg-violet-500 hover:bg-violet-600 text-white rounded-lg transition">
             Mark as Complete ✓
           </button>
         </div>

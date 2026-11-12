@@ -70,7 +70,7 @@ export default function BinaryTreesPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
     );
@@ -78,11 +78,11 @@ export default function BinaryTreesPage() {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950">
-        <header className="border-b border-teal-700/50 bg-teal-950/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950">
+        <header className="border-b border-green-700/50 bg-green-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-              <ArrowLeft className="w-5 h-5 text-cyan-400" />
+              <ArrowLeft className="w-5 h-5 text-lime-400" />
               <span className="text-slate-300">Back to DSA</span>
             </Link>
             <button
@@ -107,11 +107,11 @@ export default function BinaryTreesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-950 via-slate-900 to-cyan-950">
-      <header className="border-b border-teal-700/50 bg-teal-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950">
+      <header className="border-b border-green-700/50 bg-green-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-            <ArrowLeft className="w-5 h-5 text-cyan-400" />
+            <ArrowLeft className="w-5 h-5 text-lime-400" />
             <span className="text-slate-300">Back to DSA</span>
           </Link>
           <button
@@ -127,7 +127,7 @@ export default function BinaryTreesPage() {
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="px-3 py-1 bg-cyan-400/20 rounded-lg">
-              <span className="text-cyan-400 text-sm font-semibold">{topic.difficulty}</span>
+              <span className="text-lime-400 text-sm font-semibold">{topic.difficulty}</span>
             </div>
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">{topic.name}</h1>
@@ -137,8 +137,8 @@ export default function BinaryTreesPage() {
         {/* Two Column Layout - Animation + Properties */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left: Animated Tree */}
-          <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-teal-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-teal-100 mb-6">🌳 Tree Growth Animation</h2>
+          <div className="bg-gradient-to-br from-teal-900/40 to-slate-900/40 border border-green-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-green-100 mb-6">🌳 Tree Growth Animation</h2>
             <svg viewBox="0 0 300 400" className="w-full h-auto">
               <defs>
                 <filter id="nodeShadow">
@@ -211,10 +211,10 @@ export default function BinaryTreesPage() {
 
           {/* Right: Properties + Complexity */}
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">📋 Tree Properties</h2>
+            <h2 className="text-3xl font-extrabold text-lime-100 mb-6">📋 Tree Properties</h2>
             <div className="space-y-3">
-              <div className="bg-teal-800/30 p-4 rounded border border-teal-700/50">
-                <p className="text-teal-300 font-semibold mb-2">📏 Height</p>
+              <div className="bg-green-800/30 p-4 rounded border border-green-700/50">
+                <p className="text-green-300 font-semibold mb-2">📏 Height</p>
                 <p className="text-slate-300 text-sm">Distance from root to deepest leaf</p>
                 <p className="text-slate-400 text-xs mt-1">O(n) worst case | O(log n) balanced</p>
               </div>
@@ -224,21 +224,21 @@ export default function BinaryTreesPage() {
                 <p className="text-slate-400 text-xs mt-1">Used in traversal analysis</p>
               </div>
               <div className="bg-cyan-700/30 p-4 rounded border border-cyan-700/50">
-                <p className="text-cyan-200 font-semibold mb-2">🔄 Traversals</p>
+                <p className="text-lime-200 font-semibold mb-2">🔄 Traversals</p>
                 <p className="text-slate-300 text-sm">In-order, Pre-order, Post-order, Level-order</p>
                 <p className="text-slate-400 text-xs mt-1">Different use cases, same O(n)</p>
               </div>
-              <div className="bg-teal-700/30 p-4 rounded border border-teal-700/50">
-                <p className="text-teal-200 font-semibold mb-2">⚖️ Balance</p>
+              <div className="bg-green-700/30 p-4 rounded border border-green-700/50">
+                <p className="text-green-200 font-semibold mb-2">⚖️ Balance</p>
                 <p className="text-slate-300 text-sm">Balanced trees optimize operations</p>
                 <p className="text-slate-400 text-xs mt-1">Search: O(n) → O(log n)</p>
               </div>
             </div>
             <div className="mt-4 pt-4 border-t border-slate-700">
               <p className="text-slate-300 text-sm font-semibold mb-2">⏱️ Time Complexity:</p>
-              <p className="text-cyan-400 font-mono text-sm">{topic.timeComplexity}</p>
+              <p className="text-lime-400 font-mono text-sm">{topic.timeComplexity}</p>
               <p className="text-slate-300 text-sm font-semibold mb-2 mt-3">💾 Space Complexity:</p>
-              <p className="text-cyan-400 font-mono text-sm">{topic.spaceComplexity}</p>
+              <p className="text-lime-400 font-mono text-sm">{topic.spaceComplexity}</p>
             </div>
           </div>
         </div>
@@ -253,11 +253,11 @@ export default function BinaryTreesPage() {
                 <p className="text-slate-300 text-xs mt-1">Left → Data → Right (Sorted output for BST)</p>
               </div>
               <div className="bg-cyan-800/30 p-3 rounded border border-cyan-700/50">
-                <p className="text-cyan-300 font-semibold">Pre-order (DLR)</p>
+                <p className="text-lime-300 font-semibold">Pre-order (DLR)</p>
                 <p className="text-slate-300 text-xs mt-1">Data → Left → Right (Tree copy, expressions)</p>
               </div>
-              <div className="bg-teal-800/30 p-3 rounded border border-teal-700/50">
-                <p className="text-teal-300 font-semibold">Post-order (LRD)</p>
+              <div className="bg-green-800/30 p-3 rounded border border-green-700/50">
+                <p className="text-green-300 font-semibold">Post-order (LRD)</p>
                 <p className="text-slate-300 text-xs mt-1">Left → Right → Data (Tree deletion, cleanup)</p>
               </div>
               <div className="bg-indigo-800/30 p-3 rounded border border-indigo-700/50">
@@ -291,14 +291,14 @@ export default function BinaryTreesPage() {
         </div>
 
         {/* Detailed Notes */}
-        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-teal-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-green-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-green-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             {topic.notes.split('\n').map((line, idx) => {
               if (line.startsWith('## ')) {
-                return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                return <h3 key={idx} className="text-2xl font-bold text-lime-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
               } else if (line.startsWith('### ')) {
-                return <h4 key={idx} className="text-xl font-bold text-teal-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                return <h4 key={idx} className="text-xl font-bold text-green-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
               } else if (line.startsWith('- ')) {
                 return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
               } else if (line.trim() === '') {
@@ -374,8 +374,8 @@ export default function BinaryTreesPage() {
         </div>
 
         {/* Code Examples */}
-        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-teal-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-teal-100 mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-teal-900/40 to-cyan-900/40 border border-green-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-green-100 mb-6">💻 Code Examples</h2>
 
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => (
@@ -384,7 +384,7 @@ export default function BinaryTreesPage() {
                 onClick={() => setSelectedLanguage(lang)}
                 className={`px-4 py-2 font-semibold transition ${
                   selectedLanguage === lang
-                    ? 'text-cyan-400 border-b-2 border-cyan-400'
+                    ? 'text-lime-400 border-b-2 border-cyan-400'
                     : 'text-slate-400 hover:text-slate-300'
                 }`}
               >

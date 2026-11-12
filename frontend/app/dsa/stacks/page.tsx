@@ -113,7 +113,7 @@ export default function StacksPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950 flex items-center justify-center">
+      <div className="min-h-screen bg-gradient-to-br from-pink-950 via-red-950 to-orange-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
     );
@@ -121,11 +121,11 @@ export default function StacksPage() {
 
   if (!topic) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950">
-        <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm">
+      <div className="min-h-screen bg-gradient-to-br from-pink-950 via-red-950 to-orange-950">
+        <header className="border-b border-pink-700/50 bg-pink-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
             <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-              <ArrowLeft className="w-5 h-5 text-cyan-400" />
+              <ArrowLeft className="w-5 h-5 text-orange-400" />
               <span className="text-slate-300">Back to DSA</span>
             </Link>
             <button
@@ -150,16 +150,16 @@ export default function StacksPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-950 via-slate-900 to-cyan-950">
-      <header className="border-b border-indigo-700/50 bg-indigo-950/70 backdrop-blur-sm sticky top-0 z-50">
+    <div className="min-h-screen bg-gradient-to-br from-pink-950 via-red-950 to-orange-950">
+      <header className="border-b border-pink-700/50 bg-gradient-to-r from-pink-950/80 to-red-950/80 backdrop-blur-sm sticky top-0 z-50 shadow-2xl shadow-pink-900/30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
-            <ArrowLeft className="w-5 h-5 text-cyan-400" />
-            <span className="text-slate-300">Back to DSA</span>
+            <ArrowLeft className="w-5 h-5 text-pink-300" />
+            <span className="text-pink-100">Back to DSA</span>
           </Link>
           <button
             onClick={handleLogout}
-            className="px-4 py-2 text-red-400 hover:text-red-300 flex items-center gap-2 transition"
+            className="px-4 py-2 text-orange-300 hover:text-orange-200 flex items-center gap-2 transition"
           >
             <LogOut className="w-4 h-4" /> Logout
           </button>
@@ -170,7 +170,7 @@ export default function StacksPage() {
         <div className="mb-12">
           <div className="flex items-center gap-3 mb-4">
             <div className="px-3 py-1 bg-cyan-400/20 rounded-lg">
-              <span className="text-cyan-400 text-sm font-semibold">{topic.difficulty}</span>
+              <span className="text-orange-400 text-sm font-semibold">{topic.difficulty}</span>
             </div>
           </div>
           <h1 className="text-4xl font-bold text-white mb-2">{topic.name}</h1>
@@ -180,8 +180,8 @@ export default function StacksPage() {
         {/* Interactive Visualizer Section */}
         <div className="grid md:grid-cols-2 gap-8 mb-12">
           {/* Left: Interactive Stack Visualizer */}
-          <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">🎮 Interactive Visualizer</h2>
+          <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-pink-700/50 rounded-xl p-8 backdrop-blur-sm">
+            <h2 className="text-3xl font-extrabold text-pink-100 mb-6">🎮 Interactive Visualizer</h2>
 
             {/* Stack Display */}
             <div className="bg-slate-800/50 border border-slate-700/50 rounded-lg p-6 mb-6 min-h-60">
@@ -198,7 +198,7 @@ export default function StacksPage() {
                       className={`p-3 rounded border-2 text-white font-bold text-center transition-all ${
                         idx === stackItems.length - 1
                           ? 'bg-gradient-to-r from-cyan-500 to-cyan-600 border-cyan-400 shadow-lg shadow-cyan-500/50'
-                          : 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-indigo-400'
+                          : 'bg-gradient-to-r from-indigo-600 to-indigo-700 border-pink-400'
                       }`}
                     >
                       {item}
@@ -260,10 +260,10 @@ export default function StacksPage() {
 
           {/* Right: Operations Info Panel */}
           <div className="bg-gradient-to-br from-cyan-900/40 to-slate-900/40 border border-cyan-700/50 rounded-xl p-8 backdrop-blur-sm">
-            <h2 className="text-3xl font-extrabold text-cyan-100 mb-6">📊 Operations Guide</h2>
+            <h2 className="text-3xl font-extrabold text-orange-100 mb-6">📊 Operations Guide</h2>
             <div className="space-y-4">
-              <div className="bg-indigo-800/30 p-4 rounded border border-indigo-700/50">
-                <p className="text-indigo-300 font-semibold mb-2">🔼 Push - Add Element</p>
+              <div className="bg-pink-800/30 p-4 rounded border border-pink-700/50">
+                <p className="text-pink-300 font-semibold mb-2">🔼 Push - Add Element</p>
                 <p className="text-slate-300 text-sm">Adds element to top of stack</p>
                 <p className="text-slate-400 text-xs mt-1">Time: O(1) | Space: O(1)</p>
               </div>
@@ -286,8 +286,8 @@ export default function StacksPage() {
         </div>
 
         {/* Animated Stack Demo */}
-        <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">🎬 Automatic Animation</h2>
+        <div className="bg-gradient-to-br from-indigo-900/40 to-slate-900/40 border border-pink-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-pink-100 mb-6">🎬 Automatic Animation</h2>
           <svg viewBox="0 0 300 400" className="w-full h-auto max-w-md mx-auto">
             <defs>
               <filter id="stackShadow">
@@ -332,14 +332,14 @@ export default function StacksPage() {
         </div>
 
         {/* Detailed Notes */}
-        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-indigo-100 mb-8">📚 Detailed Notes</h2>
+        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-pink-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-pink-100 mb-8">📚 Detailed Notes</h2>
           <div className="text-slate-200 leading-relaxed space-y-4 font-normal text-base">
             {topic.notes.split('\n').map((line, idx) => {
               if (line.startsWith('## ')) {
-                return <h3 key={idx} className="text-2xl font-bold text-cyan-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
+                return <h3 key={idx} className="text-2xl font-bold text-orange-300 mt-6 mb-4">{line.replace(/^## /, '')}</h3>;
               } else if (line.startsWith('### ')) {
-                return <h4 key={idx} className="text-xl font-bold text-indigo-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
+                return <h4 key={idx} className="text-xl font-bold text-pink-200 mt-4 mb-3">{line.replace(/^### /, '')}</h4>;
               } else if (line.startsWith('- ')) {
                 return <li key={idx} className="ml-6 text-slate-300">{line.replace(/^- /, '')}</li>;
               } else if (line.trim() === '') {
@@ -352,8 +352,8 @@ export default function StacksPage() {
         </div>
 
         {/* Code Examples */}
-        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-indigo-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
-          <h2 className="text-3xl font-extrabold text-indigo-100 mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-indigo-900/40 to-cyan-900/40 border border-pink-700/50 rounded-xl p-8 mb-12 backdrop-blur-sm">
+          <h2 className="text-3xl font-extrabold text-pink-100 mb-6">💻 Code Examples</h2>
 
           <div className="flex gap-4 mb-6 border-b border-slate-700">
             {['java', 'python', 'cpp'].map((lang) => (
@@ -362,7 +362,7 @@ export default function StacksPage() {
                 onClick={() => setSelectedLanguage(lang)}
                 className={`px-4 py-2 font-semibold transition ${
                   selectedLanguage === lang
-                    ? 'text-cyan-400 border-b-2 border-cyan-400'
+                    ? 'text-orange-400 border-b-2 border-cyan-400'
                     : 'text-slate-400 hover:text-slate-300'
                 }`}
               >
