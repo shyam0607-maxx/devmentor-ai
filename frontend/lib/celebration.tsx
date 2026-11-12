@@ -31,19 +31,18 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     }
 
     const flowers: Flower[] = [];
-    const flowerColors = ['#FF69B4', '#FFB6C1', '#FF1493', '#FFC0CB', '#FFD700', '#FFA500', '#FF4500'];
-    const flowerEmojis = ['🌸', '🌺', '🌼', '🌻', '🌷', '🌹'];
+    const flowerColors = ['#FF69B4', '#FFB6C1', '#FF1493', '#FFC0CB', '#FFD700', '#FFA500', '#FF4500', '#FF6B9D', '#FF007F'];
 
     // Create flowers
-    for (let i = 0; i < 50; i++) {
+    for (let i = 0; i < 80; i++) {
       flowers.push({
         x: Math.random() * canvas.width,
-        y: -20,
-        vx: (Math.random() - 0.5) * 4,
-        vy: Math.random() * 3 + 2,
-        size: Math.random() * 30 + 20,
+        y: -50,
+        vx: (Math.random() - 0.5) * 6,
+        vy: Math.random() * 4 + 2,
+        size: Math.random() * 15 + 8,
         rotation: Math.random() * Math.PI * 2,
-        rotationSpeed: (Math.random() - 0.5) * 0.1,
+        rotationSpeed: (Math.random() - 0.5) * 0.15,
         color: flowerColors[Math.floor(Math.random() * flowerColors.length)],
         alpha: 1,
       });
@@ -51,22 +50,37 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
 
     let animationId: number;
     let frameCount = 0;
-    const maxFrames = 180; // 3 seconds at 60fps
+    const maxFrames = 200; // ~3.3 seconds at 60fps
 
-    const drawFlower = (flower: Flower, emoji: string) => {
+    const drawFlower = (flower: Flower) => {
       ctx.save();
       ctx.globalAlpha = flower.alpha;
+      ctx.fillStyle = flower.color;
       ctx.translate(flower.x, flower.y);
       ctx.rotate(flower.rotation);
-      ctx.font = `${flower.size}px serif`;
-      ctx.fillText(emoji, 0, 0);
+
+      // Draw a simple flower shape (5-petal flower)
+      const petalSize = flower.size;
+      for (let i = 0; i < 5; i++) {
+        ctx.save();
+        ctx.rotate((i / 5) * Math.PI * 2);
+        ctx.fillRect(0, -petalSize / 2, petalSize / 3, petalSize);
+        ctx.restore();
+      }
+
+      // Draw center
+      ctx.fillStyle = '#FFD700';
+      ctx.beginPath();
+      ctx.arc(0, 0, petalSize / 4, 0, Math.PI * 2);
+      ctx.fill();
+
       ctx.restore();
     };
 
     const animate = () => {
-      // Clear canvas
-      ctx.fillStyle = 'rgba(0, 0, 0, 0)';
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Clear canvas with slight fade
+      ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw flowers
       for (let i = flowers.length - 1; i >= 0; i--) {
@@ -75,17 +89,16 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         flower.x += flower.vx;
         flower.y += flower.vy;
         flower.rotation += flower.rotationSpeed;
-        flower.vy += 0.1; // Gravity
+        flower.vy += 0.12; // Gravity
 
-        // Fade out
-        if (flower.y > canvas.height * 0.5) {
-          flower.alpha = Math.max(0, flower.alpha - 0.03);
+        // Fade out as it falls
+        if (flower.y > canvas.height * 0.6) {
+          flower.alpha = Math.max(0, flower.alpha - 0.04);
         }
 
-        const emoji = flowerEmojis[Math.floor(Math.random() * flowerEmojis.length)];
-        drawFlower(flower, emoji);
+        drawFlower(flower);
 
-        if (flower.alpha <= 0) {
+        if (flower.alpha <= 0 || flower.y > canvas.height) {
           flowers.splice(i, 1);
         }
       }
@@ -98,7 +111,7 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         // Animation complete
         ctx.clearRect(0, 0, canvas.width, canvas.height);
         if (onComplete) {
-          setTimeout(onComplete, 500);
+          setTimeout(onComplete, 300);
         }
       }
     };
