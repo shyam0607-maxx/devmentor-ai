@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut, Plus, Minus } from 'lucide-react';
+import { Celebration } from '@/lib/celebration';
 
 interface Topic {
   id: string;
@@ -33,6 +34,7 @@ export default function QueuesPage() {
   const [queueItems, setQueueItems] = useState<number[]>([1, 2, 3]);
   const [inputValue, setInputValue] = useState('');
   const [message, setMessage] = useState('');
+  const [celebrating, setCelebrating] = useState(false);
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -113,6 +115,7 @@ export default function QueuesPage() {
 
   if (loading) {
     return (
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
@@ -121,6 +124,7 @@ export default function QueuesPage() {
 
   if (!topic) {
     return (
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
         <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -150,7 +154,8 @@ export default function QueuesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
+    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
+      <div className="min-h-screen bg-gradient-to-br from-violet-950 via-slate-900 to-purple-950">
       <header className="border-b border-violet-700/50 bg-violet-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">

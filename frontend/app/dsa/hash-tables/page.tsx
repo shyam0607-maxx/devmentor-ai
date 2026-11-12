@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut } from 'lucide-react';
+import { Celebration } from '@/lib/celebration';
 
 interface Topic {
   id: string;
@@ -62,10 +63,12 @@ export default function HashTablesPage() {
     router.push('/');
   };
 
-  if (loading) return <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
+  if (loading) return <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
+      <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950 flex items-center justify-center"><div className="text-white">Loading...</div></div>;
 
   if (!topic) {
     return (
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
         <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -87,7 +90,8 @@ export default function HashTablesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
+    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
+      <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-cyan-950">
       <header className="border-b border-blue-700/50 bg-blue-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80">

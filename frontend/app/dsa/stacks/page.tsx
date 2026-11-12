@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut, Plus, Minus } from 'lucide-react';
+import { Celebration } from '@/lib/celebration';
 
 interface Topic {
   id: string;
@@ -33,6 +34,7 @@ export default function StacksPage() {
   const [stackItems, setStackItems] = useState<number[]>([10, 20, 30]);
   const [inputValue, setInputValue] = useState('');
   const [message, setMessage] = useState('');
+  const [celebrating, setCelebrating] = useState(false);
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -111,6 +113,16 @@ export default function StacksPage() {
     setTimeout(() => setMessage(''), 2000);
   };
 
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    // Navigate to next module (Queues - module 6)
+    router.push('/dsa/queues');
+  };
+
   if (loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-pink-950 via-red-950 to-orange-950 flex items-center justify-center">
@@ -151,6 +163,7 @@ export default function StacksPage() {
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-pink-950 via-red-950 to-orange-950">
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <header className="border-b border-pink-700/50 bg-gradient-to-r from-pink-950/80 to-red-950/80 backdrop-blur-sm sticky top-0 z-50 shadow-2xl shadow-pink-900/30">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
@@ -402,7 +415,10 @@ export default function StacksPage() {
           >
             ← Back to Topics
           </Link>
-          <button className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition">
+          <button
+            onClick={handleMarkComplete}
+            className="px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold"
+          >
             Mark as Complete ✓
           </button>
         </div>

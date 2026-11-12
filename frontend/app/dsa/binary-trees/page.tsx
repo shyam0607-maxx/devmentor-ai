@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
 import { ArrowLeft, Copy, Check, LogOut } from 'lucide-react';
+import { Celebration } from '@/lib/celebration';
 
 interface Topic {
   id: string;
@@ -28,6 +29,16 @@ export default function BinaryTreesPage() {
   const [copied, setCopied] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [celebrating, setCelebrating] = useState(false);
+
+  const handleMarkComplete = () => {
+    setCelebrating(true);
+  };
+
+  const handleCelebrationComplete = () => {
+    setCelebrating(false);
+    router.push('/dsa/queues');
+  };
 
   useEffect(() => {
     const loadTopic = async () => {
@@ -70,6 +81,7 @@ export default function BinaryTreesPage() {
 
   if (loading) {
     return (
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950 flex items-center justify-center">
         <div className="text-white text-lg">Loading topic...</div>
       </div>
@@ -78,6 +90,7 @@ export default function BinaryTreesPage() {
 
   if (!topic) {
     return (
+      <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
       <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950">
         <header className="border-b border-green-700/50 bg-green-950/70 backdrop-blur-sm">
           <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
@@ -107,7 +120,8 @@ export default function BinaryTreesPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950">
+    <Celebration isActive={celebrating} onComplete={handleCelebrationComplete} />
+      <div className="min-h-screen bg-gradient-to-br from-green-950 via-slate-900 to-lime-950">
       <header className="border-b border-green-700/50 bg-green-950/70 backdrop-blur-sm sticky top-0 z-50">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
           <Link href="/dsa" className="flex items-center gap-2 hover:opacity-80 transition">
