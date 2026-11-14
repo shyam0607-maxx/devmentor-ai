@@ -51,7 +51,7 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
 
     let animationId: number;
     let frameCount = 0;
-    const maxFrames = 200;
+    const maxFrames = 300; // Increased for longer message display
 
     const congratulations = [
       '🎉 Amazing Work! 🎉',
@@ -126,9 +126,9 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
         }
       }
 
-      // Draw congratulating message
+      // Draw congratulating message - appears longer
       const progress = frameCount / maxFrames;
-      const messageAlpha = Math.min(1, progress * 4) * Math.max(0, 1 - (progress - 0.7) * 3.33);
+      const messageAlpha = Math.min(1, progress * 3) * Math.max(0, 1 - (progress - 0.6) * 2.5);
 
       ctx.globalAlpha = messageAlpha;
 

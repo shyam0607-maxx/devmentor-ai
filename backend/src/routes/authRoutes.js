@@ -22,10 +22,10 @@ users.set('demo@example.com', demoUser);
 learningProgress.set('demo-user-1', {
   userId: 'demo-user-1',
   dsaProgress: {
-    completedTopics: [{ topicId: 'basics', completedAt: new Date() }],
+    completedTopics: [],
     totalTopics: 11,
-    overallProgress: 9,
-    quizAverageScore: 85,
+    overallProgress: 0,
+    quizAverageScore: 0,
   },
   mernProgress: {
     completedModules: [],

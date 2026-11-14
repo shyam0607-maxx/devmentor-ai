@@ -26,14 +26,14 @@ router.get('/profile', authMiddleware, async (req, res) => {
 // Get learning progress
 router.get('/progress', authMiddleware, async (req, res) => {
   try {
-    // Return mock progress data
+    // Return progress data
     res.json({
       userId: req.userId,
       dsaProgress: {
-        completedTopics: [{ topicId: 'basics', completedAt: new Date() }],
+        completedTopics: [],
         totalTopics: 11,
-        overallProgress: 9,
-        quizAverageScore: 85,
+        overallProgress: 0,
+        quizAverageScore: 0,
       },
       mernProgress: {
         completedModules: [],
@@ -76,6 +76,31 @@ router.post('/update-path', authMiddleware, async (req, res) => {
     res.json({
       message: 'Learning path updated',
       user: { id: req.userId, learningPath },
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Mark DSA topic as completed
+router.post('/complete-topic', authMiddleware, async (req, res) => {
+  try {
+    const { topicId, moduleNumber } = req.body;
+
+    if (!topicId) {
+      return res.status(400).json({ error: 'Topic ID is required' });
+    }
+
+    // Calculate progress: 11 total DSA topics (we have 11 topics across 8 modules)
+    // Progress = (completedTopics / 11) * 100
+    const totalTopics = 11;
+    const topicsPerIncrement = 100 / totalTopics; // ~9.09% per topic
+
+    res.json({
+      message: 'Topic marked as completed',
+      topicId,
+      moduleNumber,
+      progressIncrement: topicsPerIncrement,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });
