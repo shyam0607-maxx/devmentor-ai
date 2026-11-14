@@ -36,13 +36,14 @@ export default function BacktrackingPage() {
   const handleLogout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); router.push('/'); };
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', {
+      await apiCall('/users/complete-topic', {
         method: 'POST',
         body: JSON.stringify({ topicId: 'backtracking', moduleNumber: 10 })
       });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);
+      alert('Failed to mark topic complete');
     }
   };
   const handleCelebrationComplete = () => { setCelebrating(false); router.push('/dsa/greedy-algorithms'); };
@@ -105,7 +106,7 @@ export default function BacktrackingPage() {
             <pre className="bg-slate-900 p-6 rounded overflow-x-auto text-slate-300 font-mono text-sm"><code>{topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]}</code></pre>
           </div>
         </div>
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition font-semibold">Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-indigo-500 hover:bg-indigo-600 text-white rounded-lg transition font-semibold">Mark as Complete ✓</button></div>
       </div>
     </div>
   );

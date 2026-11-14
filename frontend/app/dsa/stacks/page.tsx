@@ -115,13 +115,14 @@ export default function StacksPage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', {
+      await apiCall('/users/complete-topic', {
         method: 'POST',
         body: JSON.stringify({ topicId: 'stacks', moduleNumber: 4 })
       });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);
+      alert('Failed to mark topic complete');
     }
   };
 

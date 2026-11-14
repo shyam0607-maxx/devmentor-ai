@@ -49,13 +49,14 @@ export default function TriePage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', {
+      await apiCall('/users/complete-topic', {
         method: 'POST',
         body: JSON.stringify({ topicId: 'trie', moduleNumber: 9 })
       });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);
+      alert('Failed to mark topic complete');
     }
   };
   const handleCelebrationComplete = () => { setCelebrating(false); router.push('/dsa/union-find'); };
@@ -118,7 +119,7 @@ export default function TriePage() {
             <pre className="bg-slate-900 p-6 rounded overflow-x-auto text-slate-300 font-mono text-sm"><code>{topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]}</code></pre>
           </div>
         </div>
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition font-semibold">Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition font-semibold">Mark as Complete ✓</button></div>
       </div>
     </div>
   );

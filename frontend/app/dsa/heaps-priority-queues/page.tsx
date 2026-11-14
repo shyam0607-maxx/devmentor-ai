@@ -67,13 +67,14 @@ export default function HeapsPriorityQueuesPage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', {
+      await apiCall('/users/complete-topic', {
         method: 'POST',
         body: JSON.stringify({ topicId: 'heaps-priority-queues', moduleNumber: 9 })
       });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);
+      alert('Failed to mark topic complete');
     }
   };
 
@@ -170,7 +171,7 @@ export default function HeapsPriorityQueuesPage() {
           </div>
         </div>
 
-        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition font-semibold">Complete ✓</button></div>
+        <div className="flex justify-between"><Link href="/dsa" className="px-6 py-3 bg-slate-700 text-white rounded-lg">← Back</Link><button onClick={handleMarkComplete} className="px-6 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition font-semibold">Mark as Complete ✓</button></div>
       </div>
     </div>
   );
