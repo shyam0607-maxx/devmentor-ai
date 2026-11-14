@@ -53,6 +53,28 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
     let frameCount = 0;
     const maxFrames = 200;
 
+    const congratulations = [
+      '🎉 Amazing Work! 🎉',
+      '🌟 Excellent! 🌟',
+      '💪 You Got This! 💪',
+      '⭐ Outstanding! ⭐',
+      '🚀 Keep Going! 🚀',
+    ];
+
+    const motivations = [
+      'You are mastering DSA!',
+      'Every step brings you closer!',
+      'You are a coding champion!',
+      'Keep pushing forward!',
+      'Your potential is limitless!',
+      'You are learning rapidly!',
+      'Stay focused, stay strong!',
+      'You are on fire! 🔥',
+    ];
+
+    const selectedCongrats = congratulations[Math.floor(Math.random() * congratulations.length)];
+    const selectedMotivation = motivations[Math.floor(Math.random() * motivations.length)];
+
     const drawFlower = (flower: Flower) => {
       ctx.save();
       ctx.globalAlpha = flower.alpha;
@@ -103,6 +125,40 @@ export const Celebration: React.FC<CelebrationProps> = ({ isActive, onComplete }
           flowers.splice(i, 1);
         }
       }
+
+      // Draw congratulating message
+      const progress = frameCount / maxFrames;
+      const messageAlpha = Math.min(1, progress * 4) * Math.max(0, 1 - (progress - 0.7) * 3.33);
+
+      ctx.globalAlpha = messageAlpha;
+
+      // Main congratulation text
+      ctx.font = 'bold 60px Arial, sans-serif';
+      ctx.fillStyle = '#FFD700';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.5)';
+      ctx.shadowBlur = 10;
+      ctx.shadowOffsetX = 2;
+      ctx.shadowOffsetY = 2;
+      ctx.fillText(selectedCongrats, canvas.width / 2, canvas.height / 3 - 20);
+
+      // Motivational message
+      ctx.font = 'bold 32px Arial, sans-serif';
+      ctx.fillStyle = '#FF69B4';
+      ctx.shadowColor = 'rgba(0, 0, 0, 0.4)';
+      ctx.shadowBlur = 8;
+      ctx.shadowOffsetX = 1;
+      ctx.shadowOffsetY = 1;
+      ctx.fillText(selectedMotivation, canvas.width / 2, canvas.height / 3 + 60);
+
+      // Additional encouragement
+      ctx.font = 'bold 24px Arial, sans-serif';
+      ctx.fillStyle = '#FFA500';
+      ctx.fillText('Module Completed! 🎊', canvas.width / 2, canvas.height / 3 + 120);
+
+      ctx.globalAlpha = 1;
+      ctx.shadowColor = 'transparent';
 
       frameCount++;
 
