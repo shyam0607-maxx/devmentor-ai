@@ -50,7 +50,10 @@ export default function DPPage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'dynamic-programming', moduleNumber: 8 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'dynamic-programming', moduleNumber: 8 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);

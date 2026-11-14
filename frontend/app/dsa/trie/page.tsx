@@ -49,7 +49,10 @@ export default function TriePage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'trie', moduleNumber: 9 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'trie', moduleNumber: 9 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);

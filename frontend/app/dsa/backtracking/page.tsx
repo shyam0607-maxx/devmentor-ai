@@ -36,7 +36,10 @@ export default function BacktrackingPage() {
   const handleLogout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); router.push('/'); };
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'backtracking', moduleNumber: 10 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'backtracking', moduleNumber: 10 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);

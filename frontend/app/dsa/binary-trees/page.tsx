@@ -33,7 +33,10 @@ export default function BinaryTreesPage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'binary-trees', moduleNumber: 5 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'binary-trees', moduleNumber: 5 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);

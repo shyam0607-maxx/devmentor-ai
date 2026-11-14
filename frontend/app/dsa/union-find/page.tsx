@@ -36,7 +36,10 @@ export default function UnionFindPage() {
   const handleLogout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); router.push('/'); };
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'union-find', moduleNumber: 9 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'union-find', moduleNumber: 9 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);

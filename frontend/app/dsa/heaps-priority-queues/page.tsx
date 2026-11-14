@@ -67,7 +67,10 @@ export default function HeapsPriorityQueuesPage() {
 
   const handleMarkComplete = async () => {
     try {
-      await apiCall('/user/complete-topic', 'POST', { topicId: 'heaps-priority-queues', moduleNumber: 9 });
+      await apiCall('/user/complete-topic', {
+        method: 'POST',
+        body: JSON.stringify({ topicId: 'heaps-priority-queues', moduleNumber: 9 })
+      });
       setCelebrating(true);
     } catch (err) {
       console.error('Error marking topic complete:', err);
