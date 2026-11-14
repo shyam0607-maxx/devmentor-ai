@@ -2125,6 +2125,932 @@ private:
       },
     ],
   },
+  9: {
+    module: 9,
+    name: "Advanced Data Structures",
+    description: "Heaps, Tries, and Union-Find structures",
+    topics: [
+      {
+        id: "heaps-priority-queues",
+        name: "Heaps & Priority Queues",
+        description: "Min/Max heaps and priority queue implementations",
+        notes: `
+## Heaps & Priority Queues
+
+A heap is a specialized tree-based data structure that satisfies the heap property.
+
+### Types of Heaps:
+- **Max Heap**: Parent node ≥ child nodes (root is maximum)
+- **Min Heap**: Parent node ≤ child nodes (root is minimum)
+
+### Key Operations:
+- **Insert**: Add element and bubble up - O(log n)
+- **Delete Min/Max**: Remove root and reorganize - O(log n)
+- **Peek**: Get min/max without removing - O(1)
+- **Heapify**: Convert array to heap - O(n)
+
+### Priority Queue Applications:
+- Task scheduling
+- Dijkstra's algorithm
+- Huffman coding
+- Load balancing
+        `,
+        codeExamples: {
+          java: `
+public class MinHeap {
+  private int[] heap;
+  private int size;
+
+  public MinHeap(int capacity) {
+    heap = new int[capacity];
+    size = 0;
+  }
+
+  public void insert(int value) {
+    heap[size] = value;
+    bubbleUp(size);
+    size++;
+  }
+
+  private void bubbleUp(int index) {
+    while (index > 0) {
+      int parent = (index - 1) / 2;
+      if (heap[index] < heap[parent]) {
+        swap(index, parent);
+        index = parent;
+      } else break;
+    }
+  }
+
+  public int extractMin() {
+    int min = heap[0];
+    heap[0] = heap[size - 1];
+    size--;
+    bubbleDown(0);
+    return min;
+  }
+
+  private void bubbleDown(int index) {
+    int smallest = index;
+    int left = 2 * index + 1;
+    int right = 2 * index + 2;
+
+    if (left < size && heap[left] < heap[smallest])
+      smallest = left;
+    if (right < size && heap[right] < heap[smallest])
+      smallest = right;
+
+    if (smallest != index) {
+      swap(index, smallest);
+      bubbleDown(smallest);
+    }
+  }
+
+  private void swap(int i, int j) {
+    int temp = heap[i];
+    heap[i] = heap[j];
+    heap[j] = temp;
+  }
+}
+        `,
+          python: `
+import heapq
+
+class MaxHeap:
+    def __init__(self):
+        self.heap = []
+
+    def push(self, val):
+        # Python has min heap by default, negate for max
+        heapq.heappush(self.heap, -val)
+
+    def pop(self):
+        return -heapq.heappop(self.heap)
+
+    def peek(self):
+        return -self.heap[0]
+
+# Priority Queue Usage
+pq = []
+heapq.heappush(pq, (1, 'task1'))
+heapq.heappush(pq, (3, 'task3'))
+heapq.heappush(pq, (2, 'task2'))
+
+while pq:
+    priority, task = heapq.heappop(pq)
+    print(f"Processing {task} with priority {priority}")
+        `,
+          cpp: `
+#include <queue>
+#include <vector>
+
+int main() {
+  // Max Heap
+  std::priority_queue<int> maxHeap;
+  maxHeap.push(5);
+  maxHeap.push(10);
+  maxHeap.push(3);
+
+  std::cout << maxHeap.top();  // 10
+  maxHeap.pop();
+
+  // Min Heap
+  std::priority_queue<int, std::vector<int>, std::greater<int>> minHeap;
+  minHeap.push(5);
+  minHeap.push(3);
+  minHeap.push(10);
+
+  std::cout << minHeap.top();  // 3
+  return 0;
+}
+        `,
+        },
+        timeComplexity: "Insert: O(log n), Extract: O(log n), Peek: O(1)",
+        spaceComplexity: "O(n)",
+        difficulty: "Intermediate",
+      },
+      {
+        id: "trie",
+        name: "Trie (Prefix Tree)",
+        description: "Efficient string searching and storage",
+        notes: `
+## Trie Data Structure
+
+A Trie is a tree-like data structure used to store strings efficiently for fast retrieval.
+
+### Use Cases:
+- Autocomplete/suggestion systems
+- IP routing
+- Spell checking
+- Dictionary implementations
+
+### Operations:
+- **Insert**: Add string - O(m) where m is length
+- **Search**: Find string - O(m)
+- **StartsWith**: Check prefix - O(m)
+- **Delete**: Remove string - O(m)
+
+### Advantages:
+- Fast search (proportional to key length, not key count)
+- Prefix-based queries
+- Natural alphabetical ordering
+        `,
+        codeExamples: {
+          java: `
+class TrieNode {
+  TrieNode[] children = new TrieNode[26];
+  boolean isEndOfWord = false;
+}
+
+public class Trie {
+  private TrieNode root;
+
+  public Trie() {
+    root = new TrieNode();
+  }
+
+  public void insert(String word) {
+    TrieNode node = root;
+    for (char c : word.toCharArray()) {
+      int idx = c - 'a';
+      if (node.children[idx] == null)
+        node.children[idx] = new TrieNode();
+      node = node.children[idx];
+    }
+    node.isEndOfWord = true;
+  }
+
+  public boolean search(String word) {
+    TrieNode node = findNode(word);
+    return node != null && node.isEndOfWord;
+  }
+
+  public boolean startsWith(String prefix) {
+    return findNode(prefix) != null;
+  }
+
+  private TrieNode findNode(String s) {
+    TrieNode node = root;
+    for (char c : s.toCharArray()) {
+      int idx = c - 'a';
+      if (node.children[idx] == null)
+        return null;
+      node = node.children[idx];
+    }
+    return node;
+  }
+}
+        `,
+          python: `
+class TrieNode:
+    def __init__(self):
+        self.children = {}
+        self.is_end_of_word = False
+
+class Trie:
+    def __init__(self):
+        self.root = TrieNode()
+
+    def insert(self, word):
+        node = self.root
+        for char in word:
+            if char not in node.children:
+                node.children[char] = TrieNode()
+            node = node.children[char]
+        node.is_end_of_word = True
+
+    def search(self, word):
+        node = self._find(word)
+        return node is not None and node.is_end_of_word
+
+    def starts_with(self, prefix):
+        return self._find(prefix) is not None
+
+    def _find(self, s):
+        node = self.root
+        for char in s:
+            if char not in node.children:
+                return None
+            node = node.children[char]
+        return node
+        `,
+          cpp: `
+struct TrieNode {
+  TrieNode* children[26] = {};
+  bool isEndOfWord = false;
+};
+
+class Trie {
+  TrieNode* root;
+
+public:
+  Trie() {
+    root = new TrieNode();
+  }
+
+  void insert(string word) {
+    TrieNode* node = root;
+    for (char c : word) {
+      int idx = c - 'a';
+      if (!node->children[idx])
+        node->children[idx] = new TrieNode();
+      node = node->children[idx];
+    }
+    node->isEndOfWord = true;
+  }
+
+  bool search(string word) {
+    TrieNode* node = find(word);
+    return node && node->isEndOfWord;
+  }
+
+  bool startsWith(string prefix) {
+    return find(prefix) != nullptr;
+  }
+
+private:
+  TrieNode* find(string s) {
+    TrieNode* node = root;
+    for (char c : s) {
+      int idx = c - 'a';
+      if (!node->children[idx]) return nullptr;
+      node = node->children[idx];
+    }
+    return node;
+  }
+};
+        `,
+        },
+        timeComplexity: "Insert/Search/StartsWith: O(m) where m is word length",
+        spaceComplexity: "O(ALPHABET_SIZE * N * M) where N is number of words",
+        difficulty: "Intermediate",
+      },
+      {
+        id: "union-find",
+        name: "Union-Find (Disjoint Set Union)",
+        description: "Efficient set union and find operations",
+        notes: `
+## Union-Find Data Structure
+
+Union-Find (DSU) efficiently handles operations on disjoint sets with two main operations.
+
+### Operations:
+- **Find**: Determine which set an element belongs to - O(α(n)) amortized
+- **Union**: Merge two sets - O(α(n)) amortized
+
+### Optimizations:
+- **Path Compression**: Flatten tree during find operation
+- **Union by Rank**: Attach smaller tree to larger tree
+
+### Applications:
+- Connected components detection
+- Kruskal's algorithm for MST
+- Cycle detection in graphs
+- Network connectivity problems
+        `,
+        codeExamples: {
+          java: `
+public class UnionFind {
+  private int[] parent;
+  private int[] rank;
+
+  public UnionFind(int n) {
+    parent = new int[n];
+    rank = new int[n];
+    for (int i = 0; i < n; i++) {
+      parent[i] = i;
+      rank[i] = 0;
+    }
+  }
+
+  public int find(int x) {
+    if (parent[x] != x) {
+      parent[x] = find(parent[x]);  // Path compression
+    }
+    return parent[x];
+  }
+
+  public void union(int x, int y) {
+    int rootX = find(x);
+    int rootY = find(y);
+
+    if (rootX == rootY) return;
+
+    // Union by rank
+    if (rank[rootX] < rank[rootY]) {
+      parent[rootX] = rootY;
+    } else if (rank[rootX] > rank[rootY]) {
+      parent[rootY] = rootX;
+    } else {
+      parent[rootY] = rootX;
+      rank[rootX]++;
+    }
+  }
+
+  public boolean connected(int x, int y) {
+    return find(x) == find(y);
+  }
+}
+        `,
+          python: `
+class UnionFind:
+    def __init__(self, n):
+        self.parent = list(range(n))
+        self.rank = [0] * n
+
+    def find(self, x):
+        if self.parent[x] != x:
+            self.parent[x] = self.find(self.parent[x])
+        return self.parent[x]
+
+    def union(self, x, y):
+        root_x, root_y = self.find(x), self.find(y)
+
+        if root_x == root_y:
+            return
+
+        if self.rank[root_x] < self.rank[root_y]:
+            self.parent[root_x] = root_y
+        elif self.rank[root_x] > self.rank[root_y]:
+            self.parent[root_y] = root_x
+        else:
+            self.parent[root_y] = root_x
+            self.rank[root_x] += 1
+
+    def connected(self, x, y):
+        return self.find(x) == self.find(y)
+        `,
+          cpp: `
+class UnionFind {
+  vector<int> parent, rank;
+
+public:
+  UnionFind(int n) : parent(n), rank(n, 0) {
+    iota(parent.begin(), parent.end(), 0);
+  }
+
+  int find(int x) {
+    if (parent[x] != x)
+      parent[x] = find(parent[x]);
+    return parent[x];
+  }
+
+  void unite(int x, int y) {
+    int px = find(x), py = find(y);
+    if (px == py) return;
+
+    if (rank[px] < rank[py]) swap(px, py);
+    parent[py] = px;
+    if (rank[px] == rank[py]) rank[px]++;
+  }
+
+  bool connected(int x, int y) {
+    return find(x) == find(y);
+  }
+};
+        `,
+        },
+        timeComplexity: "Find/Union: O(α(n)) amortized, nearly O(1)",
+        spaceComplexity: "O(n)",
+        difficulty: "Intermediate",
+      },
+    ],
+  },
+  10: {
+    module: 10,
+    name: "Advanced Techniques",
+    description: "Backtracking, Greedy, and Bit Manipulation",
+    topics: [
+      {
+        id: "backtracking",
+        name: "Backtracking",
+        description: "Solving problems by exploring all possibilities",
+        notes: `
+## Backtracking Algorithm
+
+Backtracking is a recursion-based technique to explore all possible solutions by abandoning a path when it doesn't work.
+
+### Pattern:
+1. Choose: Select a candidate
+2. Explore: Recursively explore with that choice
+3. Unchoose: Backtrack and try another option
+
+### Common Problems:
+- N-Queens problem
+- Permutations and combinations
+- Sudoku solver
+- Word search
+- Rat in maze
+
+### Optimization Techniques:
+- Pruning: Skip invalid branches early
+- Memoization: Cache computed results
+- Constraint propagation: Reduce search space
+        `,
+        codeExamples: {
+          java: `
+public class Backtracking {
+  // Generate all permutations
+  public static List<List<Integer>> permute(int[] nums) {
+    List<List<Integer>> result = new ArrayList<>();
+    backtrack(result, new ArrayList<>(), nums, new boolean[nums.length]);
+    return result;
+  }
+
+  private static void backtrack(List<List<Integer>> result,
+                                List<Integer> current,
+                                int[] nums, boolean[] used) {
+    if (current.size() == nums.length) {
+      result.add(new ArrayList<>(current));
+      return;
+    }
+
+    for (int i = 0; i < nums.length; i++) {
+      if (!used[i]) {
+        current.add(nums[i]);
+        used[i] = true;
+        backtrack(result, current, nums, used);
+        current.remove(current.size() - 1);
+        used[i] = false;
+      }
+    }
+  }
+
+  // N-Queens solution
+  public static List<List<String>> solveNQueens(int n) {
+    List<List<String>> result = new ArrayList<>();
+    char[][] board = new char[n][n];
+    for (int i = 0; i < n; i++)
+      for (int j = 0; j < n; j++)
+        board[i][j] = '.';
+
+    solve(result, board, 0, n);
+    return result;
+  }
+
+  private static void solve(List<List<String>> result, char[][] board,
+                           int row, int n) {
+    if (row == n) {
+      result.add(boardToList(board));
+      return;
+    }
+
+    for (int col = 0; col < n; col++) {
+      if (isValid(board, row, col, n)) {
+        board[row][col] = 'Q';
+        solve(result, board, row + 1, n);
+        board[row][col] = '.';
+      }
+    }
+  }
+
+  private static boolean isValid(char[][] board, int row, int col, int n) {
+    // Check column
+    for (int i = 0; i < row; i++)
+      if (board[i][col] == 'Q') return false;
+
+    // Check diagonals
+    for (int i = row - 1, j = col - 1; i >= 0 && j >= 0; i--, j--)
+      if (board[i][j] == 'Q') return false;
+
+    for (int i = row - 1, j = col + 1; i >= 0 && j < n; i--, j++)
+      if (board[i][j] == 'Q') return false;
+
+    return true;
+  }
+
+  private static List<String> boardToList(char[][] board) {
+    List<String> list = new ArrayList<>();
+    for (char[] row : board)
+      list.add(new String(row));
+    return list;
+  }
+}
+        `,
+          python: `
+def permute(nums):
+    result = []
+
+    def backtrack(current, remaining):
+        if not remaining:
+            result.append(current[:])
+            return
+
+        for i in range(len(remaining)):
+            current.append(remaining[i])
+            backtrack(current, remaining[:i] + remaining[i+1:])
+            current.pop()
+
+    backtrack([], nums)
+    return result
+
+def solve_n_queens(n):
+    result = []
+    board = [['.' for _ in range(n)] for _ in range(n)]
+
+    def is_safe(row, col):
+        for i in range(row):
+            if board[i][col] == 'Q':
+                return False
+        for i, j in zip(range(row-1, -1, -1), range(col-1, -1, -1)):
+            if board[i][j] == 'Q':
+                return False
+        for i, j in zip(range(row-1, -1, -1), range(col+1, n)):
+            if board[i][j] == 'Q':
+                return False
+        return True
+
+    def solve(row):
+        if row == n:
+            result.append([''.join(r) for r in board])
+            return
+
+        for col in range(n):
+            if is_safe(row, col):
+                board[row][col] = 'Q'
+                solve(row + 1)
+                board[row][col] = '.'
+
+    solve(0)
+    return result
+        `,
+          cpp: `
+vector<vector<int>> permute(vector<int>& nums) {
+  vector<vector<int>> result;
+
+  function<void(int)> backtrack = [&](int idx) {
+    if (idx == nums.size()) {
+      result.push_back(nums);
+      return;
+    }
+
+    for (int i = idx; i < nums.size(); i++) {
+      swap(nums[idx], nums[i]);
+      backtrack(idx + 1);
+      swap(nums[idx], nums[i]);
+    }
+  };
+
+  backtrack(0);
+  return result;
+}
+        `,
+        },
+        timeComplexity: "O(n!) for permutations, varies by problem",
+        spaceComplexity: "O(n) recursion depth + output",
+        difficulty: "Advanced",
+      },
+      {
+        id: "greedy-algorithms",
+        name: "Greedy Algorithms",
+        description: "Making locally optimal choices",
+        notes: `
+## Greedy Algorithms
+
+Greedy approach makes locally optimal choices hoping to find a global optimum. Works well for specific problem types.
+
+### When to Use:
+- **Activity Selection**: Select maximum non-overlapping activities
+- **Fractional Knapsack**: Choose items by value/weight ratio
+- **Huffman Coding**: Build optimal prefix codes
+- **Dijkstra's Algorithm**: Shortest path (greedy choice of nearest unvisited)
+
+### Key Insight:
+Greedy choice property: A global optimum can be reached by making locally optimal choices.
+
+### Doesn't Always Work:
+- 0/1 Knapsack (use DP instead)
+- TSP (use DP or approximation)
+        `,
+        codeExamples: {
+          java: `
+public class Greedy {
+  // Activity Selection Problem
+  public static int activitySelection(int[] start, int[] end) {
+    int n = start.length;
+    Integer[] indices = new Integer[n];
+    for (int i = 0; i < n; i++) indices[i] = i;
+
+    Arrays.sort(indices, (a, b) -> end[a] - end[b]);
+
+    int count = 1;
+    int lastEnd = end[indices[0]];
+
+    for (int i = 1; i < n; i++) {
+      if (start[indices[i]] >= lastEnd) {
+        count++;
+        lastEnd = end[indices[i]];
+      }
+    }
+    return count;
+  }
+
+  // Huffman Coding using priority queue
+  public static class HuffmanNode {
+    char data;
+    int freq;
+    HuffmanNode left, right;
+
+    HuffmanNode(char d, int f) { data = d; freq = f; }
+  }
+
+  public static void huffmanCoding(char[] chars, int[] freqs) {
+    PriorityQueue<HuffmanNode> pq = new PriorityQueue<>
+      ((a, b) -> a.freq - b.freq);
+
+    for (int i = 0; i < chars.length; i++)
+      pq.offer(new HuffmanNode(chars[i], freqs[i]));
+
+    while (pq.size() > 1) {
+      HuffmanNode left = pq.poll();
+      HuffmanNode right = pq.poll();
+      HuffmanNode parent = new HuffmanNode('\\0', left.freq + right.freq);
+      parent.left = left;
+      parent.right = right;
+      pq.offer(parent);
+    }
+
+    HuffmanNode root = pq.poll();
+    printCodes(root, "");
+  }
+
+  private static void printCodes(HuffmanNode root, String code) {
+    if (root == null) return;
+    if (root.data != '\\0')
+      System.out.println(root.data + ": " + code);
+    printCodes(root.left, code + "0");
+    printCodes(root.right, code + "1");
+  }
+}
+        `,
+          python: `
+def activity_selection(start, end):
+    n = len(start)
+    activities = list(zip(start, end, range(n)))
+    activities.sort(key=lambda x: x[1])
+
+    count = 1
+    last_end = activities[0][1]
+
+    for i in range(1, n):
+        if activities[i][0] >= last_end:
+            count += 1
+            last_end = activities[i][1]
+
+    return count
+
+def huffman_encoding(chars, freqs):
+    import heapq
+
+    heap = [[f, [c, ""]] for c, f in zip(chars, freqs)]
+    heapq.heapify(heap)
+
+    while len(heap) > 1:
+        freq1, node1 = heapq.heappop(heap)
+        freq2, node2 = heapq.heappop(heap)
+        merged = [freq1 + freq2, [node1, node2]]
+        heapq.heappush(heap, merged)
+
+    codes = {}
+    def traverse(node, code=""):
+        if isinstance(node[0], str):
+            codes[node[0]] = code
+        else:
+            traverse(node[0], code + "0")
+            traverse(node[1], code + "1")
+
+    traverse(heap[0][1])
+    return codes
+        `,
+          cpp: `
+int activitySelection(vector<int>& start, vector<int>& end) {
+  int n = start.size();
+  vector<int> indices(n);
+  iota(indices.begin(), indices.end(), 0);
+
+  sort(indices.begin(), indices.end(),
+       [&](int a, int b) { return end[a] < end[b]; });
+
+  int count = 1;
+  int lastEnd = end[indices[0]];
+
+  for (int i = 1; i < n; i++) {
+    if (start[indices[i]] >= lastEnd) {
+      count++;
+      lastEnd = end[indices[i]];
+    }
+  }
+  return count;
+}
+        `,
+        },
+        timeComplexity: "Activity Selection: O(n log n), Huffman: O(n log n)",
+        spaceComplexity: "O(n) or O(n log n) depending on implementation",
+        difficulty: "Intermediate",
+      },
+      {
+        id: "bit-manipulation",
+        name: "Bit Manipulation",
+        description: "Working with binary representations",
+        notes: `
+## Bit Manipulation
+
+Manipulating bits directly for efficiency and solving specific problems.
+
+### Basic Operations:
+- **AND (&)**: Both bits are 1
+- **OR (|)**: At least one bit is 1
+- **XOR (^)**: Bits are different
+- **NOT (~)**: Flip all bits
+- **Left Shift (<<)**: Multiply by 2
+- **Right Shift (>>)**: Divide by 2
+
+### Useful Tricks:
+- **Check if power of 2**: n & (n-1) == 0
+- **Count set bits**: n & (n-1) clears one bit each time
+- **Get i-th bit**: (n >> i) & 1
+- **Set i-th bit**: n | (1 << i)
+- **Clear i-th bit**: n & ~(1 << i)
+- **Toggle i-th bit**: n ^ (1 << i)
+
+### Applications:
+- Fast multiplication/division
+- Checking if number is power of 2
+- Swapping without temp variable
+- Finding missing number
+        `,
+        codeExamples: {
+          java: `
+public class BitManipulation {
+  // Count number of 1s in binary representation
+  public static int countSetBits(int n) {
+    int count = 0;
+    while (n > 0) {
+      count += n & 1;
+      n >>= 1;
+    }
+    return count;
+  }
+
+  // Efficient way using Brian Kernighan algorithm
+  public static int countSetBitsEfficient(int n) {
+    int count = 0;
+    while (n > 0) {
+      n &= (n - 1);  // Clear lowest set bit
+      count++;
+    }
+    return count;
+  }
+
+  // Check if number is power of 2
+  public static boolean isPowerOfTwo(int n) {
+    return n > 0 && (n & (n - 1)) == 0;
+  }
+
+  // Get i-th bit
+  public static int getBit(int n, int i) {
+    return (n >> i) & 1;
+  }
+
+  // Set i-th bit
+  public static int setBit(int n, int i) {
+    return n | (1 << i);
+  }
+
+  // Clear i-th bit
+  public static int clearBit(int n, int i) {
+    return n & ~(1 << i);
+  }
+
+  // Toggle i-th bit
+  public static int toggleBit(int n, int i) {
+    return n ^ (1 << i);
+  }
+}
+        `,
+          python: `
+def count_set_bits(n):
+    count = 0
+    while n > 0:
+        count += n & 1
+        n >>= 1
+    return count
+
+def count_set_bits_efficient(n):
+    count = 0
+    while n > 0:
+        n &= (n - 1)
+        count += 1
+    return count
+
+def is_power_of_two(n):
+    return n > 0 and (n & (n - 1)) == 0
+
+def get_bit(n, i):
+    return (n >> i) & 1
+
+def set_bit(n, i):
+    return n | (1 << i)
+
+def clear_bit(n, i):
+    return n & ~(1 << i)
+
+def toggle_bit(n, i):
+    return n ^ (1 << i)
+
+# Find single number appearing once (others appear twice)
+def single_number(nums):
+    result = 0
+    for num in nums:
+        result ^= num
+    return result
+        `,
+          cpp: `
+int countSetBits(int n) {
+  int count = 0;
+  while (n > 0) {
+    count += n & 1;
+    n >>= 1;
+  }
+  return count;
+}
+
+int countSetBitsEfficient(int n) {
+  int count = 0;
+  while (n > 0) {
+    n &= (n - 1);
+    count++;
+  }
+  return count;
+}
+
+bool isPowerOfTwo(int n) {
+  return n > 0 && (n & (n - 1)) == 0;
+}
+
+int getBit(int n, int i) {
+  return (n >> i) & 1;
+}
+
+int setBit(int n, int i) {
+  return n | (1 << i);
+}
+
+int clearBit(int n, int i) {
+  return n & ~(1 << i);
+}
+
+int toggleBit(int n, int i) {
+  return n ^ (1 << i);
+}
+        `,
+        },
+        timeComplexity: "O(log n) for most operations or O(k) for k bits",
+        spaceComplexity: "O(1)",
+        difficulty: "Intermediate",
+      },
+    ],
+  },
 };
 
 module.exports = dsaCurriculum;
