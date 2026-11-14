@@ -47,7 +47,14 @@ export default function TriePage() {
     router.push('/');
   };
 
-  const handleMarkComplete = () => { setCelebrating(true); };
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'trie', moduleNumber: 9 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
+  };
   const handleCelebrationComplete = () => { setCelebrating(false); router.push('/dsa/union-find'); };
 
   if (loading) return <div className="min-h-screen bg-gradient-to-br from-blue-950 via-slate-900 to-slate-900 flex items-center justify-center"><div className="text-white">Loading...</div></div>;

@@ -31,7 +31,7 @@ router.get('/progress', authMiddleware, async (req, res) => {
       userId: req.userId,
       dsaProgress: {
         completedTopics: [],
-        totalTopics: 11,
+        totalTopics: 18,
         overallProgress: 0,
         quizAverageScore: 0,
       },
@@ -91,10 +91,11 @@ router.post('/complete-topic', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Topic ID is required' });
     }
 
-    // Calculate progress: 11 total DSA topics (we have 11 topics across 8 modules)
-    // Progress = (completedTopics / 11) * 100
-    const totalTopics = 11;
-    const topicsPerIncrement = 100 / totalTopics; // ~9.09% per topic
+    // Calculate progress: 18 total DSA topics across 10 modules
+    // Module 1-8: 8 topics, Module 9: 3 topics, Module 10: 3 topics
+    // Progress = (completedTopics / 18) * 100
+    const totalTopics = 18;
+    const topicsPerIncrement = 100 / totalTopics; // ~5.56% per topic
 
     res.json({
       message: 'Topic marked as completed',

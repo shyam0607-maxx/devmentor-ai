@@ -31,8 +31,13 @@ export default function BinaryTreesPage() {
   const [error, setError] = useState<string | null>(null);
   const [celebrating, setCelebrating] = useState(false);
 
-  const handleMarkComplete = () => {
-    setCelebrating(true);
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'binary-trees', moduleNumber: 5 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
   };
 
   const handleCelebrationComplete = () => {

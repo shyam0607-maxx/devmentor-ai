@@ -34,7 +34,14 @@ export default function UnionFindPage() {
 
   const handleCopy = () => { if (topic) { navigator.clipboard.writeText(topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples]); setCopied(true); setTimeout(() => setCopied(false), 2000); } };
   const handleLogout = () => { localStorage.removeItem('token'); localStorage.removeItem('user'); router.push('/'); };
-  const handleMarkComplete = () => { setCelebrating(true); };
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'union-find', moduleNumber: 9 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
+  };
   const handleCelebrationComplete = () => { setCelebrating(false); router.push('/dsa/backtracking'); };
 
   if (loading) return <div className="min-h-screen bg-gradient-to-br from-orange-950 via-slate-900 to-slate-900 flex items-center justify-center"><div className="text-white">Loading...</div></div>;

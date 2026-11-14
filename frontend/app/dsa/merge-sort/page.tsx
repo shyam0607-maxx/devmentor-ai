@@ -50,8 +50,13 @@ export default function MergeSortPage() {
     router.push('/');
   };
 
-  const handleMarkComplete = () => {
-    setCelebrating(true);
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'merge-sort', moduleNumber: 8 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
   };
 
   const handleCelebrationComplete = () => {

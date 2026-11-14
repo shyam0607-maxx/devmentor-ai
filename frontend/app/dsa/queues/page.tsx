@@ -113,8 +113,13 @@ export default function QueuesPage() {
     setTimeout(() => setMessage(''), 2000);
   };
 
-  const handleMarkComplete = () => {
-    setCelebrating(true);
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'queues', moduleNumber: 6 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
   };
 
   const handleCelebrationComplete = () => {

@@ -48,8 +48,13 @@ export default function DPPage() {
     router.push('/');
   };
 
-  const handleMarkComplete = () => {
-    setCelebrating(true);
+  const handleMarkComplete = async () => {
+    try {
+      await apiCall('/user/complete-topic', 'POST', { topicId: 'dynamic-programming', moduleNumber: 8 });
+      setCelebrating(true);
+    } catch (err) {
+      console.error('Error marking topic complete:', err);
+    }
   };
 
   const handleCelebrationComplete = () => {

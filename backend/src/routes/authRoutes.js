@@ -23,7 +23,7 @@ learningProgress.set('demo-user-1', {
   userId: 'demo-user-1',
   dsaProgress: {
     completedTopics: [],
-    totalTopics: 11,
+    totalTopics: 18,
     overallProgress: 0,
     quizAverageScore: 0,
   },
@@ -87,7 +87,7 @@ router.post('/signup', async (req, res) => {
     // Create learning progress
     learningProgress.set(userId, {
       userId,
-      dsaProgress: { totalTopics: 11, overallProgress: 0, completedTopics: [] },
+      dsaProgress: { totalTopics: 18, overallProgress: 0, completedTopics: [] },
       mernProgress: { totalModules: 4, overallProgress: 0 },
       meanProgress: { totalModules: 4, overallProgress: 0 },
       mockInterviewHistory: [],
