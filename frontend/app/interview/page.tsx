@@ -30,7 +30,6 @@ export default function InterviewPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const recognitionRef = useRef<any>(null);
-  const submitAnswerRef = useRef<() => void>(() => {});
 
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
@@ -87,16 +86,8 @@ export default function InterviewPage() {
         };
 
         recognitionRef.current.onend = () => {
-          console.log('⏹️ Speech recognition ended');
+          console.log('Speech recognition ended');
           setIsListening(false);
-
-          // Auto-submit after speech ends
-          setTimeout(() => {
-            if (submitAnswerRef.current) {
-              console.log('Auto-submitting answer...');
-              submitAnswerRef.current();
-            }
-          }, 500);
         };
 
         recognitionRef.current.onresult = (event: any) => {
@@ -147,11 +138,6 @@ export default function InterviewPage() {
       }
     }
   }, [router]);
-
-  // Update submitAnswer ref for auto-submit
-  useEffect(() => {
-    submitAnswerRef.current = submitAnswer;
-  }, [submitAnswer]);
 
   // Start camera
   const startCamera = async () => {
