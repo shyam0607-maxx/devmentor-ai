@@ -68,28 +68,30 @@ export default function InterviewPage() {
 
     loadTopics();
 
-    // Initialize speech recognition
-    const SpeechRecognition = window.webkitSpeechRecognition || (window as any).SpeechRecognition;
-    if (SpeechRecognition) {
-      recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false;
-      recognitionRef.current.interimResults = true;
-      recognitionRef.current.lang = 'en-US';
+    // Initialize speech recognition (client-side only)
+    if (typeof window !== 'undefined') {
+      const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
+      if (SpeechRecognition) {
+        recognitionRef.current = new SpeechRecognition();
+        recognitionRef.current.continuous = false;
+        recognitionRef.current.interimResults = true;
+        recognitionRef.current.lang = 'en-US';
 
-      recognitionRef.current.onstart = () => setIsListening(true);
-      recognitionRef.current.onend = () => setIsListening(false);
-      recognitionRef.current.onresult = (event: any) => {
-        let interimTranscript = '';
-        for (let i = event.resultIndex; i < event.results.length; i++) {
-          const transcript = event.results[i][0].transcript;
-          if (event.results[i].isFinal) {
-            setUserAnswer(transcript);
-          } else {
-            interimTranscript += transcript;
+        recognitionRef.current.onstart = () => setIsListening(true);
+        recognitionRef.current.onend = () => setIsListening(false);
+        recognitionRef.current.onresult = (event: any) => {
+          let interimTranscript = '';
+          for (let i = event.resultIndex; i < event.results.length; i++) {
+            const transcript = event.results[i][0].transcript;
+            if (event.results[i].isFinal) {
+              setUserAnswer(transcript);
+            } else {
+              interimTranscript += transcript;
+            }
           }
-        }
-        setTranscript(interimTranscript);
-      };
+          setTranscript(interimTranscript);
+        };
+      }
     }
   }, [router]);
 
@@ -118,7 +120,7 @@ export default function InterviewPage() {
 
   // Text to speech
   const speakText = (text: string) => {
-    if ('speechSynthesis' in window) {
+    if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
       utterance.rate = 0.9;
@@ -130,7 +132,7 @@ export default function InterviewPage() {
 
   // Start listening to user answer
   const startListening = () => {
-    if (recognitionRef.current) {
+    if (typeof window !== 'undefined' && recognitionRef.current) {
       setUserAnswer('');
       setTranscript('');
       recognitionRef.current.start();
