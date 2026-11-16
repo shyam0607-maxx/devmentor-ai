@@ -17,7 +17,6 @@ interface Progress {
   mernProgress: { overallProgress: number };
   meanProgress: { overallProgress: number };
   mockInterviewHistory: any[];
-  learningStreak: { current: number };
 }
 
 export default function Dashboard() {
@@ -109,7 +108,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid md:grid-cols-4 gap-6 mb-12">
+        <div className="grid md:grid-cols-3 gap-6 mb-12">
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
             <BarChart3 className="w-6 h-6 text-cyan-400 mb-2" />
             <p className="text-slate-400 text-sm mb-1">DSA Progress</p>
@@ -129,13 +128,6 @@ export default function Dashboard() {
             <p className="text-slate-400 text-sm mb-1">MEAN Progress</p>
             <p className="text-3xl font-bold text-white">
               {progress?.meanProgress.overallProgress || 0}%
-            </p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <Brain className="w-6 h-6 text-orange-400 mb-2" />
-            <p className="text-slate-400 text-sm mb-1">Learning Streak</p>
-            <p className="text-3xl font-bold text-white">
-              {progress?.learningStreak.current || 0} days
             </p>
           </div>
         </div>
@@ -193,9 +185,9 @@ export default function Dashboard() {
         </div>
 
         {/* Recent Interviews */}
-        {progress?.mockInterviewHistory && progress.mockInterviewHistory.length > 0 && (
-          <div>
-            <h2 className="text-2xl font-bold text-white mb-6">Recent Interviews</h2>
+        <div>
+          <h2 className="text-2xl font-bold text-white mb-6">Recent Interviews</h2>
+          {progress?.mockInterviewHistory && progress.mockInterviewHistory.length > 0 ? (
             <div className="space-y-4">
               {progress.mockInterviewHistory.slice(0, 5).map((interview, idx) => (
                 <div key={idx} className="bg-slate-800 border border-slate-700 rounded-lg p-4 flex justify-between items-center">
@@ -207,8 +199,12 @@ export default function Dashboard() {
                 </div>
               ))}
             </div>
-          </div>
-        )}
+          ) : (
+            <div className="bg-slate-800 border border-slate-700 rounded-lg p-6 text-center">
+              <p className="text-slate-400">You have not yet attended any mock interviews</p>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
