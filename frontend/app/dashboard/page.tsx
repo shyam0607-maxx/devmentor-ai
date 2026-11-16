@@ -14,8 +14,7 @@ interface User {
 
 interface Progress {
   dsaProgress: { overallProgress: number };
-  mernProgress: { overallProgress: number };
-  meanProgress: { overallProgress: number };
+  fullStackProgress: { overallProgress: number };
   mockInterviewHistory: any[];
 }
 
@@ -108,7 +107,7 @@ export default function Dashboard() {
         </div>
 
         {/* Stats Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mb-12">
+        <div className="grid md:grid-cols-2 gap-6 mb-12">
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
             <BarChart3 className="w-6 h-6 text-cyan-400 mb-2" />
             <p className="text-slate-400 text-sm mb-1">DSA Progress</p>
@@ -118,16 +117,9 @@ export default function Dashboard() {
           </div>
           <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
             <Code2 className="w-6 h-6 text-blue-400 mb-2" />
-            <p className="text-slate-400 text-sm mb-1">MERN Progress</p>
+            <p className="text-slate-400 text-sm mb-1">Full Stack Development</p>
             <p className="text-3xl font-bold text-white">
-              {progress?.mernProgress.overallProgress || 0}%
-            </p>
-          </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
-            <GitBranch className="w-6 h-6 text-violet-400 mb-2" />
-            <p className="text-slate-400 text-sm mb-1">MEAN Progress</p>
-            <p className="text-3xl font-bold text-white">
-              {progress?.meanProgress.overallProgress || 0}%
+              {progress?.fullStackProgress?.overallProgress || 0}%
             </p>
           </div>
         </div>

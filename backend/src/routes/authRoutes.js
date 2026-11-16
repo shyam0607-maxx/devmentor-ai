@@ -29,33 +29,15 @@ router.use((req, res, next) => {
         overallProgress: 0,
         quizAverageScore: 0,
       },
-    mernProgress: {
-      completedModules: [],
-      totalModules: 4,
+    fullStackProgress: {
+      completedTopics: [],
+      totalTopics: 15,
       overallProgress: 0,
     },
-    meanProgress: {
-      completedModules: [],
-      totalModules: 4,
-      overallProgress: 0,
-    },
-    mockInterviewHistory: [
-      {
-        topic: 'Arrays & Strings',
-        difficulty: 'beginner',
-        score: 78,
-        duration: 45,
-        date: new Date(),
-      },
-    ],
+    mockInterviewHistory: [],
     codingProblems: {
-      attempted: 15,
-      solved: 12,
-    },
-    learningStreak: {
-      current: 5,
-      longest: 12,
-      lastActivityDate: new Date(),
+      attempted: 0,
+      solved: 0,
     },
     });
   }
@@ -96,11 +78,9 @@ router.post('/signup', async (req, res) => {
     learningProgress.set(userId, {
       userId,
       dsaProgress: { totalTopics: 18, overallProgress: 0, completedTopics: [] },
-      mernProgress: { totalModules: 4, overallProgress: 0 },
-      meanProgress: { totalModules: 4, overallProgress: 0 },
+      fullStackProgress: { totalTopics: 15, overallProgress: 0, completedTopics: [] },
       mockInterviewHistory: [],
       codingProblems: { attempted: 0, solved: 0 },
-      learningStreak: { current: 0, longest: 0, lastActivityDate: null },
     });
 
     const token = jwt.sign({ userId: user.id }, process.env.JWT_SECRET || 'secret-key', { expiresIn: '7d' });

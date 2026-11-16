@@ -42,33 +42,15 @@ router.get('/progress', authMiddleware, async (req, res) => {
     res.json({
       userId: req.userId,
       dsaProgress: userProgress.dsaProgress,
-      mernProgress: {
-        completedModules: [],
-        totalModules: 4,
+      fullStackProgress: {
+        completedTopics: [],
+        totalTopics: 15,
         overallProgress: 0,
       },
-      meanProgress: {
-        completedModules: [],
-        totalModules: 4,
-        overallProgress: 0,
-      },
-      mockInterviewHistory: [
-        {
-          topic: 'Arrays & Strings',
-          difficulty: 'beginner',
-          score: 78,
-          duration: 45,
-          date: new Date(),
-        },
-      ],
+      mockInterviewHistory: [],
       codingProblems: {
-        attempted: 15,
-        solved: 12,
-      },
-      learningStreak: {
-        current: 5,
-        longest: 12,
-        lastActivityDate: new Date(),
+        attempted: 0,
+        solved: 0,
       },
     });
   } catch (err) {
