@@ -176,6 +176,34 @@ export default function Dashboard() {
           </div>
         </div>
 
+        {/* Interview Bot Section */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6">Mock Interview Bot</h2>
+          <Link href="/interview" className="block">
+            <div className="bg-gradient-to-br from-purple-900/40 to-slate-900/40 border border-purple-700/50 rounded-lg p-8 hover:border-purple-400 hover:shadow-lg hover:shadow-purple-400/20 transition cursor-pointer">
+              <div className="flex items-center gap-4 mb-4">
+                <div className="p-3 bg-purple-400/20 rounded-lg">
+                  <svg className="w-8 h-8 text-purple-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M2 11a1 1 0 011-1h2a1 1 0 011 1v5a1 1 0 01-1 1H3a1 1 0 01-1-1v-5zM8 7a1 1 0 011-1h2a1 1 0 011 1v9a1 1 0 01-1 1H9a1 1 0 01-1-1V7zM14 4a1 1 0 011-1h2a1 1 0 011 1v12a1 1 0 01-1 1h-2a1 1 0 01-1-1V4z" />
+                  </svg>
+                </div>
+                <div>
+                  <h3 className="text-2xl font-bold text-white">AI Interview Bot</h3>
+                  <p className="text-slate-400 text-sm">
+                    Practice with voice and video
+                  </p>
+                </div>
+              </div>
+              <p className="text-slate-300 mb-4">
+                Take interactive mock interviews with voice recognition, camera feed, and real-time feedback. The bot will introduce itself, ask questions, and provide correct answers at the end.
+              </p>
+              <div className="flex items-center gap-2 text-purple-400 font-semibold hover:text-purple-300 transition">
+                Start Interview Bot →
+              </div>
+            </div>
+          </Link>
+        </div>
+
         {/* Recent Interviews */}
         <div>
           <h2 className="text-2xl font-bold text-white mb-6">Recent Interviews</h2>

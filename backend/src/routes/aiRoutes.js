@@ -80,4 +80,37 @@ router.post('/interview', authMiddleware, async (req, res) => {
   }
 });
 
+// Evaluate answer endpoint
+router.post('/evaluate-answer', authMiddleware, async (req, res) => {
+  try {
+    const { question, userAnswer, correctAnswer, topic } = req.body;
+
+    if (!question || !userAnswer) {
+      return res.status(400).json({ error: 'Question and answer are required' });
+    }
+
+    // Simple keyword matching for evaluation (without API calls)
+    const correctKeywords = correctAnswer.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+    const userKeywords = userAnswer.toLowerCase().split(/\s+/).filter(w => w.length > 3);
+
+    const matchedKeywords = correctKeywords.filter(kw =>
+      userKeywords.some(ukw => ukw.includes(kw) || kw.includes(ukw))
+    );
+
+    const matchPercentage = (matchedKeywords.length / correctKeywords.length) * 100;
+    const isCorrect = matchPercentage >= 40; // 40% keyword match is considered correct
+
+    res.json({
+      isCorrect,
+      feedback: isCorrect
+        ? 'Your answer demonstrates a good understanding of the concept!'
+        : 'Your answer is partially correct. Review the concept more carefully.',
+      matchPercentage: Math.round(matchPercentage)
+    });
+  } catch (err) {
+    console.error('Evaluation error:', err.message);
+    res.status(500).json({ error: 'Failed to evaluate answer' });
+  }
+});
+
 module.exports = router;
