@@ -3,11 +3,6 @@ const authMiddleware = require('../middleware/auth');
 
 const router = express.Router();
 
-// In-memory storage (shared from authRoutes)
-// For this demo, we'll use module-level storage
-const usersStore = new Map();
-const progressStore = new Map();
-
 // Get user profile
 router.get('/profile', authMiddleware, async (req, res) => {
   try {
@@ -26,15 +21,27 @@ router.get('/profile', authMiddleware, async (req, res) => {
 // Get learning progress
 router.get('/progress', authMiddleware, async (req, res) => {
   try {
+    // Get user's stored progress from app.locals
+    const learningProgress = req.app.locals.learningProgress;
+    let userProgress = learningProgress.get(req.userId);
+
+    if (!userProgress) {
+      userProgress = {
+        userId: req.userId,
+        dsaProgress: {
+          completedTopics: [],
+          totalTopics: 18,
+          overallProgress: 0,
+          quizAverageScore: 0,
+        },
+      };
+      learningProgress.set(req.userId, userProgress);
+    }
+
     // Return progress data
     res.json({
       userId: req.userId,
-      dsaProgress: {
-        completedTopics: [],
-        totalTopics: 18,
-        overallProgress: 0,
-        quizAverageScore: 0,
-      },
+      dsaProgress: userProgress.dsaProgress,
       mernProgress: {
         completedModules: [],
         totalModules: 4,
@@ -91,17 +98,42 @@ router.post('/complete-topic', authMiddleware, async (req, res) => {
       return res.status(400).json({ error: 'Topic ID is required' });
     }
 
-    // Calculate progress: 18 total DSA topics across 10 modules
-    // Module 1-8: 8 topics, Module 9: 3 topics, Module 10: 3 topics
-    // Progress = (completedTopics / 18) * 100
+    // Get user's learning progress from app.locals
+    const learningProgress = req.app.locals.learningProgress;
+
+    // Get user progress
+    let userProgress = learningProgress.get(req.userId);
+    if (!userProgress) {
+      userProgress = {
+        userId: req.userId,
+        dsaProgress: {
+          completedTopics: [],
+          totalTopics: 18,
+          overallProgress: 0,
+          quizAverageScore: 0,
+        },
+      };
+    }
+
+    // Add topic to completed if not already there
+    if (!userProgress.dsaProgress.completedTopics.includes(topicId)) {
+      userProgress.dsaProgress.completedTopics.push(topicId);
+    }
+
+    // Calculate overall progress: (completedTopics / totalTopics) * 100
     const totalTopics = 18;
-    const topicsPerIncrement = 100 / totalTopics; // ~5.56% per topic
+    const completedCount = userProgress.dsaProgress.completedTopics.length;
+    userProgress.dsaProgress.overallProgress = (completedCount / totalTopics) * 100;
+
+    // Store updated progress
+    learningProgress.set(req.userId, userProgress);
 
     res.json({
       message: 'Topic marked as completed',
       topicId,
       moduleNumber,
-      progressIncrement: topicsPerIncrement,
+      completedTopics: userProgress.dsaProgress.completedTopics,
+      overallProgress: userProgress.dsaProgress.overallProgress,
     });
   } catch (err) {
     res.status(500).json({ error: err.message });

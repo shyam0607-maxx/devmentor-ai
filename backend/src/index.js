@@ -16,6 +16,10 @@ const learningProgress = new Map();
 
 console.log('✓ Using in-memory database (no MongoDB needed)');
 
+// Attach storage to app so all routes can access it
+app.locals.users = users;
+app.locals.learningProgress = learningProgress;
+
 // Routes
 app.use('/api/auth', require('./routes/authRoutes'));
 app.use('/api/users', require('./routes/userRoutes'));

@@ -4,57 +4,62 @@ const bcrypt = require('bcryptjs');
 
 const router = express.Router();
 
-// In-memory storage
-const users = new Map();
-const learningProgress = new Map();
+// Initialize storage on first request (middleware)
+router.use((req, res, next) => {
+  if (!req.app.locals.users) {
+    req.app.locals.users = new Map();
+    req.app.locals.learningProgress = new Map();
 
-// Demo user
-const demoUser = {
-  id: 'demo-user-1',
-  name: 'Demo Student',
-  email: 'demo@example.com',
-  password: bcrypt.hashSync('demo123', 10),
-  role: 'student',
-  learningPath: 'dsa',
-};
-users.set('demo@example.com', demoUser);
+    // Demo user
+    const demoUser = {
+      id: 'demo-user-1',
+      name: 'Demo Student',
+      email: 'demo@example.com',
+      password: bcrypt.hashSync('demo123', 10),
+      role: 'student',
+      learningPath: 'dsa',
+    };
+    req.app.locals.users.set('demo@example.com', demoUser);
 
-learningProgress.set('demo-user-1', {
-  userId: 'demo-user-1',
-  dsaProgress: {
-    completedTopics: [],
-    totalTopics: 18,
-    overallProgress: 0,
-    quizAverageScore: 0,
-  },
-  mernProgress: {
-    completedModules: [],
-    totalModules: 4,
-    overallProgress: 0,
-  },
-  meanProgress: {
-    completedModules: [],
-    totalModules: 4,
-    overallProgress: 0,
-  },
-  mockInterviewHistory: [
-    {
-      topic: 'Arrays & Strings',
-      difficulty: 'beginner',
-      score: 78,
-      duration: 45,
-      date: new Date(),
+    req.app.locals.learningProgress.set('demo-user-1', {
+      userId: 'demo-user-1',
+      dsaProgress: {
+        completedTopics: [],
+        totalTopics: 18,
+        overallProgress: 0,
+        quizAverageScore: 0,
+      },
+    mernProgress: {
+      completedModules: [],
+      totalModules: 4,
+      overallProgress: 0,
     },
-  ],
-  codingProblems: {
-    attempted: 15,
-    solved: 12,
-  },
-  learningStreak: {
-    current: 5,
-    longest: 12,
-    lastActivityDate: new Date(),
-  },
+    meanProgress: {
+      completedModules: [],
+      totalModules: 4,
+      overallProgress: 0,
+    },
+    mockInterviewHistory: [
+      {
+        topic: 'Arrays & Strings',
+        difficulty: 'beginner',
+        score: 78,
+        duration: 45,
+        date: new Date(),
+      },
+    ],
+    codingProblems: {
+      attempted: 15,
+      solved: 12,
+    },
+    learningStreak: {
+      current: 5,
+      longest: 12,
+      lastActivityDate: new Date(),
+    },
+    });
+  }
+  next();
 });
 
 // Sign Up
@@ -65,6 +70,9 @@ router.post('/signup', async (req, res) => {
     if (!name || !email || !password) {
       return res.status(400).json({ error: 'Please provide all required fields' });
     }
+
+    const users = req.app.locals.users;
+    const learningProgress = req.app.locals.learningProgress;
 
     if (users.has(email)) {
       return res.status(400).json({ error: 'User already exists' });
@@ -116,6 +124,7 @@ router.post('/login', async (req, res) => {
       return res.status(400).json({ error: 'Please provide email and password' });
     }
 
+    const users = req.app.locals.users;
     const user = users.get(email);
     if (!user) {
       return res.status(401).json({ error: 'Invalid credentials' });
