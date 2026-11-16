@@ -98,14 +98,26 @@ export default function InterviewPage() {
   // Start camera
   const startCamera = async () => {
     try {
-      const stream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+      if (typeof navigator === 'undefined' || !navigator.mediaDevices) {
+        alert('Camera not supported in this browser');
+        return;
+      }
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: { width: { ideal: 640 }, height: { ideal: 480 } },
+        audio: true
+      });
       if (videoRef.current) {
         videoRef.current.srcObject = stream;
         setCameraActive(true);
       }
-    } catch (err) {
+    } catch (err: any) {
       console.error('Camera error:', err);
-      alert('Unable to access camera. Please check permissions.');
+      const errorMsg = err?.name === 'NotAllowedError'
+        ? 'Camera/microphone permission denied. Please allow in browser settings.'
+        : err?.name === 'NotFoundError'
+        ? 'Camera/microphone not found. Please check your device.'
+        : 'Unable to access camera. Please check permissions.';
+      alert(errorMsg);
     }
   };
 
@@ -118,14 +130,40 @@ export default function InterviewPage() {
     }
   };
 
-  // Text to speech
+  // Get female voice
+  const getFemaleVoice = () => {
+    if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+    const voices = window.speechSynthesis.getVoices();
+    // Try to find a female voice - prefer Google voices or female-sounding ones
+    const femaleVoice = voices.find(voice =>
+      voice.name.includes('Female') ||
+      voice.name.includes('woman') ||
+      voice.name.includes('female') ||
+      (voice.name.includes('Google') && voice.name.includes('UK English')) ||
+      voice.name.includes('Samantha') ||
+      voice.name.includes('Victoria') ||
+      voice.name.includes('Moira')
+    ) || voices.find(voice => voice.name.includes('female'));
+    return femaleVoice || (voices.length > 0 ? voices[0] : null);
+  };
+
+  // Text to speech with female voice
   const speakText = (text: string) => {
     if (typeof window !== 'undefined' && 'speechSynthesis' in window) {
       window.speechSynthesis.cancel();
       const utterance = new SpeechSynthesisUtterance(text);
-      utterance.rate = 0.9;
+      utterance.rate = 0.95;
+      utterance.pitch = 1.2;
+      utterance.volume = 1;
+
+      const femaleVoice = getFemaleVoice();
+      if (femaleVoice) {
+        utterance.voice = femaleVoice;
+      }
+
       utterance.onstart = () => setIsSpeaking(true);
       utterance.onend = () => setIsSpeaking(false);
+      utterance.onerror = () => setIsSpeaking(false);
       window.speechSynthesis.speak(utterance);
     }
   };
@@ -206,24 +244,38 @@ export default function InterviewPage() {
       setInterviewResults([...interviewResults, result]);
 
       // Provide feedback
-      const feedback = evaluation.isCorrect
-        ? 'Correct! Well done.'
-        : `Incorrect. The correct answer is: ${currentQuestion.correctAnswer}`;
-      speakText(feedback);
+      if (evaluation.isCorrect) {
+        speakText('Correct! Well done. That is an excellent answer.');
 
-      // Move to next question
-      setTimeout(() => {
-        if (currentQuestionIndex + 1 < questions.length) {
-          const nextQuestion = questions[currentQuestionIndex + 1];
-          setCurrentQuestion(nextQuestion);
-          setCurrentQuestionIndex(currentQuestionIndex + 1);
-          setUserAnswer('');
-          speakText(nextQuestion.question);
-        } else {
-          // End interview
-          endInterview();
-        }
-      }, 3000);
+        // Move to next question after 3 seconds
+        setTimeout(() => {
+          if (currentQuestionIndex + 1 < questions.length) {
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            setCurrentQuestion(nextQuestion);
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setUserAnswer('');
+            setTimeout(() => speakText(nextQuestion.question), 500);
+          } else {
+            endInterview();
+          }
+        }, 3000);
+      } else {
+        // For incorrect answers, provide the correct answer
+        speakText(`I'm sorry, that's incorrect. The correct answer is: ${currentQuestion.correctAnswer}`);
+
+        // Move to next question after 5 seconds (longer time to hear the correct answer)
+        setTimeout(() => {
+          if (currentQuestionIndex + 1 < questions.length) {
+            const nextQuestion = questions[currentQuestionIndex + 1];
+            setCurrentQuestion(nextQuestion);
+            setCurrentQuestionIndex(currentQuestionIndex + 1);
+            setUserAnswer('');
+            setTimeout(() => speakText(nextQuestion.question), 500);
+          } else {
+            endInterview();
+          }
+        }, 5000);
+      }
     } catch (err) {
       console.error('Error evaluating answer:', err);
     }
