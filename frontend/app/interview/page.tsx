@@ -30,6 +30,7 @@ export default function InterviewPage() {
   const router = useRouter();
   const videoRef = useRef<HTMLVideoElement>(null);
   const recognitionRef = useRef<any>(null);
+  const submitAnswerRef = useRef<() => void>(() => {});
 
   const [topics, setTopics] = useState<Topic[]>([]);
   const [loading, setLoading] = useState(true);
@@ -76,24 +77,81 @@ export default function InterviewPage() {
         recognitionRef.current.continuous = false;
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = 'en-US';
+        recognitionRef.current.maxAlternatives = 1;
 
-        recognitionRef.current.onstart = () => setIsListening(true);
-        recognitionRef.current.onend = () => setIsListening(false);
+        recognitionRef.current.onstart = () => {
+          console.log('✅ Speech recognition started - listening for voice...');
+          setIsListening(true);
+          setTranscript('');
+          setUserAnswer('');
+        };
+
+        recognitionRef.current.onend = () => {
+          console.log('⏹️ Speech recognition ended');
+          setIsListening(false);
+
+          // Auto-submit after speech ends
+          setTimeout(() => {
+            if (submitAnswerRef.current) {
+              console.log('Auto-submitting answer...');
+              submitAnswerRef.current();
+            }
+          }, 500);
+        };
+
         recognitionRef.current.onresult = (event: any) => {
           let interimTranscript = '';
+          let finalTranscript = '';
+
           for (let i = event.resultIndex; i < event.results.length; i++) {
-            const transcript = event.results[i][0].transcript;
+            const transcript = event.results[i][0].transcript.trim();
+            const confidence = event.results[i][0].confidence;
+            console.log(`📝 Result ${i}: "${transcript}" (confidence: ${(confidence * 100).toFixed(0)}%, final: ${event.results[i].isFinal})`);
+
             if (event.results[i].isFinal) {
-              setUserAnswer(transcript);
+              finalTranscript += transcript + ' ';
             } else {
               interimTranscript += transcript;
             }
           }
-          setTranscript(interimTranscript);
+
+          if (finalTranscript) {
+            const trimmedAnswer = finalTranscript.trim();
+            console.log('✅ Final transcript captured:', trimmedAnswer);
+            setUserAnswer(trimmedAnswer);
+            setTranscript('');
+          } else if (interimTranscript) {
+            console.log('⏳ Interim transcript:', interimTranscript);
+            setTranscript(interimTranscript);
+          }
         };
+
+        recognitionRef.current.onerror = (event: any) => {
+          console.error('❌ Speech recognition error:', event.error);
+          setIsListening(false);
+
+          const errorMessages: { [key: string]: string } = {
+            'no-speech': 'No speech detected. Please speak clearly and try again.',
+            'audio-capture': 'Microphone not found. Check permissions and try again.',
+            'network': 'Network error. Check your internet connection.',
+            'not-allowed': 'Microphone permission denied. Allow access in browser settings.',
+            'service-not-allowed': 'Speech recognition service not allowed.',
+          };
+
+          const errorMsg = errorMessages[event.error] || `Speech error: ${event.error}`;
+          alert(errorMsg);
+        };
+      } else {
+        console.warn('Speech Recognition not supported in this browser');
+        alert('Speech Recognition is not supported in your browser. Please use Chrome, Edge, or Safari.');
       }
     }
   }, [router]);
+
+  // Update submitAnswer ref for auto-submit
+  useEffect(() => {
+    submitAnswerRef.current = submitAnswer;
+  }, [submitAnswer]);
 
   // Start camera
   const startCamera = async () => {
@@ -170,10 +228,27 @@ export default function InterviewPage() {
 
   // Start listening to user answer
   const startListening = () => {
-    if (typeof window !== 'undefined' && recognitionRef.current) {
-      setUserAnswer('');
-      setTranscript('');
-      recognitionRef.current.start();
+    if (typeof window !== 'undefined') {
+      if (!recognitionRef.current) {
+        alert('Speech Recognition not available in your browser.\n\nSupported: Chrome, Edge, Safari\n\nPlease type your answer manually or use a supported browser.');
+        return;
+      }
+
+      try {
+        setUserAnswer('');
+        setTranscript('');
+        setIsListening(true);
+        console.log('🎤 Starting speech recognition...');
+        recognitionRef.current.start();
+      } catch (err: any) {
+        console.error('❌ Error starting speech recognition:', err);
+        setIsListening(false);
+
+        const errorMsg = err?.message === 'recognition has already started'
+          ? 'Speech recognition already active. Please wait.'
+          : 'Microphone error. Please:\n• Check microphone permissions\n• Ensure no other app uses the microphone\n• Try refreshing the page';
+        alert(errorMsg);
+      }
     }
   };
 
@@ -218,7 +293,7 @@ export default function InterviewPage() {
   // Submit answer
   const submitAnswer = async () => {
     if (!currentQuestion || !userAnswer.trim()) {
-      alert('Please provide an answer');
+      console.log('⚠️ Cannot submit: no answer or no question');
       return;
     }
 
@@ -432,13 +507,35 @@ export default function InterviewPage() {
                     </div>
                   )}
 
-                  <button
-                    onClick={submitAnswer}
-                    disabled={isSpeaking}
-                    className="w-full flex items-center justify-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold disabled:opacity-50"
-                  >
-                    <Send className="w-4 h-4" /> Submit Answer
-                  </button>
+                  {isListening && (
+                    <div className="mb-4 p-4 bg-purple-900/40 border border-purple-600 rounded animate-pulse">
+                      <p className="text-purple-300 text-center font-semibold">🎤 Listening... Speak your answer</p>
+                    </div>
+                  )}
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={submitAnswer}
+                      disabled={isSpeaking || !userAnswer.trim()}
+                      className="flex-1 flex items-center justify-center gap-2 px-6 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold disabled:opacity-50 disabled:cursor-not-allowed"
+                    >
+                      <Send className="w-4 h-4" /> Submit Answer
+                    </button>
+
+                    {isListening && (
+                      <button
+                        onClick={() => {
+                          if (recognitionRef.current) {
+                            recognitionRef.current.stop();
+                            setIsListening(false);
+                          }
+                        }}
+                        className="px-6 py-3 bg-red-500 hover:bg-red-600 text-white rounded-lg transition font-semibold"
+                      >
+                        Stop
+                      </button>
+                    )}
+                  </div>
                 </div>
               </div>
             </div>
