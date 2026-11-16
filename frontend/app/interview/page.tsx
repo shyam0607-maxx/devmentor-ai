@@ -73,10 +73,11 @@ export default function InterviewPage() {
       const SpeechRecognition = (window as any).webkitSpeechRecognition || (window as any).SpeechRecognition;
       if (SpeechRecognition) {
         recognitionRef.current = new SpeechRecognition();
-        recognitionRef.current.continuous = false;
+        recognitionRef.current.continuous = true;
         recognitionRef.current.interimResults = true;
         recognitionRef.current.lang = 'en-US';
         recognitionRef.current.maxAlternatives = 1;
+        console.log('✅ Speech Recognition initialized successfully');
 
         recognitionRef.current.onstart = () => {
           console.log('✅ Speech recognition started - listening for voice...');
@@ -118,19 +119,34 @@ export default function InterviewPage() {
         };
 
         recognitionRef.current.onerror = (event: any) => {
-          console.error('❌ Speech recognition error:', event.error);
+          console.error('Speech recognition error:', event.error);
           setIsListening(false);
 
           const errorMessages: { [key: string]: string } = {
-            'no-speech': 'No speech detected. Please speak clearly and try again.',
-            'audio-capture': 'Microphone not found. Check permissions and try again.',
-            'network': 'Network error. Check your internet connection.',
-            'not-allowed': 'Microphone permission denied. Allow access in browser settings.',
-            'service-not-allowed': 'Speech recognition service not allowed.',
+            'no-speech': 'No speech detected. Make sure to:\n• Speak clearly and loudly\n• Check microphone is working\n• Speak for at least 1 second\n\nTry again!',
+            'audio-capture': 'Microphone not found:\n• Check microphone is connected\n• Grant browser permission\n• Try a different browser',
+            'network': 'Connection error. Check internet and try again.',
+            'not-allowed': 'Microphone permission denied:\n• Click the camera icon in address bar\n• Allow microphone access\n• Reload the page',
+            'service-not-allowed': 'Speech service blocked. Try using Chrome or Edge browser.',
           };
 
           const errorMsg = errorMessages[event.error] || `Speech error: ${event.error}`;
+          console.log('Error message shown:', errorMsg);
           alert(errorMsg);
+
+          // Auto-retry for no-speech errors
+          if (event.error === 'no-speech') {
+            console.log('Retrying speech recognition...');
+            setTimeout(() => {
+              if (recognitionRef.current) {
+                try {
+                  recognitionRef.current.start();
+                } catch (e) {
+                  console.error('Could not retry:', e);
+                }
+              }
+            }, 1000);
+          }
         };
       } else {
         console.warn('Speech Recognition not supported in this browser');
@@ -224,16 +240,27 @@ export default function InterviewPage() {
         setUserAnswer('');
         setTranscript('');
         setIsListening(true);
-        console.log('🎤 Starting speech recognition...');
-        recognitionRef.current.start();
-      } catch (err: any) {
-        console.error('❌ Error starting speech recognition:', err);
-        setIsListening(false);
+        console.log('Starting speech recognition...');
+        console.log('Recognition object ready:', !!recognitionRef.current);
 
-        const errorMsg = err?.message === 'recognition has already started'
-          ? 'Speech recognition already active. Please wait.'
-          : 'Microphone error. Please:\n• Check microphone permissions\n• Ensure no other app uses the microphone\n• Try refreshing the page';
-        alert(errorMsg);
+        // Stop any existing recognition first
+        try {
+          recognitionRef.current.stop();
+          console.log('Stopped previous recognition');
+        } catch (e) {
+          console.log('No previous recognition to stop');
+        }
+
+        // Wait and then start
+        setTimeout(() => {
+          recognitionRef.current.start();
+          console.log('Speech recognition started');
+        }, 100);
+
+      } catch (err: any) {
+        console.error('Error starting speech recognition:', err);
+        setIsListening(false);
+        alert('Microphone error. Please:\n\n1. Grant microphone permission\n2. Close other apps using microphone\n3. Try refreshing the page\n4. Use Chrome, Edge, or Safari\n\nOr type your answer manually.');
       }
     }
   };
