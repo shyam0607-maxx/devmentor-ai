@@ -123,7 +123,7 @@ router.post('/complete-topic', authMiddleware, async (req, res) => {
     // Calculate overall progress: (completedTopics / totalTopics) * 100
     const totalTopics = 18;
     const completedCount = userProgress.dsaProgress.completedTopics.length;
-    userProgress.dsaProgress.overallProgress = (completedCount / totalTopics) * 100;
+    userProgress.dsaProgress.overallProgress = Math.round((completedCount / totalTopics) * 100 * 100) / 100;
 
     // Store updated progress
     learningProgress.set(req.userId, userProgress);
