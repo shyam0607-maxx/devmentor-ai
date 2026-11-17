@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
@@ -29,15 +29,25 @@ interface Technology {
   topics: Topic[];
 }
 
-export default function TechnologyPage() {
+function TechnologyContent() {
   const router = useRouter();
   const params = useParams();
-  const techId = params.techId as string;
+  const techId = (params?.techId as string) || '';
 
   const [technology, setTechnology] = useState<Technology | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!techId);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !techId) {
+      setLoading(false);
+      return;
+    }
+
     const loadTechnology = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -56,7 +66,7 @@ export default function TechnologyPage() {
     };
 
     loadTechnology();
-  }, [techId, router]);
+  }, [techId, router, mounted]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -64,7 +74,7 @@ export default function TechnologyPage() {
     router.push('/');
   };
 
-  if (loading) {
+  if (!mounted || loading) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
         <div className="text-white text-lg">Loading...</div>
@@ -193,5 +203,17 @@ export default function TechnologyPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TechnologyPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading technology...</div>
+      </div>
+    }>
+      <TechnologyContent />
+    </Suspense>
   );
 }

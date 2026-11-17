@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useRouter, useParams } from 'next/navigation';
 import Link from 'next/link';
 import { apiCall } from '@/lib/api';
@@ -21,18 +21,28 @@ interface Topic {
   };
 }
 
-export default function TopicPage() {
+function TopicContent() {
   const router = useRouter();
   const params = useParams();
-  const techId = params.techId as string;
-  const topicId = params.topicId as string;
+  const techId = (params?.techId as string) || '';
+  const topicId = (params?.topicId as string) || '';
 
   const [topic, setTopic] = useState<Topic | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(!!techId && !!topicId);
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [copied, setCopied] = useState(false);
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted || !techId || !topicId) {
+      setLoading(false);
+      return;
+    }
+
     const loadTopic = async () => {
       try {
         const token = localStorage.getItem('token');
@@ -51,7 +61,7 @@ export default function TopicPage() {
     };
 
     loadTopic();
-  }, [techId, topicId, router]);
+  }, [techId, topicId, router, mounted]);
 
   const handleLogout = () => {
     localStorage.removeItem('token');
@@ -62,9 +72,11 @@ export default function TopicPage() {
   const handleCopy = () => {
     if (topic) {
       const code = topic.codeExamples[selectedLanguage as keyof typeof topic.codeExamples];
-      navigator.clipboard.writeText(code);
-      setCopied(true);
-      setTimeout(() => setCopied(false), 2000);
+      if (code) {
+        navigator.clipboard.writeText(code);
+        setCopied(true);
+        setTimeout(() => setCopied(false), 2000);
+      }
     }
   };
 
@@ -302,5 +314,17 @@ export default function TopicPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TopicPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading topic...</div>
+      </div>
+    }>
+      <TopicContent />
+    </Suspense>
   );
 }
