@@ -51,15 +51,16 @@ function TechnologyContent() {
     const loadTechnology = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/login');
-          return;
-        }
 
-        const techData = await apiCall(`/fsd/technology/${techId}`);
-        setTechnology(techData);
-      } catch (err) {
-        console.error('Failed to load technology:', err);
+        // Try to load from API if logged in
+        if (token) {
+          try {
+            const techData = await apiCall(`/fsd/technology/${techId}`);
+            setTechnology(techData);
+          } catch (err) {
+            console.error('Failed to load technology:', err);
+          }
+        }
       } finally {
         setLoading(false);
       }

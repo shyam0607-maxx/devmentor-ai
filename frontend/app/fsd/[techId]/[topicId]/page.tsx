@@ -46,15 +46,16 @@ function TopicContent() {
     const loadTopic = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/login');
-          return;
-        }
 
-        const topicData = await apiCall(`/fsd/technology/${techId}/topic/${topicId}`);
-        setTopic(topicData);
-      } catch (err) {
-        console.error('Failed to load topic:', err);
+        // Try to load from API if logged in
+        if (token) {
+          try {
+            const topicData = await apiCall(`/fsd/technology/${techId}/topic/${topicId}`);
+            setTopic(topicData);
+          } catch (err) {
+            console.error('Failed to load topic:', err);
+          }
+        }
       } finally {
         setLoading(false);
       }

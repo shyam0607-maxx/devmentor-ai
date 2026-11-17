@@ -61,18 +61,16 @@ export default function FSDPage() {
     const loadTechnologies = async () => {
       try {
         const token = localStorage.getItem('token');
-        if (!token) {
-          router.push('/login');
-          return;
-        }
 
-        // Try to load from API, but fall back to default if it fails
-        try {
-          const techData = await apiCall('/fsd/technologies');
-          setTechnologies(techData);
-        } catch (apiErr) {
-          console.warn('API call failed, using default technologies:', apiErr);
-          // Keep default technologies
+        // Try to load from API if logged in, but always show default data
+        if (token) {
+          try {
+            const techData = await apiCall('/fsd/technologies');
+            setTechnologies(techData);
+          } catch (apiErr) {
+            console.warn('API call failed, using default technologies:', apiErr);
+            // Keep default technologies
+          }
         }
       } finally {
         setLoading(false);
