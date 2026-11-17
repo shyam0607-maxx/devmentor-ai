@@ -46,6 +46,9 @@ export default function InterviewPage() {
   const [botIntroduced, setBotIntroduced] = useState(false);
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
+  const [showDeviceTest, setShowDeviceTest] = useState(false);
+  const [micTestResult, setMicTestResult] = useState<string | null>(null);
+  const [speakerTestResult, setSpeakerTestResult] = useState<string | null>(null);
 
   // Load topics
   useEffect(() => {
@@ -190,21 +193,55 @@ export default function InterviewPage() {
     }
   };
 
-  // Get female voice
+  // Get female voice - prioritize sweet, clear female voices
   const getFemaleVoice = () => {
     if (typeof window === 'undefined' || !('speechSynthesis' in window)) return null;
+
     const voices = window.speechSynthesis.getVoices();
-    // Try to find a female voice - prefer Google voices or female-sounding ones
+    console.log('Available voices:', voices.map(v => v.name));
+
+    // Priority 1: Explicit female voices with good names
+    const priorityNames = [
+      'Victoria',
+      'Samantha',
+      'Moira',
+      'Fiona',
+      'Google UK English Female',
+      'Google US English Female',
+      'Microsoft Zira',
+      'Microsoft Aria',
+      'Google English US Female',
+    ];
+
+    for (const name of priorityNames) {
+      const voice = voices.find(v => v.name.includes(name));
+      if (voice) {
+        console.log('Using priority voice:', voice.name);
+        return voice;
+      }
+    }
+
+    // Priority 2: Any voice explicitly marked as female
     const femaleVoice = voices.find(voice =>
-      voice.name.includes('Female') ||
-      voice.name.includes('woman') ||
-      voice.name.includes('female') ||
-      (voice.name.includes('Google') && voice.name.includes('UK English')) ||
-      voice.name.includes('Samantha') ||
-      voice.name.includes('Victoria') ||
-      voice.name.includes('Moira')
-    ) || voices.find(voice => voice.name.includes('female'));
-    return femaleVoice || (voices.length > 0 ? voices[0] : null);
+      voice.name.toLowerCase().includes('female') ||
+      voice.name.toLowerCase().includes('woman') ||
+      voice.name.toLowerCase().includes('lady')
+    );
+    if (femaleVoice) {
+      console.log('Using female-marked voice:', femaleVoice.name);
+      return femaleVoice;
+    }
+
+    // Priority 3: Google voices (usually better quality)
+    const googleVoice = voices.find(v => v.name.includes('Google'));
+    if (googleVoice) {
+      console.log('Using Google voice:', googleVoice.name);
+      return googleVoice;
+    }
+
+    // Fallback: First available voice
+    console.log('Using default voice:', voices[1]?.name || voices[0]?.name);
+    return voices.length > 1 ? voices[1] : voices[0];
   };
 
   // Text to speech with female voice
@@ -226,6 +263,42 @@ export default function InterviewPage() {
       utterance.onerror = () => setIsSpeaking(false);
       window.speechSynthesis.speak(utterance);
     }
+  };
+
+  // Test microphone - record and playback
+  const testMicrophone = async () => {
+    try {
+      setMicTestResult('Testing microphone... Speak now!');
+      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+      const mediaRecorder = new MediaRecorder(stream);
+      const audioChunks: BlobPart[] = [];
+
+      mediaRecorder.ondataavailable = (e) => audioChunks.push(e.data);
+      mediaRecorder.start();
+
+      setTimeout(() => {
+        mediaRecorder.stop();
+        mediaRecorder.onstop = () => {
+          const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+          const audioUrl = URL.createObjectURL(audioBlob);
+          const audio = new Audio(audioUrl);
+          audio.play();
+          setMicTestResult('Microphone works! You should hear your voice played back.');
+
+          // Stop the stream
+          stream.getTracks().forEach(track => track.stop());
+        };
+      }, 3000);
+    } catch (err: any) {
+      setMicTestResult('Microphone test failed: ' + err.message);
+    }
+  };
+
+  // Test speaker - bot says test message
+  const testSpeaker = () => {
+    setSpeakerTestResult('Testing speaker...');
+    speakText('Hello! I am your AI interviewer. This is a test of my voice. Can you hear me clearly?');
+    setSpeakerTestResult('Speaker test: Listen carefully!');
   };
 
   // Start listening to user answer
@@ -270,16 +343,43 @@ export default function InterviewPage() {
     setSelectedTopic(topic);
     await startCamera();
     setStage('interview');
-
-    // Bot introduction
-    const introText = `Hello! I am your AI Interview Bot. I will be conducting a mock interview on ${topic.name}. I will ask you questions, and you need to answer them. After each answer, I will tell you if it's correct or not. At the end, I will provide you with the correct answers for all questions. Let's start!`;
-    speakText(introText);
     setBotIntroduced(true);
 
-    // Load questions
+    // Bot introduction - in parts with gaps
+    const intro1 = "Hi, I'm your AI interviewer";
+    const intro2 = `I will be conducting a mock interview on ${topic.name}`;
+    const intro3 = "I will ask you questions, and you need to answer them";
+    const intro4 = "After each answer, I will tell you if it's correct or not";
+    const intro5 = "At the end, I will provide you with the correct answers for all questions";
+    const intro6 = "Let's start!";
+
+    // Speak intro parts with gaps
+    speakText(intro1);
+
+    setTimeout(() => {
+      speakText(intro2);
+    }, 2500);
+
+    setTimeout(() => {
+      speakText(intro3);
+    }, 5500);
+
+    setTimeout(() => {
+      speakText(intro4);
+    }, 8000);
+
+    setTimeout(() => {
+      speakText(intro5);
+    }, 10500);
+
+    setTimeout(() => {
+      speakText(intro6);
+    }, 13000);
+
+    // Load questions after intro
     setTimeout(() => {
       loadQuestions(topic);
-    }, 5000);
+    }, 14500);
   };
 
   // Load questions for selected topic
@@ -415,6 +515,50 @@ export default function InterviewPage() {
             <div className="mb-12">
               <h1 className="text-4xl font-bold text-white mb-2">Mock Interview</h1>
               <p className="text-slate-400">Select a topic to start your interview</p>
+            </div>
+
+            {/* Device Test Section */}
+            <div className="bg-gradient-to-br from-purple-900/40 to-slate-900/40 border border-purple-700/50 rounded-lg p-8 mb-12">
+              <h2 className="text-2xl font-bold text-white mb-6">Test Your Devices</h2>
+              <p className="text-slate-300 mb-6">Before starting, test your microphone and speaker to ensure the interview works smoothly.</p>
+
+              <div className="grid md:grid-cols-2 gap-6">
+                {/* Microphone Test */}
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-white mb-3">Test Microphone</h3>
+                  <p className="text-slate-400 text-sm mb-4">Record 3 seconds of your voice and hear it played back.</p>
+                  <button
+                    onClick={testMicrophone}
+                    className="w-full px-4 py-3 bg-cyan-500 hover:bg-cyan-600 text-white rounded-lg transition font-semibold flex items-center justify-center gap-2"
+                  >
+                    <Mic className="w-4 h-4" /> Test Microphone
+                  </button>
+                  {micTestResult && (
+                    <p className={`mt-3 text-sm ${micTestResult.includes('failed') ? 'text-red-400' : 'text-green-400'}`}>
+                      {micTestResult}
+                    </p>
+                  )}
+                </div>
+
+                {/* Speaker Test */}
+                <div className="bg-slate-800 border border-slate-700 rounded-lg p-6">
+                  <h3 className="text-lg font-bold text-white mb-3">Test Speaker</h3>
+                  <p className="text-slate-400 text-sm mb-4">Listen to the AI interviewer's voice to ensure it's clear.</p>
+                  <button
+                    onClick={testSpeaker}
+                    className="w-full px-4 py-3 bg-purple-500 hover:bg-purple-600 text-white rounded-lg transition font-semibold flex items-center justify-center gap-2"
+                  >
+                    <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                      <path d="M9.383 3.076A1 1 0 0110 4v12a1 1 0 01-1.707.707L4.586 13H2a1 1 0 01-1-1V8a1 1 0 011-1h2.586l3.707-3.707a1 1 0 011.09-.217zM14.657 2.172a1 1 0 011.414 0A6.972 6.972 0 0118 10a6.972 6.972 0 01-1.929 4.828 1 1 0 01-1.414-1.414A4.972 4.972 0 0016 10c0-1.713-.67-3.26-1.757-4.414a1 1 0 010-1.414z" />
+                      <path d="M12.586 4.172a1 1 0 011.414 0A9.956 9.956 0 0120 10a9.956 9.956 0 01-5.914 7.828 1 1 0 01-1.414-1.414A7.956 7.956 0 0018 10a7.956 7.956 0 00-4.914-7.172 1 1 0 010-1.414z" />
+                    </svg>
+                    Test Speaker
+                  </button>
+                  {speakerTestResult && (
+                    <p className="mt-3 text-sm text-blue-400">{speakerTestResult}</p>
+                  )}
+                </div>
+              </div>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
