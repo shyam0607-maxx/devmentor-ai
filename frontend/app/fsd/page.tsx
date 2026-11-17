@@ -14,10 +14,48 @@ interface Technology {
   topicCount: number;
 }
 
+const DEFAULT_TECHNOLOGIES: Technology[] = [
+  {
+    id: '1',
+    name: 'MongoDB',
+    description: 'NoSQL Database for scalable applications',
+    color: 'green',
+    topicCount: 2
+  },
+  {
+    id: '2',
+    name: 'Express.js',
+    description: 'Fast, unopinionated web framework for Node.js',
+    color: 'yellow',
+    topicCount: 1
+  },
+  {
+    id: '3',
+    name: 'Node.js',
+    description: 'JavaScript runtime for server-side development',
+    color: 'blue',
+    topicCount: 1
+  },
+  {
+    id: '4',
+    name: 'React',
+    description: 'JavaScript library for building user interfaces',
+    color: 'cyan',
+    topicCount: 1
+  },
+  {
+    id: '5',
+    name: 'Angular',
+    description: 'Complete framework for building web applications',
+    color: 'red',
+    topicCount: 1
+  }
+];
+
 export default function FSDPage() {
   const router = useRouter();
-  const [technologies, setTechnologies] = useState<Technology[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [technologies, setTechnologies] = useState<Technology[]>(DEFAULT_TECHNOLOGIES);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loadTechnologies = async () => {
@@ -28,10 +66,14 @@ export default function FSDPage() {
           return;
         }
 
-        const techData = await apiCall('/fsd/technologies');
-        setTechnologies(techData);
-      } catch (err) {
-        console.error('Failed to load technologies:', err);
+        // Try to load from API, but fall back to default if it fails
+        try {
+          const techData = await apiCall('/fsd/technologies');
+          setTechnologies(techData);
+        } catch (apiErr) {
+          console.warn('API call failed, using default technologies:', apiErr);
+          // Keep default technologies
+        }
       } finally {
         setLoading(false);
       }
