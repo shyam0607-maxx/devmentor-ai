@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams, useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Copy, Check } from 'lucide-react';
 
 const TOPICS_DATA: Record<string, Record<string, any>> = {
@@ -745,13 +745,18 @@ export class CounterComponent implements OnInit {
 
 export default function TopicPage() {
   const params = useParams();
-  const techId = params?.techId as string;
-  const topicId = params?.topicId as string;
+  const techId = (params?.techId as string) || '';
+  const topicId = (params?.topicId as string) || '';
   const router = useRouter();
 
-  const topic = TOPICS_DATA[techId]?.[topicId];
+  const [mounted, setMounted] = useState(false);
+  const topic = mounted ? TOPICS_DATA[techId]?.[topicId] : null;
   const [selectedLanguage, setSelectedLanguage] = useState('javascript');
   const [copied, setCopied] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   if (!topic) {
     return (

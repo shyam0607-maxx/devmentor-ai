@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const TECH_DATA: Record<string, any> = {
   '1': {
@@ -49,8 +50,14 @@ const TECH_DATA: Record<string, any> = {
 
 export default function TechPage() {
   const params = useParams();
-  const techId = params?.techId as string;
-  const tech = TECH_DATA[techId];
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  const techId = (params?.techId as string) || '';
+  const tech = mounted ? TECH_DATA[techId] : null;
 
   if (!tech) {
     return (
