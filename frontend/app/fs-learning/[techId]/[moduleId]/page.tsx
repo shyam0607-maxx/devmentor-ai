@@ -35,13 +35,43 @@ function ModuleContent() {
     return '/fs-learning';
   };
 
-  // Determine animation type based on tech/module
+  // Determine animation type based on tech AND module
   const getAnimationType = () => {
-    if (techId === '1') return 'database'; // MongoDB
-    if (techId === '2') return 'server'; // Express
-    if (techId === '3') return 'node'; // Node.js
-    if (techId === '4') return 'react'; // React
-    if (techId === '5') return 'angular'; // Angular
+    // MongoDB animations
+    if (techId === '1' && moduleId === '1') return 'mongodb-intro';
+    if (techId === '1' && moduleId === '2') return 'crud';
+    if (techId === '1' && moduleId === '3') return 'indexing';
+    if (techId === '1' && moduleId === '4') return 'pipeline';
+    if (techId === '1' && moduleId === '5') return 'replication';
+
+    // Express animations
+    if (techId === '2' && moduleId === '1') return 'express-setup';
+    if (techId === '2' && moduleId === '2') return 'routing';
+    if (techId === '2' && moduleId === '3') return 'middleware-chain';
+    if (techId === '2' && moduleId === '4') return 'error-flow';
+    if (techId === '2' && moduleId === '5') return 'mvc';
+
+    // Node.js animations
+    if (techId === '3' && moduleId === '1') return 'nodejs-runtime';
+    if (techId === '3' && moduleId === '2') return 'async-flow';
+    if (techId === '3' && moduleId === '3') return 'file-io';
+    if (techId === '3' && moduleId === '4') return 'streams';
+    if (techId === '3' && moduleId === '5') return 'performance';
+
+    // React animations
+    if (techId === '4' && moduleId === '1') return 'jsx-structure';
+    if (techId === '4' && moduleId === '2') return 'hooks-state';
+    if (techId === '4' && moduleId === '3') return 'effect-lifecycle';
+    if (techId === '4' && moduleId === '4') return 'context-flow';
+    if (techId === '4' && moduleId === '5') return 'optimization';
+
+    // Angular animations
+    if (techId === '5' && moduleId === '1') return 'ng-structure';
+    if (techId === '5' && moduleId === '2') return 'binding-flow';
+    if (techId === '5' && moduleId === '3') return 'dependency-inject';
+    if (techId === '5' && moduleId === '4') return 'ng-routing';
+    if (techId === '5' && moduleId === '5') return 'rxjs-flow';
+
     return 'generic';
   };
 
@@ -133,8 +163,8 @@ function ModuleContent() {
                 `}</style>
               </defs>
 
-              {/* Database Animation (MongoDB - tech 1) */}
-              {techId === '1' && (
+              {/* MongoDB: Introduction - Database Setup */}
+              {getAnimationType() === 'mongodb-intro' && (
                 <>
                   {/* Database cylinder */}
                   <ellipse cx="200" cy="80" rx="60" ry="20" fill="none" stroke="#10b981" strokeWidth="2"/>
