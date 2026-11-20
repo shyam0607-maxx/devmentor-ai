@@ -53,12 +53,43 @@ function ModuleContent() {
       <div className="max-w-6xl mx-auto">
         <Link href={`/fs-learning/${techId}`} className="text-cyan-400 hover:text-cyan-300 mb-8 inline-block">← Back to Modules</Link>
 
-        <h1 className="text-5xl font-bold text-white mb-2">{module.title}</h1>
-        <p className="text-xl text-slate-400 mb-8">{module.description}</p>
+        <style>{`
+          .module-title {
+            font-size: 3rem;
+            font-weight: bold;
+            background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 25%, #8b5cf6 50%, #ec4899 75%, #f59e0b 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 4px 6px rgba(6, 182, 212, 0.3));
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 10px rgba(6, 182, 212, 0.2);
+            animation: shimmer 3s ease-in-out infinite;
+          }
+          @keyframes shimmer {
+            0%, 100% { filter: drop-shadow(0 4px 6px rgba(6, 182, 212, 0.3)); }
+            50% { filter: drop-shadow(0 6px 12px rgba(139, 92, 246, 0.4)); }
+          }
+          .section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(90deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.3));
+            position: relative;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid;
+            border-image: linear-gradient(90deg, #10b981 0%, #06b6d4 50%, #3b82f6 100%) 1;
+          }
+        `}</style>
+        <h1 className="module-title">{module.title}</h1>
+        <p className="text-xl text-slate-300 mb-8 font-light">{module.description}</p>
 
         {/* 3D Visualization */}
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">3D Visualization</h2>
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
+          <h2 className="section-title mb-6">🎨 3D Visualization</h2>
           <div className="w-full h-80 bg-slate-900 rounded-lg flex items-center justify-center overflow-hidden">
             <svg viewBox="0 0 400 300" className="w-full h-full">
               <defs>
@@ -88,20 +119,94 @@ function ModuleContent() {
         </div>
 
         {/* Learning Notes */}
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-8">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
+          <style>{`
+            .note-content h1 {
+              font-size: 1.75rem;
+              font-weight: bold;
+              margin: 1.5rem 0 1rem 0;
+              background: linear-gradient(135deg, #06b6d4 0%, #3b82f6 50%, #8b5cf6 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              text-shadow: 0 2px 10px rgba(6, 182, 212, 0.3);
+              filter: drop-shadow(0 2px 4px rgba(6, 182, 212, 0.2));
+            }
+            .note-content h2 {
+              font-size: 1.3rem;
+              font-weight: bold;
+              margin: 1.2rem 0 0.8rem 0;
+              background: linear-gradient(90deg, #10b981 0%, #06b6d4 100%);
+              -webkit-background-clip: text;
+              -webkit-text-fill-color: transparent;
+              background-clip: text;
+              filter: drop-shadow(0 2px 4px rgba(16, 185, 129, 0.2));
+              font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            }
+            .note-content h3 {
+              font-size: 1.1rem;
+              font-weight: 600;
+              margin: 1rem 0 0.6rem 0;
+              color: #fbbf24;
+              text-shadow: 0 2px 4px rgba(251, 191, 36, 0.2);
+            }
+            .note-content strong {
+              color: #f87171;
+              font-weight: 600;
+              text-shadow: 0 1px 2px rgba(248, 113, 113, 0.2);
+            }
+            .note-content code {
+              background: linear-gradient(135deg, rgba(6, 182, 212, 0.1), rgba(139, 92, 246, 0.1));
+              color: #22d3ee;
+              padding: 2px 6px;
+              border-radius: 4px;
+              font-family: 'Courier New', monospace;
+              font-size: 0.9em;
+            }
+            .note-content li {
+              margin: 0.5rem 0 0.5rem 1.5rem;
+              color: #cbd5e1;
+            }
+            .note-content p {
+              margin: 0.8rem 0;
+              color: #e2e8f0;
+              line-height: 1.6;
+              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            }
+          `}</style>
           <h2 className="text-2xl font-bold text-white mb-6">📖 Detailed Notes</h2>
-          <div className="text-slate-300 whitespace-pre-wrap font-mono text-sm leading-relaxed">
-            {module.notes}
+          <div className="note-content text-slate-300 leading-relaxed">
+            {module.notes.split('\n').map((line: string, idx: number) => {
+              if (line.startsWith('# ')) {
+                return <h1 key={idx} className="text-cyan-300">{line.substring(2)}</h1>;
+              }
+              if (line.startsWith('## ')) {
+                return <h2 key={idx}>{line.substring(3)}</h2>;
+              }
+              if (line.startsWith('### ')) {
+                return <h3 key={idx}>{line.substring(4)}</h3>;
+              }
+              if (line.startsWith('- ')) {
+                return <li key={idx} className="text-slate-200">{line.substring(2)}</li>;
+              }
+              if (line.startsWith('`') && line.endsWith('`')) {
+                return <div key={idx} className="my-2"><code>{line.substring(1, line.length - 1)}</code></div>;
+              }
+              if (line.trim() === '') {
+                return <div key={idx} className="h-2"></div>;
+              }
+              return <p key={idx} className="text-slate-200">{line}</p>;
+            })}
           </div>
         </div>
 
         {/* Code Examples */}
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">💻 Code Examples</h2>
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
+          <h2 className="section-title mb-6">💻 Code Examples</h2>
           <div className="space-y-6">
             {module.examples && module.examples.map((example: any, idx: number) => (
-              <div key={idx} className="bg-slate-900 rounded-lg p-6 border border-slate-700">
-                <h3 className="text-cyan-400 font-bold mb-3">{example.title}</h3>
+              <div key={idx} className="bg-gradient-to-br from-slate-900 to-slate-950 rounded-lg p-6 border border-slate-700 hover:border-cyan-500/50 transition shadow-lg">
+                <h3 className="text-lg font-bold mb-3" style={{background: 'linear-gradient(90deg, #fbbf24 0%, #f97316 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text'}}>{example.title}</h3>
                 <div className="bg-slate-950 rounded p-4 mb-4 relative group">
                   <pre className="text-slate-300 text-sm overflow-x-auto">{example.code}</pre>
                   <button
@@ -121,16 +226,16 @@ function ModuleContent() {
         </div>
 
         {/* Interview FAQs */}
-        <div className="bg-slate-800 border border-slate-700 rounded-lg p-8 mb-8">
-          <h2 className="text-2xl font-bold text-white mb-6">🎯 Top 10 Interview FAQs</h2>
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
+          <h2 className="section-title mb-6">🎯 Top 10 Interview FAQs</h2>
           <div className="space-y-4">
             {module.faqs && module.faqs.map((faq: any, idx: number) => (
-              <div key={idx} className="border border-slate-700 rounded-lg overflow-hidden">
+              <div key={idx} className="border border-slate-700 rounded-lg overflow-hidden hover:border-cyan-500/50 transition shadow-md">
                 <button
                   onClick={() => setExpandedFAQ(expandedFAQ === idx ? null : idx)}
-                  className="w-full bg-slate-700 hover:bg-slate-600 p-4 flex justify-between items-center transition"
+                  className="w-full bg-gradient-to-r from-slate-700 to-slate-800 hover:from-slate-600 hover:to-slate-700 p-4 flex justify-between items-center transition"
                 >
-                  <span className="text-white font-semibold text-left">{faq.q}</span>
+                  <span className="text-left" style={{background: 'linear-gradient(90deg, #60a5fa 0%, #34d399 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent', backgroundClip: 'text', fontWeight: 'bold', fontSize: '0.95rem'}}>{faq.q}</span>
                   {expandedFAQ === idx ? (
                     <ChevronUp className="w-5 h-5 text-cyan-400" />
                   ) : (
@@ -138,8 +243,8 @@ function ModuleContent() {
                   )}
                 </button>
                 {expandedFAQ === idx && (
-                  <div className="bg-slate-800 p-4 text-slate-300">
-                    {faq.a}
+                  <div className="bg-gradient-to-r from-slate-800 to-slate-900 p-4 text-slate-200 border-t border-slate-700" style={{lineHeight: '1.8'}}>
+                    <p style={{color: '#e2e8f0', fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif'}}>{faq.a}</p>
                   </div>
                 )}
               </div>
