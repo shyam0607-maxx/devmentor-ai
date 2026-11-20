@@ -146,20 +146,55 @@ function ModuleContent() {
         <p className="text-xl text-slate-300 mb-8 font-light">{module.description}</p>
 
         {/* 3D Visualization - Topic Specific */}
-        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
-          <h2 className="section-title mb-6">🎨 Visual Concept</h2>
-          <div className="w-full h-80 bg-slate-900 rounded-lg flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 400 300" className="w-full h-full">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-600 rounded-xl p-8 mb-8 shadow-2xl">
+          <h2 className="section-title mb-6">🎨 Advanced 3D Concept Visualization</h2>
+          <div className="w-full bg-gradient-to-b from-slate-800 to-slate-950 rounded-lg flex items-center justify-center overflow-hidden" style={{height: '600px', minHeight: '600px'}}>
+            <svg viewBox="0 0 800 600" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <style>{`
-                  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
+                  @keyframes float { 0%, 100% { transform: translateY(0px) rotateZ(0deg); } 25% { transform: translateY(-30px) rotateZ(5deg); } 50% { transform: translateY(-40px) rotateZ(0deg); } 75% { transform: translateY(-20px) rotateZ(-5deg); } }
                   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-                  @keyframes flowData { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
-                  .cube { animation: float 3s ease-in-out infinite; }
-                  .circle { animation: rotate 4s linear infinite; }
-                  .pulse { animation: pulse 2s ease-in-out infinite; }
+                  @keyframes rotateCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                  @keyframes rotateCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
+                  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+                  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 5px); } 50% { filter: drop-shadow(0 0 20px); } }
+                  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
+                  @keyframes orbit { 0% { transform: rotate(0deg) translateX(80px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(80px) rotate(-360deg); } }
+                  @keyframes shimmer { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+                  @keyframes wave { 0% { transform: translateX(0) skewX(0deg); } 50% { transform: translateX(50px) skewX(5deg); } 100% { transform: translateX(0) skewX(0deg); } }
+                  @keyframes scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
+                  .cube { animation: float 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
+                  .circle { animation: rotate 5s linear infinite; }
+                  .pulse { animation: pulse 2.5s ease-in-out infinite; }
+                  .glow { animation: glow 3s ease-in-out infinite; }
+                  .bounce { animation: bounce 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
+                  .orbit { animation: orbit 6s linear infinite; transform-origin: center; }
+                  .shimmer { animation: shimmer 3s ease-in-out infinite; }
+                  .wave { animation: wave 2.5s ease-in-out infinite; }
+                  .scale { animation: scale 2.5s ease-in-out infinite; }
                 `}</style>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#06b6d4', stopOpacity: 1}} />
+                  <stop offset="50%" style={{stopColor: '#10b981', stopOpacity: 0.9}} />
+                  <stop offset="100%" style={{stopColor: '#059669', stopOpacity: 1}} />
+                </linearGradient>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#f59e0b', stopOpacity: 1}} />
+                  <stop offset="50%" style={{stopColor: '#f97316', stopOpacity: 0.9}} />
+                  <stop offset="100%" style={{stopColor: '#ea580c', stopOpacity: 1}} />
+                </linearGradient>
+                <radialGradient id="grad3" cx="50%" cy="50%" r="50%">
+                  <stop offset="0%" style={{stopColor: '#8b5cf6', stopOpacity: 0.9}} />
+                  <stop offset="70%" style={{stopColor: '#06b6d4', stopOpacity: 0.5}} />
+                  <stop offset="100%" style={{stopColor: '#06b6d4', stopOpacity: 0.1}} />
+                </radialGradient>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
               </defs>
 
               {/* MongoDB: Introduction - Database Setup */}
