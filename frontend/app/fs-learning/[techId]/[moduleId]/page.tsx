@@ -10,7 +10,6 @@ function ModuleContent() {
   const params = useParams();
   const [copied, setCopied] = useState(false);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
-  const router = require('next/navigation').useRouter();
 
   const techId = (params?.techId as string) || '';
   const moduleId = (params?.moduleId as string) || '';
@@ -224,42 +223,95 @@ function ModuleContent() {
                 </>
               )}
 
-              {/* React Component (tech 4) */}
-              {techId === '4' && (
+              {/* React: Components & JSX */}
+              {getAnimationType() === 'jsx-structure' && (
                 <>
-                  {/* Parent component */}
-                  <rect x="100" y="60" width="200" height="160" fill="none" stroke="#8b5cf6" strokeWidth="2" rx="4"/>
-                  <text x="110" y="80" fill="#8b5cf6" fontSize="12" fontWeight="bold">Parent</text>
-
-                  {/* Child components */}
-                  <rect x="120" y="100" width="60" height="50" fill="none" stroke="#06b6d4" strokeWidth="2" rx="2"/>
-                  <text x="130" y="120" fill="#06b6d4" fontSize="11">Child 1</text>
-
-                  <rect x="220" y="100" width="60" height="50" fill="none" stroke="#06b6d4" strokeWidth="2" rx="2"/>
-                  <text x="230" y="120" fill="#06b6d4" fontSize="11">Child 2</text>
-
-                  {/* Props flow */}
-                  <line x1="150" y1="100" x2="150" y2="85" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-                  <line x1="250" y1="100" x2="250" y2="85" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowhead)"/>
-
-                  <defs>
-                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
-                      <polygon points="0 0, 10 3, 0 6" fill="#34d399" />
-                    </marker>
-                  </defs>
-
-                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Component Hierarchy</text>
+                  <text x="200" y="90" textAnchor="middle" fill="#8b5cf6" fontSize="12" fontWeight="bold">&lt;Component /&gt;</text>
+                  <rect x="150" y="100" width="100" height="40" fill="none" stroke="#8b5cf6" strokeWidth="2" rx="4"/>
+                  <line x1="200" y1="140" x2="200" y2="160" stroke="#34d399" strokeWidth="2"/>
+                  <text x="200" y="175" textAnchor="middle" fill="#06b6d4" fontSize="11">Renders HTML</text>
+                  <rect x="130" y="185" width="140" height="30" fill="none" stroke="#06b6d4" strokeWidth="1.5" rx="3"/>
+                  <text x="200" y="205" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">&lt;div&gt; ... &lt;/div&gt;</text>
                 </>
               )}
 
-              {/* Angular Modules (tech 5) */}
-              {techId === '5' && (
+              {/* React: Hooks & State */}
+              {getAnimationType() === 'hooks-state' && (
                 <>
-                  {/* AppModule */}
+                  <circle cx="200" cy="100" r="20" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                  <text x="200" y="105" textAnchor="middle" fill="#8b5cf6" fontSize="10" fontWeight="bold">State</text>
+
+                  <line x1="220" y1="100" x2="260" y2="100" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowgr)"/>
+                  <circle cx="280" cy="100" r="12" fill="#34d399"/>
+
+                  <line x1="200" y1="120" x2="200" y2="150" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowgr)"/>
+                  <rect x="160" y="150" width="80" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="4"/>
+                  <text x="200" y="175" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Re-render</text>
+
+                  <defs>
+                    <marker id="arrowgr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                      <polygon points="0 0, 10 3, 0 6" fill="#34d399" />
+                    </marker>
+                  </defs>
+                </>
+              )}
+
+              {/* React: Effects & Lifecycle */}
+              {getAnimationType() === 'effect-lifecycle' && (
+                <>
+                  <circle cx="80" cy="80" r="15" fill="none" stroke="#f97316" strokeWidth="2"/>
+                  <text x="80" y="85" textAnchor="middle" fill="#f97316" fontSize="10" fontWeight="bold">Mount</text>
+
+                  <circle cx="200" cy="150" r="15" fill="none" stroke="#06b6d4" strokeWidth="2" className="pulse"/>
+                  <text x="200" y="155" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Update</text>
+
+                  <circle cx="320" cy="80" r="15" fill="none" stroke="#f87171" strokeWidth="2"/>
+                  <text x="320" y="85" textAnchor="middle" fill="#f87171" fontSize="10" fontWeight="bold">Unmount</text>
+
+                  <line x1="95" y1="80" x2="185" y2="150" stroke="#34d399" strokeWidth="1.5" opacity="0.7"/>
+                  <line x1="215" y1="150" x2="305" y2="80" stroke="#34d399" strokeWidth="1.5" opacity="0.7"/>
+                </>
+              )}
+
+              {/* React: Context API */}
+              {getAnimationType() === 'context-flow' && (
+                <>
+                  <circle cx="200" cy="80" r="30" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
+                  <text x="200" y="85" textAnchor="middle" fill="#8b5cf6" fontSize="10" fontWeight="bold">Context</text>
+
+                  <rect x="100" y="130" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="125" y="155" textAnchor="middle" fill="#06b6d4" fontSize="9">Component</text>
+
+                  <rect x="250" y="130" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="275" y="155" textAnchor="middle" fill="#06b6d4" fontSize="9">Component</text>
+
+                  <line x1="175" y1="110" x2="125" y2="130" stroke="#34d399" strokeWidth="1.5" opacity="0.7"/>
+                  <line x1="225" y1="110" x2="275" y2="130" stroke="#34d399" strokeWidth="1.5" opacity="0.7"/>
+                </>
+              )}
+
+              {/* React: Performance Optimization */}
+              {getAnimationType() === 'optimization' && (
+                <>
+                  <text x="80" y="100" fill="#f59e0b" fontSize="11" fontWeight="bold">With Memoization:</text>
+                  <line x1="80" y1="120" x2="80" y2="170" stroke="#10b981" strokeWidth="3" className="pulse"/>
+                  <text x="80" y="190" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold">FAST ⚡</text>
+
+                  <text x="320" y="100" fill="#f59e0b" fontSize="11" fontWeight="bold">Without:</text>
+                  <line x1="320" y1="120" x2="320" y2="170" stroke="#f87171" strokeWidth="1" opacity="0.4"/>
+                  <circle cx="320" cy="130" r="2" fill="#f87171" opacity="0.5"/>
+                  <circle cx="320" cy="145" r="2" fill="#f87171" opacity="0.5"/>
+                  <circle cx="320" cy="160" r="2" fill="#f87171" opacity="0.5"/>
+                  <text x="320" y="190" textAnchor="middle" fill="#f87171" fontSize="10" fontWeight="bold">SLOW 🐌</text>
+                </>
+              )}
+
+              {/* Angular: Setup & Components */}
+              {getAnimationType() === 'ng-structure' && (
+                <>
                   <rect x="110" y="70" width="180" height="140" fill="none" stroke="#f97316" strokeWidth="2" rx="8"/>
                   <text x="120" y="90" fill="#f97316" fontSize="13" fontWeight="bold">AppModule</text>
 
-                  {/* Child modules */}
                   <rect x="125" y="105" width="50" height="35" fill="none" stroke="#06b6d4" strokeWidth="1.5" rx="3"/>
                   <text x="130" y="122" fill="#06b6d4" fontSize="10">Component</text>
 
@@ -267,9 +319,82 @@ function ModuleContent() {
                   <text x="200" y="122" fill="#06b6d4" fontSize="10">Service</text>
 
                   <rect x="157" y="155" width="86" height="30" fill="none" stroke="#34d399" strokeWidth="1.5" rx="3"/>
-                  <text x="162" y="173" fill="#34d399" fontSize="10">Providers & Declarations</text>
+                  <text x="162" y="173" fill="#34d399" fontSize="10">Module Config</text>
+                </>
+              )}
 
-                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Module Architecture</text>
+              {/* Angular: Templates & Binding */}
+              {getAnimationType() === 'binding-flow' && (
+                <>
+                  <text x="200" y="90" textAnchor="middle" fill="#f97316" fontSize="12" fontWeight="bold">Template</text>
+                  <rect x="150" y="100" width="100" height="40" fill="none" stroke="#f97316" strokeWidth="2" rx="4"/>
+
+                  <line x1="200" y1="140" x2="200" y2="160" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowang1)"/>
+
+                  <text x="130" y="180" fill="#06b6d4" fontSize="10">Data Binding</text>
+                  <line x1="150" y1="190" x2="250" y2="190" stroke="#06b6d4" strokeWidth="1.5" opacity="0.6"/>
+                  <circle cx="140" cy="190" r="4" fill="#06b6d4"/>
+                  <circle cx="260" cy="190" r="4" fill="#06b6d4"/>
+
+                  <defs>
+                    <marker id="arrowang1" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                      <polygon points="0 0, 10 3, 0 6" fill="#34d399" />
+                    </marker>
+                  </defs>
+                </>
+              )}
+
+              {/* Angular: Services & DI */}
+              {getAnimationType() === 'dependency-inject' && (
+                <>
+                  <circle cx="200" cy="100" r="40" fill="none" stroke="#f97316" strokeWidth="2"/>
+                  <text x="200" y="105" textAnchor="middle" fill="#f97316" fontSize="11" fontWeight="bold">Injector</text>
+
+                  <rect x="80" y="160" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="105" y="185" textAnchor="middle" fill="#06b6d4" fontSize="9">Component</text>
+
+                  <rect x="270" y="160" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="295" y="185" textAnchor="middle" fill="#06b6d4" fontSize="9">Service</text>
+
+                  <line x1="175" y1="135" x2="110" y2="160" stroke="#34d399" strokeWidth="2" strokeDasharray="5,5" className="pulse"/>
+                  <line x1="225" y1="135" x2="290" y2="160" stroke="#34d399" strokeWidth="2" strokeDasharray="5,5" className="pulse"/>
+                </>
+              )}
+
+              {/* Angular: Routing */}
+              {getAnimationType() === 'ng-routing' && (
+                <>
+                  <circle cx="200" cy="100" r="30" fill="none" stroke="#f97316" strokeWidth="2"/>
+                  <text x="200" y="105" textAnchor="middle" fill="#f97316" fontSize="11" fontWeight="bold">Router</text>
+
+                  <rect x="80" y="160" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="105" y="180" textAnchor="middle" fill="#06b6d4" fontSize="9">/home</text>
+
+                  <rect x="175" y="160" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="200" y="180" textAnchor="middle" fill="#06b6d4" fontSize="9">/about</text>
+
+                  <rect x="270" y="160" width="50" height="40" fill="none" stroke="#06b6d4" strokeWidth="2" rx="3"/>
+                  <text x="295" y="180" textAnchor="middle" fill="#06b6d4" fontSize="9">/user/:id</text>
+
+                  <line x1="175" y1="130" x2="105" y2="160" stroke="#34d399" strokeWidth="1.5" opacity="0.6"/>
+                  <line x1="200" y1="130" x2="200" y2="160" stroke="#34d399" strokeWidth="1.5" opacity="0.6"/>
+                  <line x1="225" y1="130" x2="295" y2="160" stroke="#34d399" strokeWidth="1.5" opacity="0.6"/>
+                </>
+              )}
+
+              {/* Angular: RxJS & Observables */}
+              {getAnimationType() === 'rxjs-flow' && (
+                <>
+                  <text x="200" y="85" textAnchor="middle" fill="#8b5cf6" fontSize="12" fontWeight="bold">Observable Stream</text>
+                  <line x1="50" y1="110" x2="350" y2="110" stroke="#06b6d4" strokeWidth="2" strokeDasharray="5,5"/>
+
+                  <circle cx="80" cy="110" r="8" fill="#34d399" className="pulse"/>
+                  <circle cx="140" cy="110" r="8" fill="#34d399" className="pulse" style={{animationDelay: '0.3s'}}/>
+                  <circle cx="200" cy="110" r="8" fill="#34d399" className="pulse" style={{animationDelay: '0.6s'}}/>
+                  <circle cx="260" cy="110" r="8" fill="#34d399" className="pulse" style={{animationDelay: '0.9s'}}/>
+                  <circle cx="320" cy="110" r="8" fill="#34d399" className="pulse" style={{animationDelay: '1.2s'}}/>
+
+                  <text x="200" y="175" textAnchor="middle" fill="#06b6d4" fontSize="11" fontWeight="bold">Multiple Events Over Time</text>
                 </>
               )}
             </svg>
