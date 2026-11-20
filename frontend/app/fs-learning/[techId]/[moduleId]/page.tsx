@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 
 const MODULE_DATA: Record<string, Record<string, any>> = {
@@ -470,25 +470,20 @@ DELETE /users/1
   }
 };
 
-export default function ModulePage() {
+function ModuleContent() {
   const params = useParams();
-  const [mounted, setMounted] = useState(false);
   const [copied, setCopied] = useState(false);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   const techId = (params?.techId as string) || '';
   const moduleId = (params?.moduleId as string) || '';
 
-  const module = mounted ? MODULE_DATA[techId]?.[moduleId] : null;
+  const module = MODULE_DATA[techId]?.[moduleId];
 
-  if (!mounted || !module) {
+  if (!module) {
     return (
       <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
+        <div className="text-white">Module not found</div>
       </div>
     );
   }
@@ -618,5 +613,17 @@ export default function ModulePage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ModulePage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading module...</div>
+      </div>
+    }>
+      <ModuleContent />
+    </Suspense>
   );
 }

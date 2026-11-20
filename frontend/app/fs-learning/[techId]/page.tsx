@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { useParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 
 const TECH_DATA: Record<string, any> = {
   '1': {
@@ -67,24 +67,10 @@ const TECH_DATA: Record<string, any> = {
   }
 };
 
-export default function TechPage() {
+function TechContent() {
   const params = useParams();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
   const techId = (params?.techId as string) || '';
-  const tech = mounted ? TECH_DATA[techId] : null;
-
-  if (!mounted) {
-    return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
-        <div className="text-white">Loading...</div>
-      </div>
-    );
-  }
+  const tech = TECH_DATA[techId];
 
   if (!tech) {
     return (
@@ -139,5 +125,17 @@ export default function TechPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function TechPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-gradient-to-br from-slate-900 via-slate-800 to-slate-900 flex items-center justify-center">
+        <div className="text-white text-lg">Loading modules...</div>
+      </div>
+    }>
+      <TechContent />
+    </Suspense>
   );
 }
