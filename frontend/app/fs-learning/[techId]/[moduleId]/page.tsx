@@ -147,19 +147,38 @@ function ModuleContent() {
 
         {/* 3D Visualization - Topic Specific */}
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
-          <h2 className="section-title mb-6">🎨 Visual Concept</h2>
-          <div className="w-full h-80 bg-slate-900 rounded-lg flex items-center justify-center overflow-hidden">
-            <svg viewBox="0 0 400 300" className="w-full h-full">
+          <h2 className="section-title mb-6">🎨 Advanced 3D Visualization</h2>
+          <div className="w-full bg-slate-900 rounded-lg flex items-center justify-center overflow-hidden" style={{height: '500px'}}>
+            <svg viewBox="0 0 600 500" className="w-full h-full">
               <defs>
                 <style>{`
                   @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
                   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-                  @keyframes flowData { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
-                  .cube { animation: float 3s ease-in-out infinite; }
-                  .circle { animation: rotate 4s linear infinite; }
-                  .pulse { animation: pulse 2s ease-in-out infinite; }
+                  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
+                  @keyframes glow { 0%, 100% { box-shadow: 0 0 5px currentColor; } 50% { box-shadow: 0 0 20px currentColor; } }
+                  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-15px); } }
+                  @keyframes wave { 0% { transform: translateX(0); } 100% { transform: translateX(600px); } }
+                  @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                  @keyframes slideDown { 0% { transform: translateY(-30px); opacity: 0; } 100% { transform: translateY(0); opacity: 1; } }
+                  .float { animation: float 3.5s ease-in-out infinite; }
+                  .rotate { animation: rotate 4s linear infinite; }
+                  .pulse { animation: pulse 2.5s ease-in-out infinite; }
+                  .bounce { animation: bounce 2s ease-in-out infinite; }
+                  .spin { animation: spin 3s linear infinite; }
+                  .wave { animation: wave 2s linear infinite; }
                 `}</style>
+                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#06b6d4', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#10b981', stopOpacity: 1}} />
+                </linearGradient>
+                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#f59e0b', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#f97316', stopOpacity: 1}} />
+                </linearGradient>
+                <radialGradient id="grad3">
+                  <stop offset="0%" style={{stopColor: '#8b5cf6', stopOpacity: 0.8}} />
+                  <stop offset="100%" style={{stopColor: '#06b6d4', stopOpacity: 0.2}} />
+                </radialGradient>
               </defs>
 
               {/* MongoDB: Introduction - Database Setup */}

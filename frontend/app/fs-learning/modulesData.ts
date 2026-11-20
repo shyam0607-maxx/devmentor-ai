@@ -1146,149 +1146,441 @@ useReducer manages complex state with a reducer function. Similar to Redux patte
 
 ## Custom Hooks
 Create reusable logic by extracting state and effects into custom hooks. Custom hooks are functions starting with "use" that use other hooks. Benefits: code reuse, separation of concerns, easier testing.`, examples: [{ title: 'useState Hook', code: `import { useState } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  return <div>\n    <p>Count: {count}</p>\n    <button onClick={() => setCount(count + 1)}>Increment</button>\n  </div>;\n}`, output: `Count: 0\n[Increment button]\n(Click: Count: 1)` }], faqs: [{ q: 'What is useState?', a: 'useState is a Hook for adding state to functional components. Returns array with current state value and function to update it. Syntax: const [value, setValue] = useState(initialValue). When setValue is called with new value, React re-renders component with new state. Can have multiple useState calls in one component. Each useState call is independent with its own state. useState enables functional components to be stateful unlike before Hooks.' }, { q: 'What is useEffect?', a: 'useEffect hook runs side effects after render. Syntax: useEffect(() => { /* code */ }, [dependencies]). Runs after render by default. Dependencies array controls when effect runs: empty array runs once on mount, specific dependencies run when those values change, no array runs every render. Perfect for fetching data, setting up subscriptions, updating DOM. Return cleanup function to run before next effect or unmount. useEffect replaces lifecycle methods from class components.' }, { q: 'What is useContext?', a: 'useContext hook accesses context values without wrapping component in Consumer. Syntax: const value = useContext(MyContext). Pass context object created with createContext(). Simplifies accessing context compared to Consumer component. Component re-renders when context value changes. Use for global state like theme, language, user data. Context propagates to all descendant components. useContext enables elegant prop drilling elimination for global data.' }, { q: 'What is useReducer?', a: 'useReducer hook manages complex state with reducer function. Syntax: const [state, dispatch] = useReducer(reducer, initialState). Reducer function defines state transitions: (state, action) => newState. dispatch(action) triggers state update. Preferred over useState for complex state with multiple related values. Easier to test than useState. Enables time-travel debugging with action history. useReducer is more powerful than useState but requires more code.' }, { q: 'What is a custom hook?', a: 'Custom hooks are functions using other hooks to encapsulate reusable logic. Must start with "use" prefix. Can use any other hooks inside. Return state/functions from custom hook. Example: useFormInput encapsulates form input state and handlers, useWindowSize tracks window dimensions. Custom hooks eliminate code duplication across components. Share logic without render props or HOCs. Test custom hooks independently with their own hook-specific test utilities.' } ] },
-    '3': { title: 'Effect & Lifecycle', description: 'Manage component lifecycle with effects', notes: `# Component Effects and Lifecycle - Complete Guide
+    '3': { title: 'Effect & Lifecycle', description: 'Manage component lifecycle with effects', notes: `# Component Effects and Lifecycle - Comprehensive Mastery Guide
 
-## Component Lifecycle Phases
-Mounting: Component is added to DOM, runs once on initial render
-Updating: Component re-renders due to prop/state changes, runs many times
-Unmounting: Component is removed from DOM, runs once at end
+## Understanding Component Lifecycle
 
-## useEffect Hook Complete Guide
-useEffect replaces componentDidMount, componentDidUpdate, componentWillUnmount in class components. It's the primary way to handle side effects in functional components.
+React components go through three phases:
 
-Syntax: useEffect(() => { /* side effect code */ }, [dependencies])
+**Mounting Phase:** Component is created and inserted into DOM. Initial setup occurs here - setting initial state, adding event listeners, fetching initial data. This phase runs exactly once when component first renders.
 
-The function runs after render completes, ensuring DOM is updated. Return function for cleanup.
+**Updating Phase:** Component re-renders due to props changes, state changes, or parent re-rendering. Effects with dependencies run when those dependencies change. This phase can run many times during component lifetime.
 
-## Dependency Array
-Controls when effect runs:
-- No array: runs after every render (usually not wanted)
-- Empty []: runs once on mount only
-- [dep1, dep2]: runs only when dependencies change
-- Dependencies are compared with ===, so use stable references
+**Unmounting Phase:** Component is removed from DOM. Cleanup occurs - removing event listeners, canceling requests, clearing timers. This phase runs exactly once when component is destroyed.
 
-## Common Patterns
-Fetch data on mount: useEffect(() => { fetch(...) }, [])
-Update title: useEffect(() => { document.title = text }, [text])
-Set up listeners: useEffect(() => { window.addEventListener(...); return () => removeEventListener(...) }, [])
+## useEffect Hook - The Complete Picture
 
-## Cleanup Functions
-Return function from effect to run cleanup:
-- Unsubscribe from events
-- Cancel pending requests
-- Clear timers
-- Reset timers
-- Clean up subscriptions
+useEffect is the primary mechanism for handling side effects in functional components. Side effects are operations like:
+- Fetching data from API
+- Setting up subscriptions
+- Modifying DOM directly
+- Setting up timers/intervals
+- Adding event listeners
+- Logging analytics
 
-Cleanup runs before next effect or on unmount, preventing memory leaks.
+Syntax: useEffect(() => { /* side effect */ }, [dependencies])
 
-## Multiple Effects
-Call useEffect multiple times for different concerns. Separate effects improve readability and make each effect focused on single responsibility.
+The effect function runs AFTER render completes, ensuring DOM is painted. This is different from componentDidMount which runs after render but before browser paint.
 
-## Optimization
-useCallback memoizes functions to prevent unnecessary effect runs
-useMemo memoizes values to prevent unnecessary effect runs`, examples: [{ title: 'useEffect Example', code: `import { useEffect, useState } from 'react';\n\nfunction DataFetcher() {\n  const [data, setData] = useState(null);\n  useEffect(() => {\n    fetch('/api/data')\n      .then(r => r.json())\n      .then(d => setData(d));\n  }, []);\n  return <div>{data ? JSON.stringify(data) : 'Loading...'}</div>;\n}`, output: `Loading...\n[After fetch: { ... data ... }]` }], faqs: [{ q: 'What is useEffect?', a: 'useEffect hook runs side effects (operations with external effects) after render completes. Perfect for fetching data from APIs, setting up subscriptions, updating DOM directly, timers. useEffect(() => { /* effect */ }, [deps]) runs effect after render. Dependency array controls execution: undefined/missing means run every render, empty array means run once on mount only, specific dependencies means run when those values change. Returned function is cleanup running before next effect or unmount.' }, { q: 'When does effect run?', a: 'By default useEffect runs after every render. With empty dependency array, runs once after component mounts (similar to componentDidMount). With dependencies, runs only when dependencies change. React compares previous and current dependency values using === comparison. If dependencies didn\'t change, effect skips. For fetch operations, empty dependencies array prevents infinite fetches. Proper dependencies are critical for correctness.' }, { q: 'How do I run effect once on mount?', a: 'Pass empty dependency array to useEffect: useEffect(() => { /* effect */ }, []). Empty array means effect has no dependencies so it runs once on initial render and never again. Use for initialization code that should run once: fetching initial data, setting up subscriptions, initializing timers. If you need cleanup, return cleanup function from effect. This pattern replaces componentDidMount lifecycle method.' }, { q: 'How do I cleanup in useEffect?', a: 'Return a cleanup function from useEffect that runs before next effect or on unmount: useEffect(() => { /* setup */ return () => { /* cleanup */ }; }, [deps]). Cleanup is essential for preventing memory leaks: unsubscribe from events, cancel timers, cancel API requests. Example: useEffect(() => { const timer = setInterval(...); return () => clearInterval(timer); }). Cleanup ensures resources are released preventing leaks that accumulate over time.' }, { q: 'What is mounting, updating, unmounting?', a: 'Mounting: component is added to DOM, runs once on initial render. Updating: component re-renders due to state/prop changes, can run multiple times. Unmounting: component is removed from DOM. useEffect with empty deps runs on mount. useEffect with specific deps runs on updates when deps change. useEffect cleanup runs on unmount and before next effect. Each phase enables different operations: mount for initialization, update for responding to changes, unmount for cleanup.' } ] },
-    '4': { title: 'Context API', description: 'Share data with Context API', notes: `# React Context API - Global State Management
+## Dependency Array - Critical Concept
 
-## Problem: Prop Drilling
-Prop drilling occurs when passing data through many intermediate components that don't use it. This becomes unwieldy and makes refactoring difficult. Context solves this by allowing components anywhere in tree to access data.
+Controls when effect runs and is essential for correctness:
 
-## Context API Basics
-Create context: const MyContext = createContext(defaultValue)
-Wrap tree: <MyContext.Provider value={data}> {children} </MyContext.Provider>
-Access: const data = useContext(MyContext)
+**No dependency array:** Effect runs after every single render. Use only when you truly need side effect on every render (rare).
 
-## Creating Contexts
-createContext(defaultValue) returns context object
-Default value used when useContext called outside Provider
-Can create multiple contexts for different concerns
+**Empty dependency array []:** Effect runs only once after component mounts. Perfect for initialization: fetching data once, setting up listeners once, initializing.
 
-## Providing Context
-Provider component wraps part of tree
-Value prop contains data to share
-All descendants can access value with useContext
-When value changes, all consuming components re-render
+**With dependencies [a, b]:** Effect runs when any dependency changes. React compares with === operator. If all dependencies unchanged, effect is skipped.
 
-## Consuming Context
-useContext hook accesses context value
-Components re-render when value changes
-Can access from anywhere in subtree
-Called from functional components or custom hooks
+Dependency array determines efficiency and correctness. Missing dependencies cause stale closures. Unnecessary dependencies cause excessive effect runs.
 
-## Splitting Contexts
-Create separate contexts for different concerns
-AuthContext for authentication
-ThemeContext for theme/styling
-NotificationContext for notifications
-Prevents unnecessary re-renders from unrelated context changes
+## Real-World Effect Patterns
 
-## Context Performance
-All consumers re-render when context value changes
-Split contexts to minimize re-renders
-Memoize context value: useMemo(() => ({ value }), [value])
-Consider Redux for complex state
+**Data Fetching on Mount:**
+```
+useEffect(() => {
+  fetch('/api/data')
+    .then(r => r.json())
+    .then(data => setData(data))
+}, [])  // Run once on mount
+```
 
-## Limitations
-Not for frequently changing data
-Not for simple local component state
-Harder to debug than explicit prop passing
-No built-in devtools like Redux`, examples: [{ title: 'Context Example', code: `import { createContext, useContext } from 'react';\n\nconst ThemeContext = createContext();\n\nfunction Provider({ children }) {\n  const [theme, setTheme] = useState('light');\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction Component() {\n  const { theme } = useContext(ThemeContext);\n  return <div>Theme: {theme}</div>;\n}`, output: `Theme: light` }], faqs: [{ q: 'What is Context?', a: 'Context provides way to share data across components without passing through every intermediate component (prop drilling). Create context with createContext(defaultValue). Wrap component tree with Provider component passing value. All descendants can access value with useContext hook. Perfect for global state like authentication, theme, language, notifications. Context avoids passing props through many levels of components. Use sparingly - context is for truly global data, not all state.' }, { q: 'When should I use Context?', a: 'Use for truly global state: authenticated user, theme preference, language selection, feature flags. Don\'t use for frequently changing data as all subscribers re-render. Don\'t use if data only needs in few components - prop drilling is fine for local data. Split context by domain: AuthContext for auth, ThemeContext for theme. This prevents unnecessary re-renders from unrelated context changes. For complex state management, consider Redux or other state libraries.' }, { q: 'What is createContext?', a: 'createContext(defaultValue) creates a context object. The default value is used when useContext is called outside Provider. Returns object with two properties: Provider (component wrapping tree), Consumer (accessing values, rarely used now). Pass default value that matches shape consumers expect. Context created at module level and reused across app. Can create multiple contexts for different concerns separating global state logically.' }, { q: 'What is a Provider?', a: 'Provider is component wrapping part of tree providing context value to all descendants. Syntax: <ContextName.Provider value={data}>. Descendants anywhere in subtree can access value with useContext. When Provider value changes, all consuming components re-render. Only provide at appropriate level - don\'t wrap entire app if only sections need context. Multiple Providers can nest enabling context composition. Providers are essential - without Provider, useContext uses default value only.' }, { q: 'Can Context replace Redux?', a: 'For simple global state, Context is sufficient and reduces dependencies. For complex state with many actions, Redux provides better developer experience. Context lacks Redux benefits: time-travel debugging, action logging, middleware, dev tools. Redux shines with complex workflows, frequent state changes, and large teams. For learning, start with Context. As complexity grows, consider Redux or similar. Many projects successfully use Context alone without Redux.' } ] },
-    '5': { title: 'Performance & Optimization', description: 'Optimize React applications', notes: `# React Performance Optimization - Advanced Techniques
+**Responding to Prop Changes:**
+```
+useEffect(() => {
+  setData(null)  // Clear data when ID changes
+  fetchUserData(userId)
+}, [userId])  // Re-run when userId changes
+```
 
-## Understanding Performance Issues
-Measure first, then optimize. React DevTools Profiler shows component render times and counts. Unexpected re-renders cause performance issues. Expensive computations slow rendering. Large bundles slow initial load.
+**Synchronizing with External Systems:**
+```
+useEffect(() => {
+  const unsubscribe = externalStore.subscribe(onStoreChange)
+  return () => unsubscribe()  // Cleanup
+}, [])
+```
 
-## React.memo for Component Memoization
-Wraps component for shallow prop comparison
-If props haven't changed, skips re-render
-Only effective when parent re-renders frequently with same props
-Added overhead, so measure before using
+## Cleanup Functions - Preventing Memory Leaks
 
-Syntax: const MyComponent = React.memo(function Component(props) { ... })
+Return a cleanup function from effect that runs:
+- Before the effect runs again (if dependencies changed)
+- When component unmounts
+- If dependencies array changes
 
-## useMemo Hook
-Memoizes expensive computations
-Recalculates only when dependencies change
-Syntax: const value = useMemo(() => expensiveCalc(a, b), [a, b])
-Don't overuse - measure performance impact
-Most memoization overhead exceeds benefit
+Cleanup is essential for:
+- Unsubscribing from event listeners (window, document events)
+- Canceling pending API requests
+- Clearing timeouts and intervals
+- Closing database connections
+- Removing observers
 
-## useCallback Hook
-Memoizes function references
-Prevents unnecessary re-renders of memoized children
-Syntax: const handler = useCallback(() => { ... }, [deps])
-Use with React.memo for effectiveness
+Without cleanup, resources accumulate and cause memory leaks.
 
-## Code Splitting
-Break code into chunks loaded on demand
-React.lazy dynamically imports components
-Suspense shows fallback during load
-Route-based splitting: each route is separate chunk
-Significantly improves initial load time
+## Multiple Effects for Organization
 
-Syntax: const Component = React.lazy(() => import('./Component'))
-Usage: <Suspense fallback={<Loading />}> <Component /> </Suspense>
+Call useEffect multiple times for different concerns:
+```
+useEffect(() => { /* fetch user */ }, [userId])
+useEffect(() => { /* update title */ }, [title])
+useEffect(() => { /* set up listener */ }, [])
+```
+
+Each effect handles single responsibility. This makes code clearer than one large effect doing multiple things.
+
+## Performance Optimization
+
+useCallback memoizes functions:
+```
+const handler = useCallback(() => { /* code */ }, [deps])
+```
+
+useMemo memoizes computed values:
+```
+const filtered = useMemo(() => items.filter(...), [items])
+```
+
+Both prevent unnecessary effect runs by providing stable references.
+
+## Common Mistakes
+
+- Missing dependencies: causes stale closures
+- Not cleaning up listeners: causes memory leaks
+- Running effect every render: performance issue
+- Using non-stable dependencies: unnecessary re-runs`, examples: [{ title: 'useEffect Example', code: `import { useEffect, useState } from 'react';\n\nfunction DataFetcher() {\n  const [data, setData] = useState(null);\n  useEffect(() => {\n    fetch('/api/data')\n      .then(r => r.json())\n      .then(d => setData(d));\n  }, []);\n  return <div>{data ? JSON.stringify(data) : 'Loading...'}</div>;\n}`, output: `Loading...\n[After fetch: { ... data ... }]` }], faqs: [{ q: 'What is useEffect?', a: 'useEffect hook runs side effects (operations with external effects) after render completes. Perfect for fetching data from APIs, setting up subscriptions, updating DOM directly, timers. useEffect(() => { /* effect */ }, [deps]) runs effect after render. Dependency array controls execution: undefined/missing means run every render, empty array means run once on mount only, specific dependencies means run when those values change. Returned function is cleanup running before next effect or unmount.' }, { q: 'When does effect run?', a: 'By default useEffect runs after every render. With empty dependency array, runs once after component mounts (similar to componentDidMount). With dependencies, runs only when dependencies change. React compares previous and current dependency values using === comparison. If dependencies didn\'t change, effect skips. For fetch operations, empty dependencies array prevents infinite fetches. Proper dependencies are critical for correctness.' }, { q: 'How do I run effect once on mount?', a: 'Pass empty dependency array to useEffect: useEffect(() => { /* effect */ }, []). Empty array means effect has no dependencies so it runs once on initial render and never again. Use for initialization code that should run once: fetching initial data, setting up subscriptions, initializing timers. If you need cleanup, return cleanup function from effect. This pattern replaces componentDidMount lifecycle method.' }, { q: 'How do I cleanup in useEffect?', a: 'Return a cleanup function from useEffect that runs before next effect or on unmount: useEffect(() => { /* setup */ return () => { /* cleanup */ }; }, [deps]). Cleanup is essential for preventing memory leaks: unsubscribe from events, cancel timers, cancel API requests. Example: useEffect(() => { const timer = setInterval(...); return () => clearInterval(timer); }). Cleanup ensures resources are released preventing leaks that accumulate over time.' }, { q: 'What is mounting, updating, unmounting?', a: 'Mounting: component is added to DOM, runs once on initial render. Updating: component re-renders due to state/prop changes, can run multiple times. Unmounting: component is removed from DOM. useEffect with empty deps runs on mount. useEffect with specific deps runs on updates when deps change. useEffect cleanup runs on unmount and before next effect. Each phase enables different operations: mount for initialization, update for responding to changes, unmount for cleanup.' } ] },
+    '4': { title: 'Context API', description: 'Share data with Context API', notes: `# React Context API - Complete Global State Solution
+
+## The Prop Drilling Problem
+
+Imagine a deeply nested component tree where leaf components need data from root. Without Context, you must pass props through every intermediate component, even if they don't use the data:
+
+App → Provider → Layout → Sidebar → Menu → MenuItem
+
+If MenuItem needs user data from App, you pass it through all intermediate components. This creates:
+- Tight coupling between components
+- Difficulty refactoring (moving components breaks prop chains)
+- Boilerplate code for passing unused props
+- Mental overhead tracking data flow
+
+Context solves this elegantly by allowing any descendant to access data directly.
+
+## Context API Foundation
+
+**Creating Context:**
+const ThemeContext = createContext(defaultValue)
+
+The default value is used when useContext is called outside Provider (usually indicates an error). Default should match the shape consumers expect.
+
+**Provider Component:**
+<ThemeContext.Provider value={currentTheme}>
+  {children}
+</ThemeContext.Provider>
+
+Provider wraps portion of tree where descendants need context. All descendants can access the value.
+
+**Consuming Context:**
+const theme = useContext(ThemeContext)
+
+useContext retrieves context value. Component re-renders when value changes.
+
+## Creating Multiple Contexts
+
+Split contexts by domain:
+
+AuthContext: User authentication data, login/logout functions
+ThemeContext: Theme preference, theme switching
+NotificationContext: Toast notifications, notification state
+LocalizationContext: Language, locale selection
+
+Separation prevents unnecessary re-renders. When auth changes, theme consumers don't re-render.
+
+## Context Performance Considerations
+
+**Re-renders on Value Change:** When Provider value changes, ALL consumers re-render. This can cause performance issues if context changes frequently.
+
+**Optimization Techniques:**
+
+1. Split contexts by update frequency
+   - Rarely changed: AuthContext, ThemeContext
+   - Frequently changed: Consider Redux or other state management
+
+2. Memoize context value:
+```javascript
+const value = useMemo(() => ({
+  theme,
+  toggleTheme
+}), [theme])
+```
+
+3. Split state and dispatch:
+```javascript
+<StateContext value={state}>
+  <DispatchContext value={dispatch}>
+    {children}
+  </DispatchContext>
+</StateContext>
+```
+
+## Advanced Context Patterns
+
+**Combining with useReducer:**
+Manage complex state in context:
+```javascript
+const [state, dispatch] = useReducer(reducer, initialState)
+<AppContext.Provider value={{state, dispatch}}>
+```
+
+**Custom Provider Component:**
+```javascript
+function AppProvider({ children }) {
+  const [theme, setTheme] = useState('light')
+  const value = { theme, setTheme }
+  return (
+    <AppContext.Provider value={value}>
+      {children}
+    </AppContext.Provider>
+  )
+}
+```
+
+## When to Use Context
+
+✅ Good for:
+- Authentication state
+- Theme/styling preferences
+- Localization/language
+- UI state (modals, sidebars)
+- Moderate frequency changes
+
+❌ Not ideal for:
+- Frequently changing data (every few milliseconds)
+- Large amounts of data
+- Complex state with many updates
+- When Redux is better suited
+
+## Context vs Other Solutions
+
+**Context:** Good for simple global state, learning, small to medium apps
+
+**Redux:** Better for complex state, many updates, dev tools, large apps
+
+**MobX:** Alternative to Redux, automatic dependency tracking
+
+**Zustand:** Lightweight alternative, minimal boilerplate
+
+**Recoil:** Atomic state management, fine-grained reactivity
+
+## Debugging Context
+
+React DevTools shows context value changes. Console.log in Provider to track updates. Use custom hooks to centralize context logic. Easy to test - inject mock provider in tests.
+
+## Real-World Context Examples
+
+**Theme Switching:**
+Provide current theme and toggle function. Descendants access theme for styling.
+
+**User Authentication:**
+Provide user object, login/logout functions. Protected routes check context.
+
+**Notifications:**
+Provide notification state and add/remove functions. Components trigger notifications.`, examples: [{ title: 'Context Example', code: `import { createContext, useContext } from 'react';\n\nconst ThemeContext = createContext();\n\nfunction Provider({ children }) {\n  const [theme, setTheme] = useState('light');\n  return (\n    <ThemeContext.Provider value={{ theme, setTheme }}>\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction Component() {\n  const { theme } = useContext(ThemeContext);\n  return <div>Theme: {theme}</div>;\n}`, output: `Theme: light` }], faqs: [{ q: 'What is Context?', a: 'Context provides way to share data across components without passing through every intermediate component (prop drilling). Create context with createContext(defaultValue). Wrap component tree with Provider component passing value. All descendants can access value with useContext hook. Perfect for global state like authentication, theme, language, notifications. Context avoids passing props through many levels of components. Use sparingly - context is for truly global data, not all state.' }, { q: 'When should I use Context?', a: 'Use for truly global state: authenticated user, theme preference, language selection, feature flags. Don\'t use for frequently changing data as all subscribers re-render. Don\'t use if data only needs in few components - prop drilling is fine for local data. Split context by domain: AuthContext for auth, ThemeContext for theme. This prevents unnecessary re-renders from unrelated context changes. For complex state management, consider Redux or other state libraries.' }, { q: 'What is createContext?', a: 'createContext(defaultValue) creates a context object. The default value is used when useContext is called outside Provider. Returns object with two properties: Provider (component wrapping tree), Consumer (accessing values, rarely used now). Pass default value that matches shape consumers expect. Context created at module level and reused across app. Can create multiple contexts for different concerns separating global state logically.' }, { q: 'What is a Provider?', a: 'Provider is component wrapping part of tree providing context value to all descendants. Syntax: <ContextName.Provider value={data}>. Descendants anywhere in subtree can access value with useContext. When Provider value changes, all consuming components re-render. Only provide at appropriate level - don\'t wrap entire app if only sections need context. Multiple Providers can nest enabling context composition. Providers are essential - without Provider, useContext uses default value only.' }, { q: 'Can Context replace Redux?', a: 'For simple global state, Context is sufficient and reduces dependencies. For complex state with many actions, Redux provides better developer experience. Context lacks Redux benefits: time-travel debugging, action logging, middleware, dev tools. Redux shines with complex workflows, frequent state changes, and large teams. For learning, start with Context. As complexity grows, consider Redux or similar. Many projects successfully use Context alone without Redux.' } ] },
+    '5': { title: 'Performance & Optimization', description: 'Optimize React applications', notes: `# React Performance Optimization - Mastery Guide
+
+## The Performance Challenge
+
+React renders efficiently, but applications can still be slow due to:
+- Unnecessary re-renders of large component trees
+- Expensive computations on every render
+- Large JavaScript bundles blocking initial load
+- Poor code splitting strategies
+- Inefficient list rendering with thousands of items
+
+## Measurement First Principle
+
+Always measure before optimizing:
+
+**React DevTools Profiler:**
+- Record interactions
+- See render times for each component
+- Identify unexpectedly slow components
+- Understand component interaction
+
+**Chrome DevTools Performance Tab:**
+- Analyze full page performance
+- Track scripting, rendering, painting times
+- Identify jank and frame rate drops
+- Analyze timeline of events
+
+**Lighthouse:**
+- Automated performance audit
+- Scores based on best practices
+- Specific recommendations
+
+**Web Vitals:**
+- Largest Contentful Paint (LCP): main content load time
+- First Input Delay (FID): responsiveness to user input
+- Cumulative Layout Shift (CLS): visual stability
+
+## React.memo - Preventing Unnecessary Re-renders
+
+React.memo memoizes component, skipping re-render if props haven't changed.
+
+**How it works:**
+- Compares new props with previous props using shallow equality
+- If props identical, returns cached render
+- Skips child re-render
+
+**When to use:**
+- Component receives same props on parent re-renders
+- Component is expensive to render
+- Parent re-renders frequently
+
+**Syntax:**
+```javascript
+const MyComponent = React.memo(function Component(props) {
+  return <div>{props.data}</div>
+})
+
+// Or with custom comparison:
+const MyComponent = React.memo(Component, (prevProps, nextProps) => {
+  return prevProps.id === nextProps.id  // Return true to skip re-render
+})
+```
+
+**Performance cost:** Memoization adds shallow comparison overhead. Measure to verify benefit.
+
+## useMemo - Memoizing Computations
+
+useMemo memoizes expensive computations, recalculating only when dependencies change.
+
+**Use cases:**
+- Expensive array filtering/sorting
+- Complex object transformations
+- Large tree structures construction
+- Memoizing derived state
+
+**Syntax:**
+```javascript
+const expensiveValue = useMemo(() => {
+  return items.filter(item => item.active).sort((a, b) => a.name.localeCompare(b.name))
+}, [items])
+```
+
+**Rules:**
+- Only use if computation is truly expensive
+- Measure to verify performance improvement
+- Most memoization overhead doesn't pay off
+- Incorrect dependencies cause bugs
+
+## useCallback - Memoizing Function References
+
+useCallback memoizes function reference, returning same function if dependencies unchanged.
+
+**Why it matters:**
+- When passing function to memoized child
+- Without useCallback, new function created on every render
+- Memoized child sees different prop, re-renders anyway
+- useCallback makes function stable
+
+**Syntax:**
+```javascript
+const handleClick = useCallback(() => {
+  doSomething(id)
+}, [id])
+```
+
+**Common pattern:**
+```javascript
+const handler = useCallback(() => { /* ... */ }, [dep1, dep2])
+<MemoizedChild onHandle={handler} />  // Stable reference prevents re-render
+```
+
+## Code Splitting - Reducing Initial Load
+
+Split large bundles into smaller chunks loaded on demand.
+
+**Route-based splitting:**
+```javascript
+const Dashboard = lazy(() => import('./pages/Dashboard'))
+const Settings = lazy(() => import('./pages/Settings'))
+```
+
+Each route becomes separate chunk. Only loaded when user navigates there.
+
+**Component-based splitting:**
+```javascript
+const HeavyComponent = lazy(() => import('./HeavyComponent'))
+
+function App() {
+  return (
+    <Suspense fallback={<Loading />}>
+      <HeavyComponent />
+    </Suspense>
+  )
+}
+```
+
+**Benefits:**
+- Smaller initial JavaScript bundle
+- Faster initial page load
+- Lazy load features only when needed
+- Better Core Web Vitals scores
 
 ## Bundle Analysis
-Identify large dependencies contributing to bundle size
-Use webpack-bundle-analyzer
-Remove unused dependencies
-Use tree-shaking for dead code elimination
-Lazy load heavy libraries only when needed
 
-## Profiling and Measuring
-React DevTools Profiler: visualize render times
-Chrome DevTools Performance tab: analyze full page performance
-Lighthouse: measure page speed metrics
-Web Vitals: Core Web Vitals metrics (LCP, FID, CLS)
+**webpack-bundle-analyzer:** Visualize bundle composition
 
-## Best Practices
-Optimize at render level first
-Avoid creating new objects/functions in render
-Use keys correctly in lists
-Split large components into smaller components
-Lazy load non-critical components
-Consider virtualization for large lists`, examples: [{ title: 'useMemo Example', code: `import { useMemo } from 'react';\n\nfunction Component({ items }) {\n  const sortedItems = useMemo(() => {\n    return [...items].sort();\n  }, [items]);\n  return <ul>{sortedItems.map(i => <li key={i}>{i}</li>)}</ul>;\n}`, output: `<li>Apple</li>\n<li>Banana</li>\n<li>Cherry</li>` }], faqs: [{ q: 'What is React.memo?', a: 'React.memo wraps component for shallow prop comparison. If props haven\'t changed, skip re-render. Only use when component receives same props often but parent re-renders frequently. Memoization adds overhead, so only use when you\'ve identified it as bottleneck via profiling. With useCallback, memoize functions passed as props so memo works. Don\'t prematurely optimize - profile first. React.memo is premature optimization if you haven\'t measured.' }, { q: 'What is useMemo?', a: 'useMemo memoizes computed values to avoid recalculation. Syntax: const value = useMemo(() => expensiveComputation(), [deps]). Runs expensive function only when dependencies change. Useful for expensive calculations with many dependencies. Use judiciously - most memoization overhead exceeds benefit. Measure performance before memoizing. Children using memoized value with React.memo memoize fewer renders. useMemo is not silver bullet - profile to verify it helps.' }, { q: 'What is useCallback?', a: 'useCallback memoizes function reference. Syntax: const fn = useCallback(() => { /* code */ }, [deps]). Returns same function reference if dependencies unchanged. Use when passing function as prop to memoized child to avoid unnecessary memoized child re-renders. Example: pass callback to useCallback, then to memoized child with React.memo. Prevents child re-renders when parent re-renders with same function. Pair with React.memo for effectiveness.' }, { q: 'What is code splitting?', a: 'Code splitting breaks code into smaller chunks loaded on demand rather than all at once. React.lazy dynamically imports components: const Component = React.lazy(() => import(\'./Component\')). Wrap with Suspense for loading state. Use with route-based splitting: each route is separate chunk loaded when navigated. Improves initial load time significantly. Webpack handles bundling automatically. Essential for large applications reducing initial bundle size.' }, { q: 'How do I profile React performance?', a: 'React DevTools Profiler records component render times and counts. Click Profiler tab, record interactions, see which components render and how long they take. Identify slow components. Check if memoization helps. Use performance.measure() for custom measurements. Look for unexpected re-renders. Measure before and after optimizations to verify improvements. Regular profiling catches regressions. Profiling guides optimization efforts based on data not hunches.' } ] }
+**Find heavy dependencies:**
+- lodash: utility functions (consider alternatives)
+- moment.js: date library (consider date-fns)
+- Three.js: 3D graphics (massive)
+
+**Tree-shaking optimization:**
+- Use ES6 imports/exports for tree-shaking
+- Remove unused code from dependencies
+- Side-effect-free libraries enable optimization
+
+## List Virtualization
+
+For large lists (1000+ items), render only visible items:
+
+```javascript
+import { FixedSizeList } from 'react-window'
+
+<FixedSizeList
+  height={600}
+  itemCount={1000}
+  itemSize={50}
+  width='100%'
+>
+  {Row}
+</FixedSizeList>
+```
+
+Dramatically improves performance with many items.
+
+## Best Practices Checklist
+
+✅ Profile before optimizing
+✅ Fix re-render issues before code splitting
+✅ Split by route
+✅ Lazy load heavy components
+✅ Use keys correctly in lists
+✅ Avoid creating objects/functions in render
+✅ Memoize sparingly and measure
+✅ Monitor Web Vitals in production
+✅ Keep dependencies up to date
+✅ Bundle analysis regularly`, examples: [{ title: 'useMemo Example', code: `import { useMemo } from 'react';\n\nfunction Component({ items }) {\n  const sortedItems = useMemo(() => {\n    return [...items].sort();\n  }, [items]);\n  return <ul>{sortedItems.map(i => <li key={i}>{i}</li>)}</ul>;\n}`, output: `<li>Apple</li>\n<li>Banana</li>\n<li>Cherry</li>` }], faqs: [{ q: 'What is React.memo?', a: 'React.memo wraps component for shallow prop comparison. If props haven\'t changed, skip re-render. Only use when component receives same props often but parent re-renders frequently. Memoization adds overhead, so only use when you\'ve identified it as bottleneck via profiling. With useCallback, memoize functions passed as props so memo works. Don\'t prematurely optimize - profile first. React.memo is premature optimization if you haven\'t measured.' }, { q: 'What is useMemo?', a: 'useMemo memoizes computed values to avoid recalculation. Syntax: const value = useMemo(() => expensiveComputation(), [deps]). Runs expensive function only when dependencies change. Useful for expensive calculations with many dependencies. Use judiciously - most memoization overhead exceeds benefit. Measure performance before memoizing. Children using memoized value with React.memo memoize fewer renders. useMemo is not silver bullet - profile to verify it helps.' }, { q: 'What is useCallback?', a: 'useCallback memoizes function reference. Syntax: const fn = useCallback(() => { /* code */ }, [deps]). Returns same function reference if dependencies unchanged. Use when passing function as prop to memoized child to avoid unnecessary memoized child re-renders. Example: pass callback to useCallback, then to memoized child with React.memo. Prevents child re-renders when parent re-renders with same function. Pair with React.memo for effectiveness.' }, { q: 'What is code splitting?', a: 'Code splitting breaks code into smaller chunks loaded on demand rather than all at once. React.lazy dynamically imports components: const Component = React.lazy(() => import(\'./Component\')). Wrap with Suspense for loading state. Use with route-based splitting: each route is separate chunk loaded when navigated. Improves initial load time significantly. Webpack handles bundling automatically. Essential for large applications reducing initial bundle size.' }, { q: 'How do I profile React performance?', a: 'React DevTools Profiler records component render times and counts. Click Profiler tab, record interactions, see which components render and how long they take. Identify slow components. Check if memoization helps. Use performance.measure() for custom measurements. Look for unexpected re-renders. Measure before and after optimizations to verify improvements. Regular profiling catches regressions. Profiling guides optimization efforts based on data not hunches.' } ] }
   },
   '5': { // Angular - keep structure but expand FAQs
     '1': { title: 'Setup & Components', description: 'Set up Angular and create components', notes: `# Angular Setup and Components\n\nAngular is complete framework with everything. Use Angular CLI to generate projects. Components are decorated classes.`, examples: [{ title: 'Angular Component', code: `import { Component } from '@angular/core';\n\n@Component({\n  selector: 'app-hello',\n  template: '<h1>Hello {{ name }}</h1>',\n  styles: ['h1 { color: blue; }']\n})\nexport class HelloComponent {\n  name = 'Angular';\n}`, output: `<h1 style="color: blue;">Hello Angular</h1>` }], faqs: [{ q: 'What is Angular?', a: 'Angular is a complete, opinionated framework for building web applications with TypeScript. Unlike React which is just UI library, Angular provides everything: routing, HTTP client, forms, animations, testing utilities. Angular enforces structure and patterns making large teams more productive. Learning curve is steep but investment pays off on big projects. Angular uses TypeScript extensively with strong typing. Use Angular when building enterprise applications with complex requirements.' }, { q: 'What is a decorator?', a: 'Decorators are functions that mark and configure classes or properties. @Component marks class as component, specifying selector, template, styles. @NgModule marks class as module collecting components. @Injectable marks service. Decorators are Angular way to add metadata to classes. Decorators use @ symbol. TypeScript experimental feature required in tsconfig. Decorators define what Angular does with decorated class and how it behaves in application.' }, { q: 'What is a module?', a: 'Module is collection of components, services, directives logically grouped. Defined with @NgModule decorator specifying imports, declarations, providers, bootstrap. AppModule is root module bootstrapping application. Each feature can have feature module. Modules organize code and define dependencies. Lazy loading feature modules loads them only when needed. Modules are essential for structuring Angular applications preventing spaghetti code.' }, { q: 'What is a service?', a: 'Service is class with business logic shared across components. Marked with @Injectable decorator to enable dependency injection. Services handle API calls, data processing, authentication. Defined once, injected into many components. Services enable code reuse and testability. Dependency injection automatically provides instances. Services are singletons by default - same instance across app. HttpClient is example built-in service for HTTP requests.' }, { q: 'What is dependency injection?', a: 'Dependency injection automatically provides required dependencies to components and services. Constructor parameters declare dependencies, Angular provides instances. Removes need for manual creation. Enables easy testing by injecting mock dependencies. Services are automatically provided. Use providers in module to register services. DI is core Angular feature enabling loose coupling and testability. Services declared in providers available to all components in module.' } ] },
