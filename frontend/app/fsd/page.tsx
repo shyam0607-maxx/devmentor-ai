@@ -7,8 +7,8 @@ export default function FSDRedirect() {
   const router = useRouter();
 
   useEffect(() => {
-    // Redirect to the new working route
-    router.replace('/full-stack');
+    // Redirect to the comprehensive learning platform
+    router.replace('/fs-learning');
   }, [router]);
 
   return (

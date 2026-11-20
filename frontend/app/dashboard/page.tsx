@@ -152,21 +152,21 @@ export default function Dashboard() {
             </Link>
 
             {/* Full-Stack Path */}
-            <Link href="/fullstack" className="group">
+            <Link href="/fs-learning" className="group">
               <div className="bg-gradient-to-br from-slate-700 to-slate-800 border border-slate-600 rounded-lg p-8 hover:border-blue-400 transition hover:shadow-lg hover:shadow-blue-400/20 cursor-pointer">
                 <div className="flex items-center gap-4 mb-6">
                   <div className="p-3 bg-blue-400/20 rounded-lg">
                     <Code2 className="w-8 h-8 text-blue-400" />
                   </div>
                   <div>
-                    <h3 className="text-2xl font-bold text-white">Full-Stack Path</h3>
+                    <h3 className="text-2xl font-bold text-white">Full Stack Mastery</h3>
                     <p className="text-slate-400 text-sm">
-                      MERN & MEAN Stacks
+                      MongoDB, Express, Node.js, React, Angular
                     </p>
                   </div>
                 </div>
                 <p className="text-slate-300 mb-6">
-                  Learn modern full-stack development with MERN and MEAN stacks.
+                  Complete learning paths with 25 detailed modules, 3D visualizations, 100+ code examples, and 250+ interview FAQs.
                 </p>
                 <button className="text-blue-400 font-semibold flex items-center gap-2 group-hover:gap-3 transition">
                   Explore Paths →

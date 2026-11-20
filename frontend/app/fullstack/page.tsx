@@ -7,7 +7,7 @@ export default function FullStackPage() {
   const router = useRouter();
 
   useEffect(() => {
-    router.replace('/learn-stack');
+    router.replace('/fs-learning');
   }, [router]);
 
   return (
