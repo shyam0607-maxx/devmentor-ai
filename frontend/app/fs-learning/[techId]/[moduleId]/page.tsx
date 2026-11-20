@@ -4,7 +4,7 @@ import Link from 'next/link';
 import { useParams } from 'next/navigation';
 import { useState, Suspense } from 'react';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
-import { MODULE_DATA_COMPLETE } from '../modulesData.ts';
+import { MODULE_DATA_COMPLETE } from '@/app/fs-learning/modulesData';
 
 function ModuleContent() {
   const params = useParams();
