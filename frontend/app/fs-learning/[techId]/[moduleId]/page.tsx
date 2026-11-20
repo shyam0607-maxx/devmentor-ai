@@ -10,11 +10,40 @@ function ModuleContent() {
   const params = useParams();
   const [copied, setCopied] = useState(false);
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
+  const router = require('next/navigation').useRouter();
 
   const techId = (params?.techId as string) || '';
   const moduleId = (params?.moduleId as string) || '';
 
   let module = MODULE_DATA_COMPLETE[techId]?.[moduleId];
+
+  // Calculate next module for navigation
+  const getNextModule = () => {
+    const currentModuleNum = parseInt(moduleId);
+    const nextModuleNum = currentModuleNum + 1;
+
+    // If next module exists in same tech (max 5 modules)
+    if (nextModuleNum <= 5) {
+      return `/fs-learning/${techId}/${nextModuleNum}`;
+    }
+    // If at last module, go to next tech first module
+    const nextTechNum = parseInt(techId) + 1;
+    if (nextTechNum <= 5) {
+      return `/fs-learning/${nextTechNum}/1`;
+    }
+    // If at end, go back to main
+    return '/fs-learning';
+  };
+
+  // Determine animation type based on tech/module
+  const getAnimationType = () => {
+    if (techId === '1') return 'database'; // MongoDB
+    if (techId === '2') return 'server'; // Express
+    if (techId === '3') return 'node'; // Node.js
+    if (techId === '4') return 'react'; // React
+    if (techId === '5') return 'angular'; // Angular
+    return 'generic';
+  };
 
   // Fallback for missing modules
   if (!module) {
@@ -87,33 +116,132 @@ function ModuleContent() {
         <h1 className="module-title">{module.title}</h1>
         <p className="text-xl text-slate-300 mb-8 font-light">{module.description}</p>
 
-        {/* 3D Visualization */}
+        {/* 3D Visualization - Topic Specific */}
         <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-lg p-8 mb-8 shadow-xl">
-          <h2 className="section-title mb-6">🎨 3D Visualization</h2>
+          <h2 className="section-title mb-6">🎨 Visual Concept</h2>
           <div className="w-full h-80 bg-slate-900 rounded-lg flex items-center justify-center overflow-hidden">
             <svg viewBox="0 0 400 300" className="w-full h-full">
               <defs>
                 <style>{`
                   @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-20px); } }
                   @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+                  @keyframes flowData { 0% { offset-distance: 0%; } 100% { offset-distance: 100%; } }
                   .cube { animation: float 3s ease-in-out infinite; }
                   .circle { animation: rotate 4s linear infinite; }
+                  .pulse { animation: pulse 2s ease-in-out infinite; }
                 `}</style>
               </defs>
-              {/* Animated cube */}
-              <g className="cube">
-                <rect x="140" y="80" width="120" height="120" fill="none" stroke="#06b6d4" strokeWidth="2"/>
-                <line x1="140" y1="80" x2="170" y2="50" stroke="#06b6d4" strokeWidth="2"/>
-                <line x1="260" y1="80" x2="290" y2="50" stroke="#06b6d4" strokeWidth="2"/>
-                <line x1="260" y1="200" x2="290" y2="230" stroke="#06b6d4" strokeWidth="2"/>
-                <line x1="140" y1="200" x2="170" y2="230" stroke="#06b6d4" strokeWidth="2"/>
-                <rect x="170" y="50" width="120" height="120" fill="none" stroke="#06b6d4" strokeWidth="2" opacity="0.7"/>
-              </g>
-              {/* Rotating circles */}
-              <g className="circle" opacity="0.6">
-                <circle cx="200" cy="150" r="80" fill="none" stroke="#8b5cf6" strokeWidth="2"/>
-                <circle cx="200" cy="150" r="60" fill="none" stroke="#06b6d4" strokeWidth="2"/>
-              </g>
+
+              {/* Database Animation (MongoDB - tech 1) */}
+              {techId === '1' && (
+                <>
+                  {/* Database cylinder */}
+                  <ellipse cx="200" cy="80" rx="60" ry="20" fill="none" stroke="#10b981" strokeWidth="2"/>
+                  <line x1="140" y1="80" x2="140" y2="180" stroke="#10b981" strokeWidth="2"/>
+                  <line x1="260" y1="80" x2="260" y2="180" stroke="#10b981" strokeWidth="2"/>
+                  <ellipse cx="200" cy="180" rx="60" ry="20" fill="none" stroke="#10b981" strokeWidth="2"/>
+                  <rect x="140" y="80" width="120" height="100" fill="none" stroke="#10b981" strokeWidth="2" opacity="0.3"/>
+
+                  {/* Data points */}
+                  <circle cx="170" cy="110" r="4" fill="#34d399" className="pulse"/>
+                  <circle cx="200" cy="130" r="4" fill="#34d399" className="pulse" style={{animationDelay: '0.3s'}}/>
+                  <circle cx="230" cy="150" r="4" fill="#34d399" className="pulse" style={{animationDelay: '0.6s'}}/>
+
+                  {/* Label */}
+                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">NoSQL Database</text>
+                </>
+              )}
+
+              {/* Server Animation (Express - tech 2) */}
+              {techId === '2' && (
+                <>
+                  {/* Server box */}
+                  <rect x="120" y="80" width="160" height="120" fill="none" stroke="#f59e0b" strokeWidth="2" rx="8"/>
+                  <line x1="130" y1="100" x2="270" y2="100" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
+                  <line x1="130" y1="120" x2="270" y2="120" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
+                  <line x1="130" y1="140" x2="270" y2="140" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
+
+                  {/* Incoming requests */}
+                  <circle cx="80" cy="140" r="8" fill="#06b6d4" className="pulse"/>
+                  <line x1="88" y1="140" x2="120" y2="140" stroke="#06b6d4" strokeWidth="2" strokeDasharray="5,5" opacity="0.7"/>
+
+                  {/* Outgoing response */}
+                  <line x1="280" y1="140" x2="320" y2="140" stroke="#10b981" strokeWidth="2" strokeDasharray="5,5" opacity="0.7"/>
+                  <circle cx="328" cy="140" r="8" fill="#10b981" className="pulse"/>
+
+                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Request-Response Server</text>
+                </>
+              )}
+
+              {/* Node.js Runtime (tech 3) */}
+              {techId === '3' && (
+                <>
+                  {/* Event loop representation */}
+                  <circle cx="200" cy="150" r="70" fill="none" stroke="#6ee7b7" strokeWidth="2" className="rotate"/>
+
+                  {/* Event queue items */}
+                  <circle cx="270" cy="150" r="12" fill="#6ee7b7" className="pulse"/>
+                  <circle cx="265" cy="90" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '0.4s'}}/>
+                  <circle cx="200" cy="50" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '0.8s'}}/>
+                  <circle cx="130" cy="90" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '1.2s'}}/>
+
+                  {/* Center */}
+                  <circle cx="200" cy="150" r="20" fill="none" stroke="#06b6d4" strokeWidth="2"/>
+                  <text x="200" y="155" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Loop</text>
+
+                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Event Loop</text>
+                </>
+              )}
+
+              {/* React Component (tech 4) */}
+              {techId === '4' && (
+                <>
+                  {/* Parent component */}
+                  <rect x="100" y="60" width="200" height="160" fill="none" stroke="#8b5cf6" strokeWidth="2" rx="4"/>
+                  <text x="110" y="80" fill="#8b5cf6" fontSize="12" fontWeight="bold">Parent</text>
+
+                  {/* Child components */}
+                  <rect x="120" y="100" width="60" height="50" fill="none" stroke="#06b6d4" strokeWidth="2" rx="2"/>
+                  <text x="130" y="120" fill="#06b6d4" fontSize="11">Child 1</text>
+
+                  <rect x="220" y="100" width="60" height="50" fill="none" stroke="#06b6d4" strokeWidth="2" rx="2"/>
+                  <text x="230" y="120" fill="#06b6d4" fontSize="11">Child 2</text>
+
+                  {/* Props flow */}
+                  <line x1="150" y1="100" x2="150" y2="85" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+                  <line x1="250" y1="100" x2="250" y2="85" stroke="#34d399" strokeWidth="2" markerEnd="url(#arrowhead)"/>
+
+                  <defs>
+                    <marker id="arrowhead" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+                      <polygon points="0 0, 10 3, 0 6" fill="#34d399" />
+                    </marker>
+                  </defs>
+
+                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Component Hierarchy</text>
+                </>
+              )}
+
+              {/* Angular Modules (tech 5) */}
+              {techId === '5' && (
+                <>
+                  {/* AppModule */}
+                  <rect x="110" y="70" width="180" height="140" fill="none" stroke="#f97316" strokeWidth="2" rx="8"/>
+                  <text x="120" y="90" fill="#f97316" fontSize="13" fontWeight="bold">AppModule</text>
+
+                  {/* Child modules */}
+                  <rect x="125" y="105" width="50" height="35" fill="none" stroke="#06b6d4" strokeWidth="1.5" rx="3"/>
+                  <text x="130" y="122" fill="#06b6d4" fontSize="10">Component</text>
+
+                  <rect x="190" y="105" width="50" height="35" fill="none" stroke="#06b6d4" strokeWidth="1.5" rx="3"/>
+                  <text x="200" y="122" fill="#06b6d4" fontSize="10">Service</text>
+
+                  <rect x="157" y="155" width="86" height="30" fill="none" stroke="#34d399" strokeWidth="1.5" rx="3"/>
+                  <text x="162" y="173" fill="#34d399" fontSize="10">Providers & Declarations</text>
+
+                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Module Architecture</text>
+                </>
+              )}
             </svg>
           </div>
         </div>
@@ -257,9 +385,9 @@ function ModuleContent() {
           <Link href={`/fs-learning/${techId}`} className="px-6 py-3 bg-slate-700 hover:bg-slate-600 text-white rounded-lg transition font-semibold">
             ← Back to Modules
           </Link>
-          <button className="px-6 py-3 bg-cyan-600 hover:bg-cyan-500 text-white rounded-lg transition font-semibold">
-            ✓ Mark as Complete
-          </button>
+          <Link href={getNextModule()} className="px-6 py-3 bg-gradient-to-r from-green-600 to-cyan-600 hover:from-green-500 hover:to-cyan-500 text-white rounded-lg transition font-semibold">
+            ✓ Mark as Complete & Continue
+          </Link>
         </div>
       </div>
     </div>
