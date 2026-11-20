@@ -478,35 +478,34 @@ function ModuleContent() {
   const techId = (params?.techId as string) || '';
   const moduleId = (params?.moduleId as string) || '';
 
-  const module = MODULE_DATA[techId]?.[moduleId];
+  let module = MODULE_DATA[techId]?.[moduleId];
 
+  // Fallback for missing modules
   if (!module) {
-    // Provide default content for missing modules
-    const defaultModule = {
+    module = {
       title: `Module ${moduleId} - Coming Soon`,
-      description: 'This module will be available soon with comprehensive content',
-      notes: `# Module Content\n\nThis module is being prepared with:\n- Detailed explanations\n- Code examples\n- Interview FAQs\n- Best practices\n\nCheck back soon!`,
+      description: 'Comprehensive learning content coming soon',
+      notes: `# Module Content\n\n## Coming Soon\n\nThis module is being prepared with detailed explanations, code examples, and interview questions.`,
       examples: [{
-        title: 'Example Code',
-        code: `// Module content coming soon\nconsole.log('Learning module');`,
-        output: `Module content coming soon\nLearning module`
+        title: 'Example',
+        code: `console.log('Learning in progress');`,
+        output: `Learning in progress`
       }],
       faqs: [
-        { q: 'When will this module be ready?', a: 'Coming soon with full content' },
-        { q: 'What will be included?', a: 'Notes, code, FAQs, and best practices' },
-        { q: 'Can I contribute?', a: 'Help us build better learning content' },
-        { q: 'Is there premium content?', a: 'All content is free' },
-        { q: 'How often updated?', a: 'Regular updates with new content' },
-        { q: 'Mobile friendly?', a: 'Yes, works on all devices' },
-        { q: 'Download available?', a: 'Yes, export as PDF' },
-        { q: 'Interactive examples?', a: 'Yes, with live output' },
-        { q: 'Community forum?', a: 'Join discussions and get help' },
-        { q: 'Certificates?', a: 'Completion certificates available' }
+        { q: 'When ready?', a: 'Soon with full content' },
+        { q: 'What includes?', a: 'Notes, code, FAQs' },
+        { q: 'Is free?', a: 'Yes' },
+        { q: 'Mobile friendly?', a: 'Yes' },
+        { q: 'Updates?', a: 'Regular content' },
+        { q: 'Examples?', a: 'Interactive code' },
+        { q: 'Download?', a: 'Available' },
+        { q: 'Certificates?', a: 'Yes' },
+        { q: 'Help?', a: 'Community support' },
+        { q: 'Contribute?', a: 'Help build content' }
       ]
     };
-
-    return renderModule(defaultModule);
   }
+
 
   const handleCopy = (code: string) => {
     navigator.clipboard.writeText(code);
