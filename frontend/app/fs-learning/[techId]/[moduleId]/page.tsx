@@ -5,6 +5,7 @@ import { useParams } from 'next/navigation';
 import { useState, Suspense } from 'react';
 import { Copy, Check, ChevronDown, ChevronUp } from 'lucide-react';
 import { MODULE_DATA_COMPLETE } from '@/app/fs-learning/modulesData';
+import { renderMindMapAnimation } from '@/app/fs-learning/animations/mindMapAnimations';
 
 function ModuleContent() {
   const params = useParams();
@@ -184,6 +185,9 @@ function ModuleContent() {
                   </feMerge>
                 </filter>
               </defs>
+
+              {/* Universal Mind-Map Animation Renderer */}
+              {renderMindMapAnimation(getAnimationType())}
 
               {/* MongoDB: Advanced Mind-Map */}
               {getAnimationType() === 'mongodb-intro' && (
