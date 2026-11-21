@@ -145,51 +145,39 @@ function ModuleContent() {
         <h1 className="module-title">{module.title}</h1>
         <p className="text-xl text-slate-300 mb-8 font-light">{module.description}</p>
 
-        {/* 3D Visualization - Topic Specific */}
-        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border-2 border-slate-600 rounded-xl p-8 mb-8 shadow-2xl">
-          <h2 className="section-title mb-6">🎨 Advanced 3D Concept Visualization</h2>
-          <div className="w-full bg-gradient-to-b from-slate-800 to-slate-950 rounded-lg flex items-center justify-center overflow-hidden" style={{height: '600px', minHeight: '600px'}}>
-            <svg viewBox="0 0 800 600" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
+        {/* Advanced Mind-Map Visualization */}
+        <div className="bg-gradient-to-br from-slate-800 via-slate-750 to-slate-900 border-3 border-gradient rounded-xl p-8 mb-8 shadow-2xl">
+          <h2 className="section-title mb-2">🧠 Interactive Mind-Map Learning Structure</h2>
+          <p className="text-slate-400 text-sm mb-6">Topic breakdown and concept relationships for deep understanding</p>
+          <div className="w-full bg-gradient-to-b from-slate-800 to-slate-950 rounded-lg flex items-center justify-center overflow-hidden" style={{height: '700px', minHeight: '700px', borderTop: '2px solid rgba(6,182,212,0.3)'}}>
+            <svg viewBox="0 0 1000 700" className="w-full h-full" preserveAspectRatio="xMidYMid meet">
               <defs>
                 <style>{`
-                  @keyframes float { 0%, 100% { transform: translateY(0px) rotateZ(0deg); } 25% { transform: translateY(-30px) rotateZ(5deg); } 50% { transform: translateY(-40px) rotateZ(0deg); } 75% { transform: translateY(-20px) rotateZ(-5deg); } }
-                  @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                  @keyframes rotateCW { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-                  @keyframes rotateCCW { from { transform: rotate(360deg); } to { transform: rotate(0deg); } }
-                  @keyframes pulse { 0%, 100% { opacity: 0.5; } 50% { opacity: 1; } }
-                  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 5px); } 50% { filter: drop-shadow(0 0 20px); } }
-                  @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-25px); } }
-                  @keyframes orbit { 0% { transform: rotate(0deg) translateX(80px) rotate(0deg); } 100% { transform: rotate(360deg) translateX(80px) rotate(-360deg); } }
-                  @keyframes shimmer { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
-                  @keyframes wave { 0% { transform: translateX(0) skewX(0deg); } 50% { transform: translateX(50px) skewX(5deg); } 100% { transform: translateX(0) skewX(0deg); } }
-                  @keyframes scale { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.1); } }
-                  .cube { animation: float 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite; }
-                  .circle { animation: rotate 5s linear infinite; }
-                  .pulse { animation: pulse 2.5s ease-in-out infinite; }
-                  .glow { animation: glow 3s ease-in-out infinite; }
-                  .bounce { animation: bounce 2.5s cubic-bezier(0.68, -0.55, 0.265, 1.55) infinite; }
-                  .orbit { animation: orbit 6s linear infinite; transform-origin: center; }
-                  .shimmer { animation: shimmer 3s ease-in-out infinite; }
-                  .wave { animation: wave 2.5s ease-in-out infinite; }
-                  .scale { animation: scale 2.5s ease-in-out infinite; }
+                  @keyframes pulse { 0%, 100% { r: 8px; opacity: 0.7; } 50% { r: 12px; opacity: 1; } }
+                  @keyframes glow { 0%, 100% { filter: drop-shadow(0 0 3px); } 50% { filter: drop-shadow(0 0 15px); } }
+                  @keyframes fadeInScale { 0% { opacity: 0; transform: scale(0.5); } 100% { opacity: 1; transform: scale(1); } }
+                  @keyframes drawLine { 0% { stroke-dashoffset: 1000; } 100% { stroke-dashoffset: 0; } }
+                  @keyframes float { 0%, 100% { transform: translateY(0px); } 50% { transform: translateY(-15px); } }
+                  @keyframes rotateSlow { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+                  .mindmap-node { animation: glow 3s ease-in-out infinite; }
+                  .mindmap-pulse { animation: pulse 2s ease-in-out infinite; }
+                  .mindmap-line { animation: drawLine 2s ease-in-out forwards; stroke-dasharray: 1000; }
+                  .mindmap-center { animation: float 3s ease-in-out infinite; }
                 `}</style>
-                <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+                <linearGradient id="primary" x1="0%" y1="0%" x2="100%" y2="100%">
                   <stop offset="0%" style={{stopColor: '#06b6d4', stopOpacity: 1}} />
-                  <stop offset="50%" style={{stopColor: '#10b981', stopOpacity: 0.9}} />
+                  <stop offset="100%" style={{stopColor: '#0891b2', stopOpacity: 1}} />
+                </linearGradient>
+                <linearGradient id="secondary" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#10b981', stopOpacity: 1}} />
                   <stop offset="100%" style={{stopColor: '#059669', stopOpacity: 1}} />
                 </linearGradient>
-                <linearGradient id="grad2" x1="0%" y1="0%" x2="100%" y2="100%">
-                  <stop offset="0%" style={{stopColor: '#f59e0b', stopOpacity: 1}} />
-                  <stop offset="50%" style={{stopColor: '#f97316', stopOpacity: 0.9}} />
-                  <stop offset="100%" style={{stopColor: '#ea580c', stopOpacity: 1}} />
+                <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="100%">
+                  <stop offset="0%" style={{stopColor: '#8b5cf6', stopOpacity: 1}} />
+                  <stop offset="100%" style={{stopColor: '#6366f1', stopOpacity: 1}} />
                 </linearGradient>
-                <radialGradient id="grad3" cx="50%" cy="50%" r="50%">
-                  <stop offset="0%" style={{stopColor: '#8b5cf6', stopOpacity: 0.9}} />
-                  <stop offset="70%" style={{stopColor: '#06b6d4', stopOpacity: 0.5}} />
-                  <stop offset="100%" style={{stopColor: '#06b6d4', stopOpacity: 0.1}} />
-                </radialGradient>
-                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                  <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+                <filter id="mindmapGlow">
+                  <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
                   <feMerge>
                     <feMergeNode in="coloredBlur"/>
                     <feMergeNode in="SourceGraphic"/>

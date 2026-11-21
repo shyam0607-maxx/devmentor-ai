@@ -1,0 +1,39 @@
+ANGULAR MODULE 1: Setup & Components - Comprehensive Guide
+- Complete Angular framework overview with TypeScript
+- Component architecture and decorators
+- Module system organization
+- Dependency injection basics
+- Service creation and injection
+- Component lifecycle hooks
+
+ANGULAR MODULE 2: Templates & Binding - Data Flow Mastery  
+- Interpolation {{ }} for data display
+- Property binding [property]="value"
+- Event binding (click)="handler()"
+- Two-way binding [(ngModel)]="data"
+- Directives *ngIf, *ngFor, *ngSwitch
+- Form handling and validation
+
+ANGULAR MODULE 3: Services & DI - Business Logic Layer
+- Creating reusable services
+- @Injectable decorator usage
+- Dependency injection patterns
+- HttpClient for API calls
+- Service singleton pattern
+- Shared state management
+
+ANGULAR MODULE 4: Routing - Navigation Architecture
+- Route configuration and hierarchy
+- Route parameters and query strings
+- RouterLink navigation
+- Guard implementation (CanActivate, CanDeactivate)
+- Lazy loading feature modules
+- Resolver for data pre-fetching
+
+ANGULAR MODULE 5: RxJS & Observables - Reactive Programming
+- Observable stream creation
+- Operators (map, filter, tap, etc.)
+- Subject and ReplaySubject
+- Async pipe integration
+- Error handling with catchError
+- Subscription management and unsubscribe
