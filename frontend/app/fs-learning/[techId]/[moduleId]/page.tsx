@@ -185,64 +185,224 @@ function ModuleContent() {
                 </filter>
               </defs>
 
-              {/* MongoDB: Introduction - Database Setup */}
+              {/* MongoDB: Advanced Mind-Map */}
               {getAnimationType() === 'mongodb-intro' && (
                 <>
-                  {/* Database cylinder */}
-                  <ellipse cx="200" cy="80" rx="60" ry="20" fill="none" stroke="#10b981" strokeWidth="2"/>
-                  <line x1="140" y1="80" x2="140" y2="180" stroke="#10b981" strokeWidth="2"/>
-                  <line x1="260" y1="80" x2="260" y2="180" stroke="#10b981" strokeWidth="2"/>
-                  <ellipse cx="200" cy="180" rx="60" ry="20" fill="none" stroke="#10b981" strokeWidth="2"/>
-                  <rect x="140" y="80" width="120" height="100" fill="none" stroke="#10b981" strokeWidth="2" opacity="0.3"/>
+                  {/* Center Node - MongoDB */}
+                  <circle cx="500" cy="350" r="50" fill="url(#primary)" filter="url(#mindmapGlow)"/>
+                  <text x="500" y="360" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold">MongoDB</text>
 
-                  {/* Data points */}
-                  <circle cx="170" cy="110" r="4" fill="#34d399" className="pulse"/>
-                  <circle cx="200" cy="130" r="4" fill="#34d399" className="pulse" style={{animationDelay: '0.3s'}}/>
-                  <circle cx="230" cy="150" r="4" fill="#34d399" className="pulse" style={{animationDelay: '0.6s'}}/>
+                  {/* Main Branches with animated lines */}
+                  {/* Installation Branch */}
+                  <line x1="450" y1="315" x2="280" y2="150" stroke="#10b981" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0s'}} opacity="0.8"/>
+                  <circle cx="280" cy="150" r="35" fill="#10b981" fillOpacity="0.3" stroke="#10b981" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="160" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="bold">Setup</text>
 
-                  {/* Label */}
-                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">NoSQL Database</text>
+                  {/* Connection Branch */}
+                  <line x1="550" y1="315" x2="720" cy="150" stroke="#06b6d4" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.3s'}} opacity="0.8"/>
+                  <circle cx="720" cy="150" r="35" fill="#06b6d4" fillOpacity="0.3" stroke="#06b6d4" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="160" textAnchor="middle" fill="#06b6d4" fontSize="13" fontWeight="bold">Connect</text>
+
+                  {/* Concepts Branch */}
+                  <line x1="450" y1="390" x2="280" y2="550" stroke="#8b5cf6" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.6s'}} opacity="0.8"/>
+                  <circle cx="280" cy="550" r="35" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="560" textAnchor="middle" fill="#8b5cf6" fontSize="13" fontWeight="bold">Concepts</text>
+
+                  {/* Architecture Branch */}
+                  <line x1="550" y1="390" x2="720" y2="550" stroke="#f59e0b" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.9s'}} opacity="0.8"/>
+                  <circle cx="720" cy="550" r="35" fill="#f59e0b" fillOpacity="0.3" stroke="#f59e0b" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="560" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="bold">Schema</text>
+
+                  {/* Sub-branches Level 2 */}
+                  {/* Setup sub-items */}
+                  <line x1="260" y1="185" x2="140" y2="240" stroke="#10b981" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="140" cy="240" r="18" fill="#10b981" fillOpacity="0.4"/>
+                  <text x="140" y="245" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold">Windows</text>
+
+                  <line x1="300" y1="185" x2="420" y2="240" stroke="#10b981" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="420" cy="240" r="18" fill="#10b981" fillOpacity="0.4"/>
+                  <text x="420" y="245" textAnchor="middle" fill="#10b981" fontSize="10" fontWeight="bold">Linux</text>
+
+                  {/* Connection sub-items */}
+                  <line x1="740" y1="185" x2="620" y2="240" stroke="#06b6d4" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="620" cy="240" r="18" fill="#06b6d4" fillOpacity="0.4"/>
+                  <text x="620" y="245" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Atlas</text>
+
+                  <line x1="700" y1="185" x2="800" y2="240" stroke="#06b6d4" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="800" cy="240" r="18" fill="#06b6d4" fillOpacity="0.4"/>
+                  <text x="800" y="245" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Local</text>
+
+                  {/* Title and description */}
+                  <text x="500" y="680" textAnchor="middle" fill="#06b6d4" fontSize="18" fontWeight="bold">MongoDB Learning Hierarchy</text>
+                  <text x="500" y="700" textAnchor="middle" fill="#34d399" fontSize="13">Understanding core concepts through visual relationships</text>
                 </>
               )}
 
-              {/* Server Animation (Express - tech 2) */}
+              {/* Express: Advanced Mind-Map */}
               {techId === '2' && (
                 <>
-                  {/* Server box */}
-                  <rect x="120" y="80" width="160" height="120" fill="none" stroke="#f59e0b" strokeWidth="2" rx="8"/>
-                  <line x1="130" y1="100" x2="270" y2="100" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
-                  <line x1="130" y1="120" x2="270" y2="120" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
-                  <line x1="130" y1="140" x2="270" y2="140" stroke="#f59e0b" strokeWidth="1" opacity="0.5"/>
+                  {/* Center Node - Express */}
+                  <circle cx="500" cy="350" r="50" fill="url(#secondary)" filter="url(#mindmapGlow)"/>
+                  <text x="500" y="360" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold">Express.js</text>
 
-                  {/* Incoming requests */}
-                  <circle cx="80" cy="140" r="8" fill="#06b6d4" className="pulse"/>
-                  <line x1="88" y1="140" x2="120" y2="140" stroke="#06b6d4" strokeWidth="2" strokeDasharray="5,5" opacity="0.7"/>
+                  {/* Main Branches */}
+                  {/* Routing Branch */}
+                  <line x1="450" y1="315" x2="280" y2="150" stroke="#f59e0b" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0s'}} opacity="0.8"/>
+                  <circle cx="280" cy="150" r="35" fill="#f59e0b" fillOpacity="0.3" stroke="#f59e0b" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="160" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="bold">Routing</text>
 
-                  {/* Outgoing response */}
-                  <line x1="280" y1="140" x2="320" y2="140" stroke="#10b981" strokeWidth="2" strokeDasharray="5,5" opacity="0.7"/>
-                  <circle cx="328" cy="140" r="8" fill="#10b981" className="pulse"/>
+                  {/* Middleware Branch */}
+                  <line x1="550" y1="315" x2="720" y2="150" stroke="#06b6d4" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.3s'}} opacity="0.8"/>
+                  <circle cx="720" cy="150" r="35" fill="#06b6d4" fillOpacity="0.3" stroke="#06b6d4" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="160" textAnchor="middle" fill="#06b6d4" fontSize="13" fontWeight="bold">Middleware</text>
 
-                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Request-Response Server</text>
+                  {/* Request/Response Branch */}
+                  <line x1="450" y1="390" x2="280" y2="550" stroke="#10b981" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.6s'}} opacity="0.8"/>
+                  <circle cx="280" cy="550" r="35" fill="#10b981" fillOpacity="0.3" stroke="#10b981" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="560" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="bold">Req/Res</text>
+
+                  {/* Error Handling Branch */}
+                  <line x1="550" y1="390" x2="720" y2="550" stroke="#8b5cf6" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.9s'}} opacity="0.8"/>
+                  <circle cx="720" cy="550" r="35" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="560" textAnchor="middle" fill="#8b5cf6" fontSize="13" fontWeight="bold">Errors</text>
+
+                  {/* Sub-branches */}
+                  <line x1="260" y1="185" x2="140" y2="240" stroke="#f59e0b" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="140" cy="240" r="18" fill="#f59e0b" fillOpacity="0.4"/>
+                  <text x="140" y="245" textAnchor="middle" fill="#f59e0b" fontSize="10" fontWeight="bold">GET/POST</text>
+
+                  <line x1="300" y1="185" x2="420" y2="240" stroke="#f59e0b" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="420" cy="240" r="18" fill="#f59e0b" fillOpacity="0.4"/>
+                  <text x="420" y="245" textAnchor="middle" fill="#f59e0b" fontSize="10" fontWeight="bold">Params</text>
+
+                  <text x="500" y="680" textAnchor="middle" fill="#f59e0b" fontSize="18" fontWeight="bold">Express Server Architecture</text>
+                  <text x="500" y="700" textAnchor="middle" fill="#34d399" fontSize="13">Web server request-response cycle mastery</text>
                 </>
               )}
 
-              {/* Node.js Runtime (tech 3) */}
+              {/* Node.js: Advanced Mind-Map */}
               {techId === '3' && (
                 <>
-                  {/* Event loop representation */}
-                  <circle cx="200" cy="150" r="70" fill="none" stroke="#6ee7b7" strokeWidth="2" className="rotate"/>
+                  {/* Center Node - Node.js */}
+                  <circle cx="500" cy="350" r="50" fill="url(#secondary)" filter="url(#mindmapGlow)"/>
+                  <text x="500" y="360" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold">Node.js</text>
 
-                  {/* Event queue items */}
-                  <circle cx="270" cy="150" r="12" fill="#6ee7b7" className="pulse"/>
-                  <circle cx="265" cy="90" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '0.4s'}}/>
-                  <circle cx="200" cy="50" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '0.8s'}}/>
-                  <circle cx="130" cy="90" r="12" fill="#6ee7b7" className="pulse" style={{animationDelay: '1.2s'}}/>
+                  {/* Main Branches */}
+                  {/* Event Loop Branch */}
+                  <line x1="450" y1="315" x2="280" y2="150" stroke="#6ee7b7" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0s'}} opacity="0.8"/>
+                  <circle cx="280" cy="150" r="35" fill="#6ee7b7" fillOpacity="0.3" stroke="#6ee7b7" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="160" textAnchor="middle" fill="#6ee7b7" fontSize="13" fontWeight="bold">Event Loop</text>
 
-                  {/* Center */}
-                  <circle cx="200" cy="150" r="20" fill="none" stroke="#06b6d4" strokeWidth="2"/>
-                  <text x="200" y="155" textAnchor="middle" fill="#06b6d4" fontSize="10" fontWeight="bold">Loop</text>
+                  {/* Modules Branch */}
+                  <line x1="550" y1="315" x2="720" y2="150" stroke="#10b981" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.3s'}} opacity="0.8"/>
+                  <circle cx="720" cy="150" r="35" fill="#10b981" fillOpacity="0.3" stroke="#10b981" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="160" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="bold">Modules</text>
 
-                  <text x="200" y="250" textAnchor="middle" fill="#06b6d4" fontSize="14" fontWeight="bold">Event Loop</text>
+                  {/* Streams Branch */}
+                  <line x1="450" y1="390" x2="280" y2="550" stroke="#f59e0b" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.6s'}} opacity="0.8"/>
+                  <circle cx="280" cy="550" r="35" fill="#f59e0b" fillOpacity="0.3" stroke="#f59e0b" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="560" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="bold">Streams</text>
+
+                  {/* Async Branch */}
+                  <line x1="550" y1="390" x2="720" y2="550" stroke="#8b5cf6" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.9s'}} opacity="0.8"/>
+                  <circle cx="720" cy="550" r="35" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="560" textAnchor="middle" fill="#8b5cf6" fontSize="13" fontWeight="bold">Async</text>
+
+                  {/* Sub-branches */}
+                  <line x1="260" y1="185" x2="140" y2="240" stroke="#6ee7b7" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="140" cy="240" r="18" fill="#6ee7b7" fillOpacity="0.4"/>
+                  <text x="140" y="245" textAnchor="middle" fill="#6ee7b7" fontSize="10" fontWeight="bold">Phases</text>
+
+                  <line x1="300" y1="185" x2="420" y2="240" stroke="#6ee7b7" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="420" cy="240" r="18" fill="#6ee7b7" fillOpacity="0.4"/>
+                  <text x="420" y="245" textAnchor="middle" fill="#6ee7b7" fontSize="10" fontWeight="bold">Queue</text>
+
+                  <text x="500" y="680" textAnchor="middle" fill="#6ee7b7" fontSize="18" fontWeight="bold">Node.js Runtime Architecture</text>
+                  <text x="500" y="700" textAnchor="middle" fill="#34d399" fontSize="13">Asynchronous, event-driven JavaScript runtime</text>
+                </>
+              )}
+
+              {/* React: Advanced Mind-Map */}
+              {techId === '4' && (
+                <>
+                  {/* Center Node - React */}
+                  <circle cx="500" cy="350" r="50" fill="url(#accent)" filter="url(#mindmapGlow)"/>
+                  <text x="500" y="360" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold">React</text>
+
+                  {/* Main Branches */}
+                  {/* Components Branch */}
+                  <line x1="450" y1="315" x2="280" y2="150" stroke="#8b5cf6" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0s'}} opacity="0.8"/>
+                  <circle cx="280" cy="150" r="35" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="160" textAnchor="middle" fill="#8b5cf6" fontSize="13" fontWeight="bold">Components</text>
+
+                  {/* Hooks Branch */}
+                  <line x1="550" y1="315" x2="720" y2="150" stroke="#06b6d4" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.3s'}} opacity="0.8"/>
+                  <circle cx="720" cy="150" r="35" fill="#06b6d4" fillOpacity="0.3" stroke="#06b6d4" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="160" textAnchor="middle" fill="#06b6d4" fontSize="13" fontWeight="bold">Hooks</text>
+
+                  {/* State & Props Branch */}
+                  <line x1="450" y1="390" x2="280" y2="550" stroke="#10b981" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.6s'}} opacity="0.8"/>
+                  <circle cx="280" cy="550" r="35" fill="#10b981" fillOpacity="0.3" stroke="#10b981" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="560" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="bold">State/Props</text>
+
+                  {/* Context & Performance Branch */}
+                  <line x1="550" y1="390" x2="720" y2="550" stroke="#f59e0b" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.9s'}} opacity="0.8"/>
+                  <circle cx="720" cy="550" r="35" fill="#f59e0b" fillOpacity="0.3" stroke="#f59e0b" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="560" textAnchor="middle" fill="#f59e0b" fontSize="13" fontWeight="bold">Advanced</text>
+
+                  {/* Sub-branches */}
+                  <line x1="260" y1="185" x2="140" y2="240" stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="140" cy="240" r="18" fill="#8b5cf6" fillOpacity="0.4"/>
+                  <text x="140" y="245" textAnchor="middle" fill="#8b5cf6" fontSize="10" fontWeight="bold">Functional</text>
+
+                  <line x1="300" y1="185" x2="420" y2="240" stroke="#8b5cf6" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="420" cy="240" r="18" fill="#8b5cf6" fillOpacity="0.4"/>
+                  <text x="420" y="245" textAnchor="middle" fill="#8b5cf6" fontSize="10" fontWeight="bold">JSX</text>
+
+                  <text x="500" y="680" textAnchor="middle" fill="#8b5cf6" fontSize="18" fontWeight="bold">React Component Architecture</text>
+                  <text x="500" y="700" textAnchor="middle" fill="#34d399" fontSize="13">Modern UI development with hooks and composition</text>
+                </>
+              )}
+
+              {/* Angular: Advanced Mind-Map */}
+              {techId === '5' && (
+                <>
+                  {/* Center Node - Angular */}
+                  <circle cx="500" cy="350" r="50" fill="url(#accent)" filter="url(#mindmapGlow)"/>
+                  <text x="500" y="360" textAnchor="middle" fill="white" fontSize="16" fontWeight="bold">Angular</text>
+
+                  {/* Main Branches */}
+                  {/* Components Branch */}
+                  <line x1="450" y1="315" x2="280" y2="150" stroke="#f97316" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0s'}} opacity="0.8"/>
+                  <circle cx="280" cy="150" r="35" fill="#f97316" fillOpacity="0.3" stroke="#f97316" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="160" textAnchor="middle" fill="#f97316" fontSize="13" fontWeight="bold">Components</text>
+
+                  {/* Services Branch */}
+                  <line x1="550" y1="315" x2="720" y2="150" stroke="#06b6d4" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.3s'}} opacity="0.8"/>
+                  <circle cx="720" cy="150" r="35" fill="#06b6d4" fillOpacity="0.3" stroke="#06b6d4" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="160" textAnchor="middle" fill="#06b6d4" fontSize="13" fontWeight="bold">Services</text>
+
+                  {/* Templates Branch */}
+                  <line x1="450" y1="390" x2="280" y2="550" stroke="#10b981" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.6s'}} opacity="0.8"/>
+                  <circle cx="280" cy="550" r="35" fill="#10b981" fillOpacity="0.3" stroke="#10b981" strokeWidth="3" className="mindmap-node"/>
+                  <text x="280" y="560" textAnchor="middle" fill="#10b981" fontSize="13" fontWeight="bold">Templates</text>
+
+                  {/* Routing & RxJS Branch */}
+                  <line x1="550" y1="390" x2="720" y2="550" stroke="#8b5cf6" strokeWidth="3" className="mindmap-line" style={{animationDelay: '0.9s'}} opacity="0.8"/>
+                  <circle cx="720" cy="550" r="35" fill="#8b5cf6" fillOpacity="0.3" stroke="#8b5cf6" strokeWidth="3" className="mindmap-node"/>
+                  <text x="720" y="560" textAnchor="middle" fill="#8b5cf6" fontSize="13" fontWeight="bold">Advanced</text>
+
+                  {/* Sub-branches */}
+                  <line x1="260" y1="185" x2="140" y2="240" stroke="#f97316" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="140" cy="240" r="18" fill="#f97316" fillOpacity="0.4"/>
+                  <text x="140" y="245" textAnchor="middle" fill="#f97316" fontSize="10" fontWeight="bold">Lifecycle</text>
+
+                  <line x1="300" y1="185" x2="420" y2="240" stroke="#f97316" strokeWidth="1.5" opacity="0.5"/>
+                  <circle cx="420" cy="240" r="18" fill="#f97316" fillOpacity="0.4"/>
+                  <text x="420" y="245" textAnchor="middle" fill="#f97316" fontSize="10" fontWeight="bold">DI</text>
+
+                  <text x="500" y="680" textAnchor="middle" fill="#f97316" fontSize="18" fontWeight="bold">Angular Framework Architecture</text>
+                  <text x="500" y="700" textAnchor="middle" fill="#34d399" fontSize="13">Enterprise Angular framework with TypeScript and DI</text>
                 </>
               )}
 
